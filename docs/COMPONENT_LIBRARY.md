@@ -272,17 +272,151 @@ Alert/notification message dengan theme-aware styling untuk light, dark, dan sty
 
 ### x-badge
 
-Badge/status indicator.
+Badge/status indicator dengan theme-aware styling untuk light, dark, dan stylis themes.
 
 ```blade
+<x-badge variant="default">Default</x-badge>
+<x-badge variant="primary">Primary</x-badge>
 <x-badge variant="success">Active</x-badge>
+<x-badge variant="danger">Busy</x-badge>
 <x-badge variant="warning" :dot="true">Pending</x-badge>
+<x-badge variant="info">New</x-badge>
 ```
 
 **Props:**
 - `variant`: `'default'` | `'primary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
 - `size`: `'sm'` | `'default'` | `'lg'`
-- `dot`: boolean
+- `dot`: boolean (default: false)
+- `class`: string untuk additional classes
+
+**Theme Support:**
+- **Light Theme**: Soft pastel backgrounds (bg-success-50, bg-danger-50, dll) dengan text colors yang kontras
+- **Dark Theme**: Semi-transparent backgrounds (bg-success-900/30, dll) dengan text colors yang lebih terang
+- **Stylis Theme**: Medical-appropriate soft color tones (emerald, rose, amber, sky) dengan semi-transparent backgrounds
+
+---
+
+### x-checkbox
+
+Checkbox input dengan label, theme-aware untuk light, dark, dan stylis themes.
+
+```blade
+{{-- Basic Checkbox --}}
+<x-checkbox name="terms" label="I agree to the terms" />
+
+{{-- With Description --}}
+<x-checkbox name="newsletter" label="Subscribe to newsletter" description="Get weekly updates" />
+
+{{-- Checked --}}
+<x-checkbox name="remember" label="Remember me" :checked="true" />
+
+{{-- Disabled --}}
+<x-checkbox name="disabled" label="Disabled option" :disabled="true" />
+```
+
+**Props:**
+- `name`: string (optional) - Input name attribute
+- `label`: string (optional) - Label text
+- `checked`: boolean (default: false)
+- `disabled`: boolean (default: false)
+- `description`: string (optional) - Additional description text
+- `class`: string untuk additional classes
+
+**Theme Support:**
+- **Light Theme**: Border rounded dengan background surface, checked state biru primary
+- **Dark Theme**: Darker background dan border, checked state tetap primary
+- **Stylis Theme**: Semi-transparent background dengan teal border pada hover/checked
+
+---
+
+### x-radio
+
+Radio button input dengan label, theme-aware untuk light, dark, dan stylis themes.
+
+```blade
+{{-- Basic Radio --}}
+<x-radio name="gender" value="male" label="Male" />
+<x-radio name="gender" value="female" label="Female" />
+
+{{-- With Description --}}
+<x-radio name="plan" value="free" label="Free Plan" description="Basic features" />
+<x-radio name="plan" value="pro" label="Pro Plan" description="All features" :checked="true" />
+
+{{-- Disabled --}}
+<x-radio name="option" value="disabled" label="Disabled" :disabled="true" />
+```
+
+**Props:**
+- `name`: string (optional) - Input name attribute (must be same for radio group)
+- `value`: string (optional) - Input value
+- `label`: string (optional) - Label text
+- `checked`: boolean (default: false)
+- `disabled`: boolean (default: false)
+- `description`: string (optional) - Additional description text
+- `class`: string untuk additional classes
+
+**Theme Support:**
+- **Light Theme**: Circular border dengan background surface, checked dengan dot primary
+- **Dark Theme**: Darker background dan border, checked dot tetap primary
+- **Stylis Theme**: Semi-transparent background dengan teal styling
+
+---
+
+### x-autocomplete
+
+Autocomplete/select dropdown dengan search functionality, theme-aware untuk light, dark, dan stylis themes.
+
+```blade
+{{-- Basic Select --}}
+<x-autocomplete
+    label="Select Department"
+    name="department"
+    :options="[
+        ['value' => 'cardio', 'label' => 'Cardiology'],
+        ['value' => 'neuro', 'label' => 'Neurology'],
+    ]"
+/>
+
+{{-- Searchable --}}
+<x-autocomplete
+    label="Select Doctor"
+    name="doctor"
+    :searchable="true"
+    :options="[
+        ['value' => 'dr_smith', 'label' => 'Dr. John Smith'],
+        ['value' => 'dr_jones', 'label' => 'Dr. Sarah Jones'],
+    ]"
+    placeholder="Search doctor..."
+/>
+
+{{-- Clearable --}}
+<x-autocomplete
+    label="Patient"
+    name="patient"
+    :clearable="true"
+    :options="[
+        ['value' => 'p1', 'label' => 'Patient 1'],
+        ['value' => 'p2', 'label' => 'Patient 2'],
+    ]"
+/>
+```
+
+**Props:**
+- `name`: string (optional) - Input name attribute
+- `label`: string (optional) - Field label
+- `placeholder`: string (default: "Select an option")
+- `options`: array - Array of {value, label} pairs
+- `value`: string (optional) - Selected value
+- `required`: boolean (default: false)
+- `disabled`: boolean (default: false)
+- `searchable`: boolean (default: true) - Enable search functionality
+- `clearable`: boolean (default: true) - Show clear button
+- `error`: string (optional) - Error message
+
+**Theme Support:**
+- **Light Theme**: Surface background dengan border, dropdown dengan shadow
+- **Dark Theme**: Slate background, dropdown dengan shadow yang lebih gelap
+- **Stylis Theme**: Semi-transparent background dengan teal border, backdrop blur
 
 ---
 
@@ -366,24 +500,59 @@ Statistics card untuk dashboard.
 
 ### x-modal
 
-Modal dialog dengan backdrop.
+Modal dialog dengan backdrop, theme-aware untuk light, dark, dan stylis themes.
 
 ```blade
-<x-modal title="Modal Title" :size="'lg'">
+{{-- Basic Modal --}}
+<x-modal title="Modal Title" trigger="Open Modal">
     <p>Modal content here</p>
 
     @slot('footer')
-        <x-button>Cancel</x-button>
-        <x-button variant="primary">Confirm</x-button>
+        <button class="px-4 py-2 rounded-xl bg-surface border border-border">Cancel</button>
+        <button class="px-4 py-2 rounded-xl bg-primary text-white">Confirm</button>
     @endslot
+</x-modal>
+
+{{-- Small Modal --}}
+<x-modal title="Confirm" size="sm" trigger="Confirm Action">
+    <p class="text-center">Are you sure you want to proceed?</p>
+    @slot('footer')
+        <button class="px-4 py-2 rounded-xl bg-danger text-white">Delete</button>
+    @endslot
+</x-modal>
+
+{{-- Large Modal --}}
+<x-modal title="Patient Details" size="lg" trigger="View Details">
+    <p>More content here...</p>
 </x-modal>
 ```
 
 **Props:**
-- `title`: string | null
+- `title`: string | null (optional)
 - `size`: `'sm'` | `'default'` | `'lg'` | `'xl'` | `'full'`
-- `centered`: boolean
-- `backdrop`: boolean
+- `centered`: boolean (default: true)
+- `backdrop`: boolean (default: true)
+- `trigger`: string untuk custom trigger button text
+- `class`: string untuk additional trigger button classes
+
+**Slots:**
+- `footer` - Untuk tombol action di bagian bawah modal
+
+**Theme Support:**
+- **Light Theme**: `bg-surface` dengan border dan shadow yang jelas
+- **Dark Theme**: Shadow lebih intens (`shadow-black/50`), backdrop dengan blur
+- **Stylis Theme**:
+  - `rounded-3xl` untuk lebih rounded
+  - `backdrop-blur-xl` untuk glassmorphism effect
+  - `bg-white/90` semi-transparent
+  - Border `border-white/30` untuk subtle outline
+  - Dark stylis: `bg-surface/90` dengan `border-teal-700/30`
+
+**Visual Features:**
+- Smooth scale + translate transitions
+- Backdrop blur untuk focus
+- Close button dengan hover scale effect
+- Responsive sizing dengan max-width variants
 
 ---
 

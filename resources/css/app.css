@@ -200,9 +200,15 @@
     --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.7);
 }
 
-/* Force dark theme text colors */
-.theme-dark * {
-    color: var(--color-text-primary) !important;
+/* Force dark theme text colors - ONLY for text elements, not icons/SVG */
+.theme-dark p,
+.theme-dark span:not([class*="text-"]),
+.theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4, .theme-dark h5, .theme-dark h6,
+.theme-dark a,
+.theme-dark label,
+.theme-dark button:not([class*="bg-"]),
+.theme-dark td, .theme-dark th {
+    color: var(--color-text-primary);
 }
 
 .theme-dark .text-text-secondary {
@@ -215,6 +221,12 @@
 
 .theme-dark .text-text-muted {
     color: var(--color-text-muted) !important;
+}
+
+/* Preserve SVG icon colors in dark mode */
+.theme-dark svg[stroke="currentColor"],
+.theme-dark svg {
+    stroke: currentColor;
 }
 
 /* Force dark background on body */
@@ -616,6 +628,135 @@ input:-webkit-autofill:focus {
     -webkit-text-fill-color: var(--color-text-primary);
     -webkit-box-shadow: 0 0 0px 1000px var(--color-surface) inset;
     transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ============================================
+ * FORM COMPONENTS - CHECKBOX & RADIO
+ * ============================================ */
+
+/* Checkbox */
+input[type="checkbox"].custom-checkbox {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--color-border);
+    border-radius: 0.375rem;
+    background-color: var(--color-surface);
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition) ease;
+}
+
+input[type="checkbox"].custom-checkbox:hover {
+    border-color: var(--color-primary-300);
+}
+
+input[type="checkbox"].custom-checkbox:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.theme-dark input[type="checkbox"].custom-checkbox {
+    background-color: #334155;
+    border-color: #475569;
+}
+
+.theme-dark input[type="checkbox"].custom-checkbox:hover {
+    border-color: #64748b;
+}
+
+.theme-dark input[type="checkbox"].custom-checkbox:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.theme-stylis input[type="checkbox"].custom-checkbox {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(153, 213, 201, 0.3);
+}
+
+.theme-stylis input[type="checkbox"].custom-checkbox:hover {
+    border-color: rgba(153, 213, 201, 0.5);
+}
+
+.theme-stylis input[type="checkbox"].custom-checkbox:checked {
+    background-color: #14b8a6;
+    border-color: #14b8a6;
+}
+
+/* Radio */
+input[type="radio"].custom-radio {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--color-border);
+    border-radius: 9999px;
+    background-color: var(--color-surface);
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition) ease;
+}
+
+input[type="radio"].custom-radio:hover {
+    border-color: var(--color-primary-300);
+}
+
+input[type="radio"].custom-radio:checked {
+    border-color: var(--color-primary);
+}
+
+input[type="radio"].custom-radio:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background-color: var(--color-primary);
+}
+
+.theme-dark input[type="radio"].custom-radio {
+    background-color: #334155;
+    border-color: #475569;
+}
+
+.theme-dark input[type="radio"].custom-radio:hover {
+    border-color: #64748b;
+}
+
+.theme-dark input[type="radio"].custom-radio:checked {
+    border-color: var(--color-primary);
+}
+
+.theme-dark input[type="radio"].custom-radio:checked::after {
+    background-color: var(--color-primary);
+}
+
+.theme-stylis input[type="radio"].custom-radio {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(153, 213, 201, 0.3);
+}
+
+.theme-stylis input[type="radio"].custom-radio:hover {
+    border-color: rgba(153, 213, 201, 0.5);
+}
+
+.theme-stylis input[type="radio"].custom-radio:checked {
+    border-color: #14b8a6;
+}
+
+.theme-stylis input[type="radio"].custom-radio:checked::after {
+    background-color: #14b8a6;
+}
+
+/* Focus ring for checkbox/radio */
+input[type="checkbox"].custom-checkbox:focus,
+input[type="radio"].custom-radio:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-primary) / 0.1;
+    ring: 2px solid var(--color-primary) / 0.1;
 }
 
 /* ============================================

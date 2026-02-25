@@ -7,29 +7,6 @@
 ])
 
 @php
-    // Theme-aware alert styling for light, dark, and stylis themes
-    $typeClasses = [
-        'success' => 'bg-success-50 border-success-200 text-success-700 ' .
-                     'theme-dark:bg-success-900/25 theme-dark:border-success-700/50 theme-dark:text-success-300 ' .
-                     'theme-stylis:bg-emerald-50/90 theme-stylis:border-emerald-300/60 theme-stylis:text-emerald-800 ' .
-                     'theme-stylis.theme-dark:bg-emerald-900/20 theme-stylis.theme-dark:border-emerald-600/40 theme-stylis.theme-dark:text-emerald-300',
-
-        'danger' => 'bg-danger-50 border-danger-200 text-danger-700 ' .
-                   'theme-dark:bg-danger-900/25 theme-dark:border-danger-700/50 theme-dark:text-danger-300 ' .
-                   'theme-stylis:bg-rose-50/90 theme-stylis:border-rose-300/60 theme-stylis:text-rose-800 ' .
-                   'theme-stylis.theme-dark:bg-rose-900/20 theme-stylis.theme-dark:border-rose-600/40 theme-stylis.theme-dark:text-rose-300',
-
-        'warning' => 'bg-warning-50 border-warning-200 text-warning-700 ' .
-                   'theme-dark:bg-warning-900/25 theme-dark:border-warning-700/50 theme-dark:text-warning-300 ' .
-                   'theme-stylis:bg-amber-50/90 theme-stylis:border-amber-300/60 theme-stylis:text-amber-800 ' .
-                   'theme-stylis.theme-dark:bg-amber-900/20 theme-stylis.theme-dark:border-amber-600/40 theme-stylis.theme-dark:text-amber-300',
-
-        'info' => 'bg-info-50 border-info-200 text-info-700 ' .
-                 'theme-dark:bg-info-900/25 theme-dark:border-info-700/50 theme-dark:text-info-300 ' .
-                 'theme-stylis:bg-sky-50/90 theme-stylis:border-sky-300/60 theme-stylis:text-sky-800 ' .
-                 'theme-stylis.theme-dark:bg-sky-900/20 theme-stylis.theme-dark:border-sky-600/40 theme-stylis.theme-dark:text-sky-300',
-    ];
-
     // Icons for each alert type
     $icons = [
         'success' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
@@ -38,12 +15,11 @@
         'info' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
     ];
 
-    // Close button hover styles per theme
-    $closeButtonClass = 'flex-shrink-0 p-1.5 rounded-md transition-all duration-200 ' .
-                        'hover:bg-black/10 active:bg-black/15 ' .
-                        'theme-dark:hover:bg-white/10 theme-dark:active:bg-white/15 ' .
-                        'theme-stylis:hover:bg-black/10 theme-stylis:active:bg-black/15 ' .
-                        'theme-stylis.theme-dark:hover:bg-white/10 theme-stylis.theme-dark:active:bg-white/15';
+    $alertClass = 'alert-' . $type;
+
+    // Close button styles
+    $closeButtonClass = 'flex-shrink-0 p-1.5 rounded-md transition-all duration-200 hover:bg-black/10 active:bg-black/15 ' .
+                        'theme-dark:hover:bg-white/10 theme-dark:active:bg-white/15';
 @endphp
 
 <div x-data="{ show: true }"
@@ -54,7 +30,7 @@
      x-transition:leave="transition ease-in duration-150"
      x-transition:leave-start="opacity-100 scale-100"
      x-transition:leave-end="opacity-0 scale-95"
-     class="alert-component rounded-xl border p-4 shadow-sm {{ $typeClasses[$type] }} {{ $class }}"
+     class="alert-component rounded-xl border p-4 shadow-sm {{ $alertClass }} {{ $class }}"
      x-cloak
      role="alert"
      aria-live="polite">
@@ -62,14 +38,14 @@
     <div class="flex items-start gap-3">
         @if($icon)
             <div class="flex-shrink-0 mt-0.5">
-                <div class="p-0.5 rounded-full ring-1 ring-current opacity-20">
+                <div class="p-0.5 rounded-full ring-1 ring-current opacity-20 alert-icon">
                     {!! $icons[$type] !!}
                 </div>
             </div>
         @endif
 
         <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium leading-5">
+            <div class="text-sm font-medium leading-5 alert-content">
                 {{ $slot }}
             </div>
         </div>
@@ -85,3 +61,151 @@
         @endif
     </div>
 </div>
+
+@once
+<style>
+/* Alert Success */
+.alert-success {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+}
+.alert-success .alert-content {
+    color: #15803d;
+}
+.theme-dark .alert-success {
+    background-color: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+.theme-dark .alert-success .alert-content {
+    color: #86efac;
+}
+.theme-dark .alert-success .alert-icon {
+    color: #86efac;
+}
+.theme-stylis .alert-success {
+    background-color: rgba(220, 252, 231, 0.9);
+    border-color: rgba(129, 230, 217, 0.5);
+}
+.theme-stylis .alert-success .alert-content {
+    color: #047857;
+}
+.theme-stylis.theme-dark .alert-success {
+    background-color: rgba(34, 197, 94, 0.15);
+    border-color: rgba(52, 211, 153, 0.3);
+}
+.theme-stylis.theme-dark .alert-success .alert-content {
+    color: #6ee7b7;
+}
+.theme-stylis.theme-dark .alert-success .alert-icon {
+    color: #6ee7b7;
+}
+
+/* Alert Danger */
+.alert-danger {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}
+.alert-danger .alert-content {
+    color: #b91c1c;
+}
+.theme-dark .alert-danger {
+    background-color: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+.theme-dark .alert-danger .alert-content {
+    color: #fca5a5;
+}
+.theme-dark .alert-danger .alert-icon {
+    color: #fca5a5;
+}
+.theme-stylis .alert-danger {
+    background-color: rgba(254, 226, 226, 0.9);
+    border-color: rgba(251, 113, 133, 0.4);
+}
+.theme-stylis .alert-danger .alert-content {
+    color: #b91c1c;
+}
+.theme-stylis.theme-dark .alert-danger {
+    background-color: rgba(239, 68, 68, 0.15);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+.theme-stylis.theme-dark .alert-danger .alert-content {
+    color: #fda4af;
+}
+.theme-stylis.theme-dark .alert-danger .alert-icon {
+    color: #fda4af;
+}
+
+/* Alert Warning */
+.alert-warning {
+    background-color: #fffbeb;
+    border-color: #fde68a;
+}
+.alert-warning .alert-content {
+    color: #b45309;
+}
+.theme-dark .alert-warning {
+    background-color: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+.theme-dark .alert-warning .alert-content {
+    color: #fcd34d;
+}
+.theme-dark .alert-warning .alert-icon {
+    color: #fcd34d;
+}
+.theme-stylis .alert-warning {
+    background-color: rgba(254, 243, 199, 0.9);
+    border-color: rgba(251, 191, 36, 0.4);
+}
+.theme-stylis .alert-warning .alert-content {
+    color: #b45309;
+}
+.theme-stylis.theme-dark .alert-warning {
+    background-color: rgba(245, 158, 11, 0.15);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+.theme-stylis.theme-dark .alert-warning .alert-content {
+    color: #fbbf24;
+}
+.theme-stylis.theme-dark .alert-warning .alert-icon {
+    color: #fbbf24;
+}
+
+/* Alert Info */
+.alert-info {
+    background-color: #f0f9ff;
+    border-color: #bae6fd;
+}
+.alert-info .alert-content {
+    color: #0369a1;
+}
+.theme-dark .alert-info {
+    background-color: rgba(14, 165, 233, 0.15);
+    border-color: rgba(14, 165, 233, 0.3);
+}
+.theme-dark .alert-info .alert-content {
+    color: #7dd3fc;
+}
+.theme-dark .alert-info .alert-icon {
+    color: #7dd3fc;
+}
+.theme-stylis .alert-info {
+    background-color: rgba(224, 242, 254, 0.9);
+    border-color: rgba(125, 211, 252, 0.4);
+}
+.theme-stylis .alert-info .alert-content {
+    color: #0284c7;
+}
+.theme-stylis.theme-dark .alert-info {
+    background-color: rgba(14, 165, 233, 0.15);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+.theme-stylis.theme-dark .alert-info .alert-content {
+    color: #7dd3fc;
+}
+.theme-stylis.theme-dark .alert-info .alert-icon {
+    color: #7dd3fc;
+}
+</style>
+@endonce

@@ -28,20 +28,22 @@ export default function clockController() {
         updateClock() {
             const now = new Date();
 
-            // Format time HH:MM:SS
+            // Format time HH:MM:SS - WIB (Asia/Jakarta)
             this.currentTime = now.toLocaleTimeString('id-ID', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
-                hour12: false
+                hour12: false,
+                timeZone: 'Asia/Jakarta'
             });
 
-            // Format date
+            // Format date with day - WIB (Asia/Jakarta)
             this.currentDate = now.toLocaleDateString('id-ID', {
                 weekday: 'long',
+                day: 'numeric',
+                month: 'short',
                 year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+                timeZone: 'Asia/Jakarta'
             });
         },
 

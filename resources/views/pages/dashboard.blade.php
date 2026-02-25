@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - Roxwood Health Medical Center')
+@section('title', __('messages.dashboard') . ' - ' . __('messages.app_name'))
 
-@section('page-title', 'Dashboard')
-@section('page-description', 'Welcome - Overview')
+@section('page-title', __('messages.dashboard'))
+@section('page-description', __('messages.overview') . ' - ' . __('messages.welcome'))
 
 @section('content')
 {{-- Stats Cards --}}
 <x-grid :cols="1" :gap="'default'" class="mb-6">
     <x-stat-card
-        title="Total Patients"
+        :title="__('messages.total_patients')"
         value="2,847"
         change="+12.5%"
         changeType="positive"
@@ -18,7 +18,7 @@
     />
 
     <x-stat-card
-        title="Total Doctors"
+        :title="__('messages.total_doctors')"
         value="156"
         change="+3"
         changeType="positive"
@@ -27,7 +27,7 @@
     />
 
     <x-stat-card
-        title="Appointments"
+        :title="__('messages.total_appointments')"
         value="384"
         change="-2.4%"
         changeType="negative"
@@ -36,7 +36,7 @@
     />
 
     <x-stat-card
-        title="Revenue"
+        :title="__('messages.total_revenue')"
         value="Rp 1.2M"
         change="+8.1%"
         changeType="positive"
@@ -48,34 +48,34 @@
 {{-- Charts & Tables Grid --}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     {{-- Chart Area --}}
-    <x-card title="Revenue Overview" :cols="'lg:col-span-2'" class="h-full">
+    <x-card :title="__('messages.revenue_overview')" :cols="'lg:col-span-2'" class="h-full">
         <div class="h-64 flex items-center justify-center bg-surface/50 rounded-lg">
             <div class="text-center">
                 <svg class="w-16 h-16 mx-auto text-text-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                 </svg>
-                <p class="text-text-secondary">Chart Component Placeholder</p>
-                <p class="text-sm text-text-muted mt-1">Integrate Chart.js or ApexCharts here</p>
+                <p class="text-text-secondary" data-translate="chart_placeholder">{{ __('messages.chart_placeholder') }}</p>
+                <p class="text-sm text-text-muted mt-1" data-translate="chart_description">{{ __('messages.chart_description') }}</p>
             </div>
         </div>
     </x-card>
 
     {{-- Recent Activity --}}
-    <x-card title="Recent Activity">
+    <x-card :title="__('messages.recent_activity')">
         <div class="space-y-4">
             @foreach([
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>', 'title' => 'New patient registered', 'time' => '2 minutes ago', 'color' => 'text-primary-500'],
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>', 'title' => 'Appointment scheduled', 'time' => '15 minutes ago', 'color' => 'text-success-500'],
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>', 'title' => 'Lab report approved', 'time' => '1 hour ago', 'color' => 'text-info-500'],
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>', 'title' => 'Payment received', 'time' => '2 hours ago', 'color' => 'text-success-500'],
+                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>', 'title_key' => 'new_patient_registered', 'time_key' => 'two_minutes_ago', 'color' => 'text-primary-500'],
+                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>', 'title_key' => 'appointment_scheduled', 'time_key' => 'fifteen_minutes_ago', 'color' => 'text-success-500'],
+                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>', 'title_key' => 'lab_report_approved', 'time_key' => 'one_hour_ago', 'color' => 'text-info-500'],
+                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>', 'title_key' => 'payment_received', 'time_key' => 'hours_ago', 'time_param' => '2', 'color' => 'text-success-500'],
             ] as $activity)
             <div class="flex items-start gap-3">
                 <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-surface flex items-center justify-center {{ $activity['color'] }}">
                     {!! $activity['icon'] !!}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-text-primary">{{ $activity['title'] }}</p>
-                    <p class="text-xs text-text-secondary">{{ $activity['time'] }}</p>
+                    <p class="text-sm font-medium text-text-primary" data-translate="{{ $activity['title_key'] }}">{{ __($activity['title_key']) }}</p>
+                    <p class="text-xs text-text-secondary" data-translate="{{ $activity['time_key'] }}">{{ __($activity['time_key'], ['minutes' => $activity['time_param'] ?? 2, 'hours' => $activity['time_param'] ?? 2]) }}</p>
                 </div>
             </div>
             @endforeach
@@ -84,15 +84,15 @@
 </div>
 
  {{-- Patients Table --}}
- <x-card title="Recent Patients" class="mt-6">
+ <x-card :title="__('messages.recent_patients')" class="mt-6">
     <div class="overflow-x-auto -mx-5 sm:mx-0">
         <x-table
             :headers="[
-                ['label' => 'Patient', 'key' => 'name'],
-                ['label' => 'ID', 'key' => 'id'],
-                ['label' => 'Visit Date', 'key' => 'date'],
-                ['label' => 'Status', 'key' => 'status'],
-                ['label' => 'Actions', 'key' => 'actions'],
+                ['label' => __('messages.patient'), 'key' => 'name'],
+                ['label' => __('messages.id'), 'key' => 'id'],
+                ['label' => __('messages.visit_date'), 'key' => 'date'],
+                ['label' => __('messages.status'), 'key' => 'status'],
+                ['label' => __('messages.actions'), 'key' => 'actions'],
             ]"
             :striped="true"
             :hoverable="true"
@@ -114,17 +114,19 @@
                 <td class="px-4 py-3 text-text-secondary">{{ $patient['id'] }}</td>
                 <td class="px-4 py-3 text-text-secondary">{{ $patient['date'] }}</td>
                 <td class="px-4 py-3">
-                    <x-badge :variant="$patient['statusColor']">{{ $patient['status'] }}</x-badge>
+                    <x-badge :variant="$patient['statusColor']">
+                        <span data-translate="{{ $patient['status'] }}">{{ __($patient['status']) }}</span>
+                    </x-badge>
                 </td>
                 <td class="px-4 py-3">
                     <div class="flex items-center gap-2">
-                        <button class="p-1.5 rounded-lg hover:bg-surface-hover transition-colors">
+                        <button class="p-1.5 rounded-lg hover:bg-surface-hover transition-colors" title="{{ __('messages.view') }}">
                             <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                             </svg>
                         </button>
-                        <button class="p-1.5 rounded-lg hover:bg-surface-hover transition-colors">
+                        <button class="p-1.5 rounded-lg hover:bg-surface-hover transition-colors" title="{{ __('messages.edit') }}">
                             <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                             </svg>

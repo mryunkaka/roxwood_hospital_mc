@@ -38,6 +38,7 @@ return [
     'time' => 'Waktu',
     'active' => 'Aktif',
     'inactive' => 'Tidak Aktif',
+    'pending' => 'Menunggu',
 
     // Auth
     'login' => 'Masuk',
@@ -86,6 +87,27 @@ return [
     'recent_activity' => 'Aktivitas Terbaru',
     'quick_actions' => 'Aksi Cepat',
 
+    // Dashboard Stats
+    'total_patients' => 'Total Pasien',
+    'total_doctors' => 'Total Dokter',
+    'total_appointments' => 'Janji Temu',
+    'total_revenue' => 'Pendapatan',
+    'revenue_overview' => 'Ringkasan Pendapatan',
+    'recent_patients' => 'Pasien Terbaru',
+    'new_patient_registered' => 'Pasien baru terdaftar',
+    'appointment_scheduled' => 'Janji temu dijadwalkan',
+    'lab_report_approved' => 'Laporan lab disetujui',
+    'payment_received' => 'Pembayaran diterima',
+    'chart_placeholder' => 'Placeholder Komponen Grafik',
+    'chart_description' => 'Integrasikan Chart.js atau ApexCharts di sini',
+
+    // Time ago
+    'minutes_ago' => ':minutes menit yang lalu',
+    'hours_ago' => ':hours jam yang lalu',
+    'one_hour_ago' => '1 jam yang lalu',
+    'two_minutes_ago' => '2 menit yang lalu',
+    'fifteen_minutes_ago' => '15 menit yang lalu',
+
     // Navigation
     'home' => 'Beranda',
     'menu' => 'Menu',
@@ -106,10 +128,173 @@ return [
     // Language
     'language' => 'Bahasa',
     'switch_language' => 'Ganti Bahasa',
+    'english' => 'English',
+    'indonesian' => 'Bahasa Indonesia',
+    'united_states' => 'Amerika Serikat',
+    'indonesia' => 'Indonesia',
 
     // Components
     'components' => 'Komponen',
     'component_library' => 'Pustaka Komponen',
+    'showcase_all_components' => 'Showcase semua komponen yang tersedia',
+
+    // Component sections
+    'buttons' => 'Tombol',
+    'alerts' => 'Peringatan',
+    'badges' => 'Lencana',
+    'form_elements' => 'Elemen Formulir',
+    'avatars' => 'Avatar',
+    'cards' => 'Kartu',
+    'modals' => 'Modal',
+    'checkbox_radio' => 'Kotak Centang & Radio',
+    'autocomplete' => 'Otomatis Lengkap',
+    'data_table' => 'Tabel Data',
+
+    // Button labels
+    'button_variants' => 'Varian Tombol',
+    'button_sizes' => 'Ukuran Tombol',
+    'button_with_icons' => 'Tombol dengan Ikon',
+    'primary' => 'Utama',
+    'secondary' => 'Sekunder',
+    'success' => 'Berhasil',
+    'danger' => 'Bahaya',
+    'warning' => 'Peringatan',
+    'info' => 'Informasi',
+    'ghost' => 'Hantu',
+    'link' => 'Tautan',
+    'small' => 'Kecil',
+    'default' => 'Default',
+    'large' => 'Besar',
+    'add_new' => 'Tambah Baru',
+
+    // Alert messages
+    'success_message' => 'Perubahan Anda telah berhasil disimpan.',
+    'error_message' => 'Terjadi kesalahan. Silakan coba lagi.',
+    'warning_message' => 'Silakan tinjau input Anda sebelum mengirim.',
+    'info_message' => 'Ini adalah pesan informasional untuk Anda.',
+
+    // Badge labels
+    'online' => 'Online',
+    'busy' => 'Sibuk',
+    'away' => 'Pergi',
+
+    // Form labels
+    'input_fields' => 'Kolom Input',
+    'select_textarea' => 'Pilih & Area Teks',
+    'disabled_input' => 'Input Dinonaktifkan',
+    'department' => 'Departemen',
+    'select_department' => 'Pilih departemen',
+    'message' => 'Pesan',
+    'enter_message' => 'Masukkan pesan Anda',
+    'remember_me_checkbox' => 'Ingat saya',
+
+    // Department options
+    'cardiology' => 'Kardiologi',
+    'neurology' => 'Neurologi',
+    'orthopedics' => 'Ortopedi',
+    'pediatrics' => 'Pediatri',
+    'radiology' => 'Radiologi',
+
+    // Card labels
+    'default_card' => 'Kartu Default',
+    'card_subtitle' => 'Ini adalah subjudul kartu',
+    'card_content' => 'Ini adalah area konten kartu. Anda dapat menaruh konten apa pun di sini.',
+    'hoverable_card' => 'Kartu Dapat Diarahkan',
+    'hoverable_description' => 'Kartu ini memiliki efek hover. Coba arahkan kursor ke atasnya!',
+    'no_padding' => 'Tanpa Padding',
+    'image_card' => 'Kartu dengan gambar dan konten kustom.',
+
+    // Modal labels
+    'basic_modal' => 'Modal Dasar',
+    'small_modal' => 'Modal Kecil',
+    'large_modal' => 'Modal Besar',
+    'success_modal' => 'Modal Sukses',
+    'form_modal' => 'Modal Formulir',
+    'xl_modal' => 'Modal Ekstra Besar',
+    'basic_modal_description' => 'Modal sederhana dengan header, konten, dan footer.',
+    'small_modal_description' => 'Modal kompak untuk konfirmasi sederhana.',
+    'large_modal_description' => 'Modal lebih lebar untuk lebih banyak konten.',
+    'success_modal_description' => 'Modal untuk konfirmasi sukses.',
+    'form_modal_description' => 'Modal dengan input formulir.',
+    'xl_modal_description' => 'Modal lebar maksimum untuk konten kompleks.',
+
+    // Modal content
+    'basic_modal_content' => 'Ini adalah contoh modal dasar. Ini memiliki header, area konten, dan Anda dapat menambahkan footer.',
+    'click_to_close' => 'Klik tombol X atau klik di luar untuk menutup.',
+    'confirm_action' => 'Konfirmasi Tindakan',
+    'are_you_sure' => 'Apakah Anda yakin?',
+    'action_cannot_be_undone' => 'Tindakan ini tidak dapat dibatalkan.',
+    'patient_information' => 'Informasi Pasien',
+    'medical_records' => 'Rekam Medis',
+
+    // Patient info labels
+    'patient_name' => 'Nama Pasien',
+    'patient_id' => 'ID Pasien',
+    'date_of_birth' => 'Tanggal Lahir',
+    'blood_type' => 'Golongan Darah',
+    'medical_notes' => 'Catatan Medis',
+    'patient_history' => 'Pasien memiliki riwayat alergi musiman. Antihistamin diresepkan sesuai kebutuhan.',
+
+    // Success modal
+    'success_title' => 'Berhasil!',
+    'appointment_scheduled_title' => 'Janji Temu Dijadwalkan!',
+    'appointment_success_message' => 'Janji temu Anda telah berhasil dijadwalkan untuk 28 Februari 2026 pukul 10:00.',
+    'done' => 'Selesai',
+
+    // Form modal
+    'add_new_patient' => 'Tambah Pasien Baru',
+    'enter_patient_name' => 'Masukkan nama pasien',
+    'add_patient' => 'Tambah Pasien',
+
+    // Medical records table
+    'doctor' => 'Dokter',
+    'diagnosis' => 'Diagnosis',
+    'completed' => 'Selesai',
+    'annual_checkup' => 'Pemeriksaan Tahunan',
+    'follow_up_visit' => 'Kunjungan Tindak Lanjut',
+    'lab_results_review' => 'Tinjauan Hasil Lab',
+    'export_records' => 'Ekspor Rekam Medis',
+
+    // Checkbox & Radio
+    'checkboxes' => 'Kotak Centang',
+    'radio_buttons' => 'Tombol Radio',
+    'i_agree_terms' => 'Saya menyetujui Syarat & Ketentuan',
+    'subscribe_newsletter' => 'Berlangganan buletin',
+    'newsletter_description' => 'Dapatkan pembaruan terbaru langsung ke kotak masuk Anda.',
+    'disabled_option' => 'Opsi dinonaktifkan',
+    'male' => 'Pria',
+    'female' => 'Wanita',
+    'free_plan' => 'Paket Gratis',
+    'pro_plan' => 'Paket Pro',
+    'free_plan_description' => 'Fitur dasar dengan akses terbatas',
+    'pro_plan_description' => 'Semua fitur dengan prioritas dukungan',
+
+    // Autocomplete labels
+    'single_select' => 'Pilih Satu',
+    'searchable_select' => 'Dapat Dicari',
+    'select_department_label' => 'Pilih Departemen',
+    'choose_department' => 'Pilih departemen',
+    'select_doctor_label' => 'Pilih Dokter',
+    'search_select_doctor' => 'Cari dan pilih dokter',
+
+    // Doctor names
+    'dr_smith' => 'Dr. John Smith',
+    'dr_jones' => 'Dr. Sarah Jones',
+    'dr_williams' => 'Dr. Michael Williams',
+    'dr_brown' => 'Dr. Emily Brown',
+    'dr_davis' => 'Dr. Robert Davis',
+
+    // DataTable labels
+    'ajax_data_table' => 'Tabel Data Ajax dengan Paginasi',
+    'data_table_description' => 'Komponen tabel canggih dengan pencarian, pengurutan, paginasi, dan lainnya.',
+    'search_patients' => 'Cari pasien...',
+    'patient' => 'Pasien',
+    'id' => 'ID',
+    'visit_date' => 'Tanggal Kunjungan',
+    'showing_results' => 'Menampilkan',
+    'results' => 'hasil',
+    'first' => 'Pertama',
+    'last' => 'Terakhir',
 
     // Stats
     'patients' => 'Pasien',
@@ -125,8 +310,7 @@ return [
     'showing' => 'Menampilkan',
     'to' => 'hingga',
     'of' => 'dari',
-    'no_data' => 'Tidak ada data',
-    'no_data_available' => 'Tidak ada data yang tersedia',
+    'no_data' => 'Tidak ada data yang tersedia',
     'sort_by' => 'Urutkan berdasarkan',
 
     // Forms
@@ -173,37 +357,26 @@ return [
     'current_password_placeholder' => 'Masukkan kata sandi saat ini',
     'new_password_placeholder' => 'Masukkan kata sandi baru',
     'confirm_password_placeholder' => 'Konfirmasi kata sandi baru',
+    'search_placeholder' => 'Cari...',
 
     // Labels for forms
     'name' => 'Nama',
-    'full_name' => 'Nama Lengkap',
+    'full_name_label' => 'Nama Lengkap',
     'email_address' => 'Alamat Email',
-    'disabled_input' => 'Input Dinonaktifkan',
-    'department' => 'Departemen',
-    'message' => 'Pesan',
-    'current_password' => 'Kata Sandi Saat Ini',
-    'new_password' => 'Kata Sandi Baru',
-    'confirm_password' => 'Konfirmasi Kata Sandi Baru',
     'site_name' => 'Nama Situs',
     'admin_email' => 'Email Admin',
     'timezone' => 'Zona Waktu',
     'theme_preference' => 'Preferensi Tema',
-    'language' => 'Bahasa',
     'notification_settings' => 'Pengaturan Notifikasi',
     'security_settings' => 'Pengaturan Keamanan',
     'general_settings' => 'Pengaturan Umum',
     'appearance_settings' => 'Pengaturan Tampilan',
 
-    // Department options
-    'cardiology' => 'Kardiologi',
-    'neurology' => 'Neurologi',
-    'orthopedics' => 'Ortopedi',
-    'pediatrics' => 'Pediatri',
-
     // Settings tabs
     'general' => 'Umum',
     'appearance' => 'Tampilan',
     'security' => 'Keamanan',
+    'notifications' => 'Notifikasi',
 
     // Additional
     'save_changes' => 'Simpan Perubahan',
@@ -227,4 +400,25 @@ return [
     // Validation messages
     'email_required' => 'Email wajib diisi',
     'password_required' => 'Kata sandi wajib diisi',
+
+    // Sidebar menu
+    'dashboard_menu' => 'Dashboard',
+    'components_menu' => 'Komponen',
+    'settings_menu' => 'Pengaturan',
+    'logout_menu' => 'Keluar',
+
+    // Profile dropdown
+    'profile_menu' => 'Profil',
+    'settings_menu' => 'Pengaturan',
+    'logout_menu' => 'Keluar',
+
+    // Additional button labels
+    'refresh' => 'Refresh',
+    'export' => 'Ekspor',
+    'open_basic_modal' => 'Buka Modal Dasar',
+    'open_small_modal' => 'Buka Modal Kecil',
+    'open_large_modal' => 'Buka Modal Besar',
+    'open_success_modal' => 'Buka Modal Sukses',
+    'open_form_modal' => 'Buka Modal Formulir',
+    'open_xl_modal' => 'Buka Modal XL',
 ];
