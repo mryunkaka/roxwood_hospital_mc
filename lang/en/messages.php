@@ -303,6 +303,41 @@ return [
     'revenue' => 'Revenue',
     'rooms' => 'Rooms',
     'departments' => 'Departments',
+    'total_patients' => 'Total Patients',
+    'total_doctors' => 'Total Doctors',
+    'total_appointments' => 'Total Appointments',
+    'total_revenue' => 'Total Revenue',
+
+    // Charts
+    'patient_visits' => 'Patient Visits',
+    'patient_status' => 'Patient Status',
+    'department_revenue' => 'Department Revenue',
+    'appointment_types' => 'Appointment Types',
+    'revenue_overview' => 'Revenue Overview',
+    'recovered' => 'Recovered',
+    'critical' => 'Critical',
+
+    // Patients Page
+    'all_patients' => 'All Patients',
+    'manage_patients' => 'Manage Patients',
+    'add_patient' => 'Add Patient',
+    'search_patients' => 'Search patients...',
+    'all_departments' => 'All Departments',
+    'all_status' => 'All Status',
+    'selected' => 'selected',
+    'confirm_delete' => 'Are you sure you want to delete',
+    'patient_details' => 'Patient Details',
+    'patient_id' => 'Patient ID',
+    'phone' => 'Phone',
+    'blood_type' => 'Blood Type',
+    'age' => 'Age',
+    'gender' => 'Gender',
+    'address' => 'Address',
+    'print' => 'Print',
+    'last_visit' => 'Last Visit',
+    'male' => 'Male',
+    'female' => 'Female',
+    'patients_menu' => 'Patients',
 
     // Tables
     'table' => 'Table',
@@ -421,4 +456,65 @@ return [
     'open_success_modal' => 'Open Success Modal',
     'open_form_modal' => 'Open Form Modal',
     'open_xl_modal' => 'Open XL Modal',
+
+    // Skeleton Loaders
+    'skeleton_loaders' => 'Skeleton Loaders',
+    'text_skeleton' => 'Text Skeleton',
+    'circle_skeleton' => 'Circle Skeleton',
+    'card_skeleton' => 'Card Skeleton',
+    'table_skeleton' => 'Table Skeleton',
+
+    // Progress Bars
+    'progress_bars' => 'Progress Bars',
+    'basic_progress' => 'Basic Progress',
+    'with_label' => 'With Label & Percentage',
+    'variants' => 'Variants',
+    'sizes' => 'Sizes',
+    'striped_animated' => 'Striped & Animated',
+
+    // Tooltips
+    'tooltips' => 'Tooltips',
+
+    // Popovers
+    'popovers' => 'Popovers',
+
+    // File Upload
+    'file_upload' => 'File Upload',
+    'single_upload' => 'Single Upload',
+    'image_upload' => 'Image Upload (Multiple)',
+    'upload_drag_drop' => 'Drag & drop files here',
+    'upload_or' => 'or',
+    'upload_browse' => 'browse files',
+    'upload_accept' => 'Accepted formats',
+    'upload_max_size' => 'Max file size',
+    'upload_clear_all' => 'Clear All Files',
+
+    // Date/Time Pickers
+    'date_time_pickers' => 'Date/Time Pickers',
+    'date_picker' => 'Date Picker',
+    'time_picker' => 'Time Picker',
+    'datetime_picker' => 'DateTime Picker',
+    'inline_calendar' => 'Inline Calendar',
+
+    // Toast Notifications
+    'toast_notifications' => 'Toast Notifications',
+    'toast_description' => 'Click buttons to trigger toast notifications',
+
+    // Charts
+    'charts' => 'Charts',
+    'line_chart' => 'Line Chart',
+    'bar_chart' => 'Bar Chart',
+    'doughnut_chart' => 'Doughnut Chart',
+    'pie_chart' => 'Pie Chart',
+    'radar_chart' => 'Radar Chart',
+    'polar_area_chart' => 'Polar Area Chart',
+
+    // Accessibility Features
+    'accessibility_features' => 'Accessibility Features',
+    'font_size' => 'Font Size',
+    'current_font' => 'Current Font',
+    'high_contrast' => 'High Contrast Mode',
+    'high_contrast_desc' => 'Increase contrast for better visibility',
+    'reduced_motion' => 'Reduced Motion',
+    'reduced_motion_desc' => 'Reduce animations for users with motion sensitivity',
 ];

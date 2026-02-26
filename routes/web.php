@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Components
     Route::get('/components', [ComponentController::class, 'index'])->name('components');
+
+    // Patients
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients');
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');

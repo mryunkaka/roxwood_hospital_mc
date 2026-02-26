@@ -1,8 +1,15 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" class="theme-light" x-data="themeController()" :class="{
-    'theme-dark': theme === 'dark' || (theme === 'stylis' && isDark),
-    'theme-stylis': theme === 'stylis'
-}">
+<html lang="{{ app()->getLocale() }}" class="theme-light"
+      x-data="{
+          ...themeController(),
+          ...accessibilityController()
+      }"
+      :class="{
+          'theme-dark': theme === 'dark' || (theme === 'stylis' && isDark),
+          'theme-stylis': theme === 'stylis',
+          'high-contrast': highContrast,
+          'reduced-motion': reducedMotion
+      }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,6 +78,9 @@
          class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
          @click="closeSidebar()"
          x-cloak></div>
+
+    {{-- Toast Container --}}
+    <x-toast />
 
     {{-- Vite JS --}}
     @vite(['resources/js/app.js'])

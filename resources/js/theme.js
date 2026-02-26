@@ -80,6 +80,11 @@ export default function themeController() {
 
             // Save ke localStorage
             localStorage.setItem('roxwood-theme', this.theme);
+
+            // Dispatch event untuk chart updates
+            window.dispatchEvent(new CustomEvent('theme-changed', {
+                detail: { theme: this.theme }
+            }));
         },
 
         setTheme(themeName) {

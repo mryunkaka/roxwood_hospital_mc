@@ -29,7 +29,7 @@
                 :label="__('messages.full_name')"
                 :dataTranslateLabel="'full_name'"
                 :dataTranslatePlaceholder="'full_name_placeholder'"
-                :placeholder="__('messages.full_name_placeholder')"
+                placeholder="{{ __('messages.full_name_placeholder') }}"
                 :required="true"
                 autocomplete="name"
                 autocorrect="off"
@@ -43,7 +43,7 @@
                 :label="__('messages.pin')"
                 :dataTranslateLabel="'pin'"
                 :dataTranslatePlaceholder="'pin_placeholder'"
-                :placeholder="__('messages.pin_placeholder')"
+                placeholder="{{ __('messages.pin_placeholder') }}"
                 :required="true"
                 maxlength="4"
                 pattern="[0-9]{4}"
@@ -60,7 +60,7 @@
                 :label="__('messages.batch')"
                 :dataTranslateLabel="'batch'"
                 :dataTranslatePlaceholder="'batch_placeholder'"
-                :placeholder="__('messages.batch_placeholder')"
+                placeholder="{{ __('messages.batch_placeholder') }}"
                 :required="true"
                 min="1"
                 max="26"
@@ -80,7 +80,7 @@
                 :label="__('messages.citizen_id')"
                 :dataTranslateLabel="'citizen_id'"
                 :dataTranslatePlaceholder="'citizen_id_placeholder'"
-                :placeholder="__('messages.citizen_id_placeholder')"
+                placeholder="{{ __('messages.citizen_id_placeholder') }}"
                 :required="true"
             />
 
@@ -91,7 +91,7 @@
                 :label="__('messages.phone_number')"
                 :dataTranslateLabel="'phone_number'"
                 :dataTranslatePlaceholder="'phone_number_placeholder'"
-                :placeholder="__('messages.phone_number_placeholder')"
+                placeholder="{{ __('messages.phone_number_placeholder') }}"
                 :required="true"
             />
 

@@ -47,22 +47,76 @@
 
 {{-- Charts & Tables Grid --}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    {{-- Chart Area --}}
-    <x-card :title="__('messages.revenue_overview')" :cols="'lg:col-span-2'" class="h-full">
-        <div class="h-64 flex items-center justify-center bg-surface/50 rounded-lg">
-            <div class="text-center">
-                <svg class="w-16 h-16 mx-auto text-text-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-                <p class="text-text-secondary" data-translate="chart_placeholder">{{ __('messages.chart_placeholder') }}</p>
-                <p class="text-sm text-text-muted mt-1" data-translate="chart_description">{{ __('messages.chart_description') }}</p>
-            </div>
+    {{-- Line Chart - Patient Visits --}}
+    <x-card :title="__('messages.patient_visits')" :cols="'lg:col-span-2'" class="h-full">
+        <div class="h-72">
+            <canvas
+                x-data="chartController()"
+                x-init="{
+                    type = 'line';
+                    data = {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        datasets: [
+                            {
+                                label: '2024',
+                                data: [650, 720, 810, 890, 920, 1050, 1180, 1250, 1320, 1400, 1480, 1550],
+                                color: '#3b82f6',
+                                fill: true
+                            },
+                            {
+                                label: '2025',
+                                data: [1550, 1620, 1710, 1790, 1850, 1920, 2010, 2100, 2180, 2250, 2320, 2400],
+                                color: '#14b8a6',
+                                fill: true
+                            }
+                        ]
+                    };
+                    options = {
+                        plugins: {
+                            legend: { position: 'top' }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        }
+                    };
+                    createChart();
+                }"
+                x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
+            ></canvas>
         </div>
     </x-card>
 
-    {{-- Recent Activity --}}
-    <x-card :title="__('messages.recent_activity')">
-        <div class="space-y-4">
+    {{-- Recent Activity & Patient Status --}}
+    <div class="space-y-6">
+        {{-- Doughnut Chart - Patient Status --}}
+        <x-card :title="__('messages.patient_status')">
+            <div class="h-52">
+                <canvas
+                    x-data="chartController()"
+                    x-init="{
+                        type = 'doughnut';
+                        data = {
+                            labels: ['Active', 'Recovered', 'Pending', 'Critical'],
+                            datasets: [{
+                                data: [1847, 680, 220, 100],
+                            }]
+                        };
+                        options = {
+                            plugins: {
+                                legend: { position: 'right' }
+                            }
+                        };
+                        createChart();
+                    }"
+                    x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
+                ></canvas>
+            </div>
+        </x-card>
+
+        {{-- Recent Activity --}}
+        <x-card :title="__('messages.recent_activity')">
+            <div class="space-y-4">
             @foreach([
                 ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>', 'title_key' => 'new_patient_registered', 'time_key' => 'two_minutes_ago', 'color' => 'text-primary-500'],
                 ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>', 'title_key' => 'appointment_scheduled', 'time_key' => 'fifteen_minutes_ago', 'color' => 'text-success-500'],
@@ -138,4 +192,59 @@
         </x-table>
     </div>
 </x-card>
+
+ {{-- More Charts --}}
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+    {{-- Bar Chart - Department Revenue --}}
+    <x-card :title="__('messages.department_revenue')">
+        <div class="h-64">
+            <canvas
+                x-data="chartController()"
+                x-init="{
+                    type = 'bar';
+                    data = {
+                        labels: ['Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'Radiology'],
+                        datasets: [{
+                            label: 'Revenue (Million Rp)',
+                            data: [450, 320, 280, 190, 150],
+                            color: '#3b82f6'
+                        }]
+                    };
+                    options = {
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    };
+                    createChart();
+                }"
+                x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
+            ></canvas>
+        </div>
+    </x-card>
+
+    {{-- Pie Chart - Appointment Types --}}
+    <x-card :title="__('messages.appointment_types')">
+        <div class="h-64">
+            <canvas
+                x-data="chartController()"
+                x-init="{
+                    type = 'pie';
+                    data = {
+                        labels: ['Consultation', 'Follow-up', 'Emergency', 'Surgery', 'Lab Test'],
+                        datasets: [{
+                            data: [35, 25, 15, 10, 15]
+                        }]
+                    };
+                    options = {
+                        plugins: {
+                            legend: { position: 'right' }
+                        }
+                    };
+                    createChart();
+                }"
+                x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
+            ></canvas>
+        </div>
+    </x-card>
+</div>
 @endsection

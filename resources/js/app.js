@@ -8,18 +8,27 @@
 // Import Alpine.js
 import Alpine from 'alpinejs';
 
-// Import controllers
+// Import controllers (toastController registers itself in alpine:init)
 import themeController from './theme.js';
 import langController from './lang.js';
 import clockController from './clock.js';
+import accessibilityController from './accessibility.js';
+import './toast.js'; // Import toast.js to register its alpine:init handler
+import chartController, { ChartData, updateAllCharts } from './chart.js';
 
 // Setup Alpine
 window.Alpine = Alpine;
 
-// Register controllers
+// Register controllers (toastController is registered in toast.js alpine:init event)
 Alpine.data('themeController', themeController);
 Alpine.data('langController', langController);
 Alpine.data('clockController', clockController);
+Alpine.data('accessibilityController', accessibilityController);
+Alpine.data('chartController', chartController);
+
+// Export chart helpers for global access
+window.ChartData = ChartData;
+window.updateAllCharts = updateAllCharts;
 
 // Start Alpine
 Alpine.start();

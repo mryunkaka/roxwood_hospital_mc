@@ -1,0 +1,489 @@
+/**
+ * ============================================
+ * ROXWOOD HEALTH MEDICAL CENTER
+ * RTL Support & Print Styles
+ * ============================================
+ */
+
+/* ============================================
+   RTL (Right-to-Left) Support
+   ============================================ */
+
+[dir="rtl"] {
+    direction: rtl;
+    unicode-bidi: embed;
+}
+
+/* Flip layouts */
+[dir="rtl"] .flex {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .flex-row {
+    flex-direction: row-reverse;
+}
+
+/* Fix nested flex containers */
+[dir="rtl"] .flex-col,
+[dir="rtl"] .flex-column {
+    flex-direction: column;
+}
+
+/* Flip margins and paddings */
+[dir="rtl"] .ms-auto { margin-left: auto; margin-right: 0; }
+[dir="rtl"] .me-auto { margin-right: auto; margin-left: 0; }
+[dir="rtl"] .ps-auto { padding-left: auto; padding-right: 0; }
+[dir="rtl"] .pe-auto { padding-right: auto; padding-left: 0; }
+
+/* Flip directional classes */
+[dir="rtl"] .start-0 { left: auto; right: 0; }
+[dir="rtl"] .end-0 { right: auto; left: 0; }
+[dir="rtl"] .-start-4 { left: auto; right: -1rem; }
+[dir="rtl"] .-end-4 { right: auto; left: -1rem; }
+
+/* Flip text alignment */
+[dir="rtl"] .text-start { text-align: right; }
+[dir="rtl"] .text-end { text-align: left; }
+
+/* Flip borders */
+[dir="rtl"] .border-l { border-left: none; border-right-width: 1px; }
+[dir="rtl"] .border-r { border-right: none; border-left-width: 1px; }
+[dir="rtl"] .border-s { border-left: none; border-right-width: 1px; }
+[dir="rtl"] .border-e { border-right: none; border-left-width: 1px; }
+
+/* Flip positioning */
+[dir="rtl"] .left-0 { left: auto; right: 0; }
+[dir="rtl"] .right-0 { right: auto; left: 0; }
+[dir="rtl"] .top-0 { top: 0; }
+[dir="rtl"] .bottom-0 { bottom: 0; }
+
+/* Flip transforms */
+[dir="rtl"] .-translate-x-1\/2 {
+    --tw-translate-x: 50%;
+}
+[dir="rtl"] .-translate-x-full {
+    --tw-translate-x: 100%;
+}
+
+/* Icon flipping untuk RTL */
+[dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+}
+
+/* Arrows that should flip */
+[dir="rtl"] .arrow-left::before {
+    content: '→';
+}
+[dir="rtl"] .arrow-right::before {
+    content: '←';
+}
+
+/* Skip to content link untuk accessibility */
+[dir="rtl"] .skip-to-content {
+    right: 0;
+    left: auto;
+}
+
+/* Sidebar RTL adjustments */
+[dir="rtl"] aside {
+    border-left: 1px solid var(--color-border);
+    border-right: none;
+}
+
+[dir="rtl"] aside.fixed.right-0 {
+    right: auto;
+    left: 0;
+}
+
+/* Navbar RTL */
+[dir="rtl"] nav .nav-logo {
+    margin-left: 1rem;
+    margin-right: 0;
+}
+
+/* Breadcrumb RTL */
+[dir="rtl"] .breadcrumb-item::after {
+    content: '‹';
+    margin-left: 0.5rem;
+    margin-right: 0;
+}
+
+[dir="rtl"] .breadcrumb-item:last-child::after {
+    content: '';
+}
+
+/* Form RTL */
+[dir="rtl"] input[type="text"],
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="password"],
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+    text-align: right;
+}
+
+/* Checkbox & Radio RTL */
+[dir="rtl"] input[type="checkbox"],
+[dir="rtl"] input[type="radio"] {
+    margin-left: 0.5rem;
+    margin-right: 0;
+}
+
+/* Dropdown RTL */
+[dir="rtl"] .dropdown-menu {
+    right: auto;
+    left: 0;
+    text-align: right;
+}
+
+[dir="rtl"] .dropdown-menu.dropdown-menu-end {
+    left: auto;
+    right: 0;
+}
+
+/* Tooltip RTL */
+[dir="rtl"] .tooltip {
+    text-align: right;
+}
+
+/* Pagination RTL */
+[dir="rtl"] .pagination {
+    flex-direction: row-reverse;
+}
+
+/* Table RTL */
+[dir="rtl"] table {
+    text-align: right;
+}
+
+[dir="rtl"] table th,
+[dir="rtl"] table td {
+    text-align: right;
+}
+
+/* Alert RTL */
+[dir="rtl"] .alert {
+    text-align: right;
+}
+
+[dir="rtl"] .alert-icon {
+    margin-left: 0.75rem;
+    margin-right: 0;
+}
+
+/* Badge RTL */
+[dir="rtl"] .badge {
+    margin-left: 0.25rem;
+    margin-right: 0;
+}
+
+/* Modal RTL */
+[dir="rtl"] .modal-content {
+    text-align: right;
+}
+
+/* Responsive RTL fixes */
+@media (max-width: 768px) {
+    [dir="rtl"] .mobile-menu {
+        right: auto;
+        left: 0;
+        transform: translateX(-100%);
+    }
+
+    [dir="rtl"] .mobile-menu.open {
+        transform: translateX(0);
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+    /* Hide non-printable elements */
+    .no-print,
+    .sidebar,
+    .navbar,
+    button,
+    .pagination,
+    .dropdown,
+    .tooltip,
+    .modal-backdrop,
+    [x-cloak] {
+        display: none !important;
+    }
+
+    /* Reset colors for print */
+    * {
+        color: black !important;
+        background: white !important;
+        border-color: #ddd !important;
+    }
+
+    /* Body & container */
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+        color: black;
+        background: white;
+    }
+
+    /* Links */
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.9em;
+        word-break: break-all;
+    }
+
+    /* Skip link anchors */
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    /* Images */
+    img {
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+    }
+
+    h1 { font-size: 24pt; }
+    h2 { font-size: 18pt; }
+    h3 { font-size: 14pt; }
+    h4 { font-size: 12pt; }
+    h5 { font-size: 11pt; }
+    h6 { font-size: 10pt; }
+
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1em 0;
+        page-break-inside: avoid;
+    }
+
+    table th,
+    table td {
+        border: 1px solid #ddd;
+        padding: 0.5em;
+        text-align: left;
+    }
+
+    table th {
+        background: #f0f0f0 !important;
+        font-weight: bold;
+    }
+
+    /* Avoid breaking inside these elements */
+    p,
+    blockquote,
+    pre,
+    code,
+    .card,
+    .alert,
+    .badge {
+        page-break-inside: avoid;
+    }
+
+    /* Page breaks */
+    .page-break-before {
+        page-break-before: always;
+    }
+
+    .page-break-after {
+        page-break-after: always;
+    }
+
+    .page-break-inside-avoid {
+        page-break-inside: avoid;
+    }
+
+    /* Cards & containers */
+    .card,
+    .section {
+        border: 1px solid #ddd;
+        margin: 1em 0;
+        padding: 1em;
+        page-break-inside: avoid;
+        box-shadow: none;
+    }
+
+    /* Forms */
+    form {
+        page-break-inside: avoid;
+    }
+
+    input,
+    textarea,
+    select {
+        border: 1px solid #ddd;
+        padding: 0.5em;
+        background: white;
+    }
+
+    /* Remove input decorations */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+    /* Hide decorative elements */
+    .only-screen,
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Print footer */
+    .print-footer {
+        display: block !important;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 10pt;
+        border-top: 1px solid #ddd;
+        padding: 0.5em;
+    }
+
+    /* Print URL improvements */
+    a[href^="http"]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666;
+    }
+
+    /* Abbreviations */
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+        font-size: 0.8em;
+    }
+
+    /* Charts and graphs */
+    canvas,
+    svg {
+        max-height: 400px;
+        page-break-inside: avoid;
+    }
+
+    /* Lists */
+    ul, ol {
+        page-break-inside: avoid;
+    }
+
+    li {
+        margin-bottom: 0.25em;
+    }
+
+    /* Code blocks */
+    pre {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 1em;
+        overflow-x: auto;
+        page-break-inside: avoid;
+    }
+
+    code {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+    }
+
+    /* Special print-only content */
+    .print-only {
+        display: block !important;
+    }
+
+    /* Logo for print */
+    .brand-logo img {
+        max-height: 1cm;
+        width: auto;
+    }
+
+    /* Ensure sufficient contrast */
+    .text-text-primary,
+    .text-text-secondary,
+    .text-text-tertiary {
+        color: black !important;
+    }
+
+    /* Remove theme-specific backgrounds */
+    .bg-surface,
+    .bg-primary,
+    .bg-success,
+    .bg-danger,
+    .bg-warning,
+    .bg-info {
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Tables with headers */
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    /* Maximum width for content */
+    .container,
+    .main-content {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* ============================================
+   High Contrast Print Mode
+   ============================================ */
+
+@media print and (prefers-contrast: high) {
+    * {
+        border-color: black !important;
+    }
+
+    table th {
+        background: black !important;
+        color: white !important;
+    }
+}
+
+/* ============================================
+   Print-specific RTL adjustments
+   ============================================ */
+
+@media print {
+    [dir="rtl"] {
+        direction: rtl;
+    }
+
+    [dir="rtl"] table th,
+    [dir="rtl"] table td {
+        text-align: right;
+    }
+
+    [dir="rtl"] a[href]:after {
+        content: " (" attr(href) ")";
+    }
+}

@@ -176,21 +176,21 @@
                         type="password"
                         name="current_password"
                         :label="__('messages.current_password')"
-                        :placeholder="__('messages.current_password_placeholder')"
+                        placeholder="{{ __('messages.current_password_placeholder') }}"
                     />
 
                     <x-input
                         type="password"
                         name="new_password"
                         :label="__('messages.new_password')"
-                        :placeholder="__('messages.new_password_placeholder')"
+                        placeholder="{{ __('messages.new_password_placeholder') }}"
                     />
 
                     <x-input
                         type="password"
                         name="confirm_password"
                         :label="__('messages.confirm_password')"
-                        :placeholder="__('messages.confirm_password_placeholder')"
+                        placeholder="{{ __('messages.confirm_password_placeholder') }}"
                     />
 
                     <div class="flex items-center justify-between p-4 rounded-lg border border-danger-200 bg-danger-50 theme-dark:border-danger-800 theme-dark:bg-danger-900/20">

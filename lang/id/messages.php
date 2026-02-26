@@ -92,6 +92,37 @@ return [
     'total_doctors' => 'Total Dokter',
     'total_appointments' => 'Janji Temu',
     'total_revenue' => 'Pendapatan',
+
+    // Charts
+    'patient_visits' => 'Kunjungan Pasien',
+    'patient_status' => 'Status Pasien',
+    'department_revenue' => 'Pendapatan Departemen',
+    'appointment_types' => 'Jenis Janji Temu',
+    'revenue_overview' => 'Ringkasan Pendapatan',
+    'recovered' => 'Sembuh',
+    'critical' => 'Kritis',
+
+    // Patients Page
+    'all_patients' => 'Semua Pasien',
+    'manage_patients' => 'Kelola Pasien',
+    'add_patient' => 'Tambah Pasien',
+    'search_patients' => 'Cari pasien...',
+    'all_departments' => 'Semua Departemen',
+    'all_status' => 'Semua Status',
+    'selected' => 'dipilih',
+    'confirm_delete' => 'Apakah Anda yakin ingin menghapus',
+    'patient_details' => 'Detail Pasien',
+    'patient_id' => 'ID Pasien',
+    'phone' => 'Telepon',
+    'blood_type' => 'Golongan Darah',
+    'age' => 'Usia',
+    'gender' => 'Jenis Kelamin',
+    'address' => 'Alamat',
+    'print' => 'Cetak',
+    'last_visit' => 'Kunjungan Terakhir',
+    'male' => 'Laki-laki',
+    'female' => 'Perempuan',
+    'patients_menu' => 'Pasien',
     'revenue_overview' => 'Ringkasan Pendapatan',
     'recent_patients' => 'Pasien Terbaru',
     'new_patient_registered' => 'Pasien baru terdaftar',
@@ -421,4 +452,65 @@ return [
     'open_success_modal' => 'Buka Modal Sukses',
     'open_form_modal' => 'Buka Modal Formulir',
     'open_xl_modal' => 'Buka Modal XL',
+
+    // Skeleton Loaders
+    'skeleton_loaders' => 'Skeleton Loader',
+    'text_skeleton' => 'Skeleton Teks',
+    'circle_skeleton' => 'Skeleton Lingkaran',
+    'card_skeleton' => 'Skeleton Kartu',
+    'table_skeleton' => 'Skeleton Tabel',
+
+    // Progress Bars
+    'progress_bars' => 'Progress Bar',
+    'basic_progress' => 'Progress Dasar',
+    'with_label' => 'Dengan Label & Persentase',
+    'variants' => 'Varian',
+    'sizes' => 'Ukuran',
+    'striped_animated' => 'Strip & Animasi',
+
+    // Tooltips
+    'tooltips' => 'Tooltip',
+
+    // Popovers
+    'popovers' => 'Popover',
+
+    // File Upload
+    'file_upload' => 'Upload File',
+    'single_upload' => 'Upload Satu File',
+    'image_upload' => 'Upload Gambar (Multiple)',
+    'upload_drag_drop' => 'Seret & lepas file di sini',
+    'upload_or' => 'atau',
+    'upload_browse' => 'pilih file',
+    'upload_accept' => 'Format yang diterima',
+    'upload_max_size' => 'Ukuran file maksimal',
+    'upload_clear_all' => 'Hapus Semua File',
+
+    // Date/Time Pickers
+    'date_time_pickers' => 'Picker Tanggal/Waktu',
+    'date_picker' => 'Picker Tanggal',
+    'time_picker' => 'Picker Waktu',
+    'datetime_picker' => 'Picker Tanggal & Waktu',
+    'inline_calendar' => 'Kalender Inline',
+
+    // Toast Notifications
+    'toast_notifications' => 'Notifikasi Toast',
+    'toast_description' => 'Klik tombol untuk memunculkan notifikasi toast',
+
+    // Charts
+    'charts' => 'Grafik',
+    'line_chart' => 'Grafik Garis',
+    'bar_chart' => 'Grafik Batang',
+    'doughnut_chart' => 'Grafik Donat',
+    'pie_chart' => 'Grafik Pie',
+    'radar_chart' => 'Grafik Radar',
+    'polar_area_chart' => 'Grafik Polar Area',
+
+    // Accessibility Features
+    'accessibility_features' => 'Fitur Aksesibilitas',
+    'font_size' => 'Ukuran Font',
+    'current_font' => 'Font Saat Ini',
+    'high_contrast' => 'Mode Kontras Tinggi',
+    'high_contrast_desc' => 'Tingkatkan kontras untuk visibilitas lebih baik',
+    'reduced_motion' => 'Kurangi Gerakan',
+    'reduced_motion_desc' => 'Kurangi animasi untuk pengguna dengan sensitivitas gerakan',
 ];

@@ -88,6 +88,65 @@
     </x-card>
 </x-section>
 
+ {{-- Toast Notifications Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4 theme-dark:text-white">Toast Notifications</h2>
+    <x-card title="Toast Demos">
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+            <x-button variant="success" @click="$toast.success('Operation completed successfully!')">
+                Success Toast
+            </x-button>
+            <x-button variant="danger" @click="$toast.error('Something went wrong!')">
+                Error Toast
+            </x-button>
+            <x-button variant="warning" @click="$toast.warning('Please review your input.')">
+                Warning Toast
+            </x-button>
+            <x-button variant="info" @click="$toast.info('New features available!')">
+                Info Toast
+            </x-button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+            <x-button variant="secondary" @click="$toast.show('Custom message', 'success', { title: 'With Title!' })">
+                With Title
+            </x-button>
+            <x-button variant="secondary" @click="$toast.show('This toast will not auto-dismiss', 'info', { persistent: true })">
+                Persistent
+            </x-button>
+            <x-button variant="secondary" @click="$toast.show('This toast will disappear in 2 seconds', 'info', { duration: 2000 })">
+                2 Seconds
+            </x-button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+            <x-button variant="ghost" @click="$toast.success('Data saved successfully!', {
+                actions: [
+                    { label: 'Undo', variant: 'default' },
+                    { label: 'View', variant: 'primary' }
+                ]
+            })">
+                With Actions
+            </x-button>
+            <x-button variant="ghost" @click="$toast.clear()">
+                Clear All
+            </x-button>
+        </div>
+
+        <div class="border-t border-border pt-4 mt-4">
+            <p class="text-sm text-text-secondary mb-2">Toast Position:</p>
+            <div class="flex flex-wrap items-center gap-2">
+                <button @click="$toast.position = 'top-right'" class="px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-surface-hover transition-colors" :class="$toast.position === 'top-right' ? 'bg-primary-50 border-primary text-primary' : ''">Top Right</button>
+                <button @click="$toast.position = 'top-center'" class="px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-surface-hover transition-colors" :class="$toast.position === 'top-center' ? 'bg-primary-50 border-primary text-primary' : ''">Top Center</button>
+                <button @click="$toast.position = 'top-left'" class="px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-surface-hover transition-colors" :class="$toast.position === 'top-left' ? 'bg-primary-50 border-primary text-primary' : ''">Top Left</button>
+                <button @click="$toast.position = 'bottom-right'" class="px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-surface-hover transition-colors" :class="$toast.position === 'bottom-right' ? 'bg-primary-50 border-primary text-primary' : ''">Bottom Right</button>
+                <button @click="$toast.position = 'bottom-center'" class="px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-surface-hover transition-colors" :class="$toast.position === 'bottom-center' ? 'bg-primary-50 border-primary text-primary' : ''">Bottom Center</button>
+                <button @click="$toast.position = 'bottom-left'" class="px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-surface-hover transition-colors" :class="$toast.position === 'bottom-left' ? 'bg-primary-50 border-primary text-primary' : ''">Bottom Left</button>
+            </div>
+        </div>
+    </x-card>
+</x-section>
+
  {{-- Forms Section --}}
  <x-section class="mt-6">
     <h2 class="text-xl font-bold text-text-primary mb-4 theme-dark:text-white" data-translate="form_elements">{{ __('messages.form_elements') }}</h2>
@@ -98,7 +157,7 @@
                     type="text"
                     name="name"
                     :label="__('messages.full_name')"
-                    :placeholder="__('messages.name_placeholder')"
+                    placeholder="{{ __('messages.name_placeholder') }}"
                     :required="true"
                 />
 
@@ -106,21 +165,21 @@
                     type="email"
                     name="email"
                     :label="__('messages.email_address')"
-                    :placeholder="__('messages.email_address_placeholder')"
+                    placeholder="{{ __('messages.email_address_placeholder') }}"
                 />
 
                 <x-input
                     type="password"
                     name="password"
                     :label="__('messages.password')"
-                    :placeholder="__('messages.password_placeholder')"
+                    placeholder="{{ __('messages.password_placeholder') }}"
                 />
 
                 <x-input
                     type="text"
                     name="disabled"
                     :label="__('messages.disabled_input')"
-                    :placeholder="__('messages.disabled_placeholder')"
+                    placeholder="{{ __('messages.disabled_placeholder') }}"
                     :disabled="true"
                 />
             </form>
@@ -137,7 +196,7 @@
                         ['value' => 'ortho', 'label' => __('messages.orthopedics')],
                         ['value' => 'pedia', 'label' => __('messages.pediatrics')],
                     ]"
-                    :placeholder="__('messages.select_department')"
+                    placeholder="{{ __('messages.select_department') }}"
                 />
 
                 <div>
@@ -146,7 +205,7 @@
                     </label>
                     <textarea
                         rows="4"
-                        :placeholder="__('messages.enter_message')"
+                        placeholder="{{ __('messages.enter_message') }}"
                         class="w-full rounded-lg border border-border px-4 py-2.5 text-sm outline-none transition-all duration-200 bg-surface text-text-primary placeholder:text-text-hint focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                     ></textarea>
                 </div>
@@ -321,13 +380,13 @@
                         type="text"
                         name="fullname"
                         :label="__('messages.full_name')"
-                        :placeholder="__('messages.enter_patient_name')"
+                        placeholder="{{ __('messages.enter_patient_name') }}"
                     />
                     <x-input
                         type="email"
                         name="email"
                         :label="__('messages.email_address')"
-                        :placeholder="__('messages.email_address_placeholder')"
+                        placeholder="{{ __('messages.email_address_placeholder') }}"
                     />
                     <x-select
                         name="department"
@@ -337,7 +396,7 @@
                             ['value' => 'neuro', 'label' => __('messages.neurology')],
                             ['value' => 'pedia', 'label' => __('messages.pediatrics')],
                         ]"
-                        :placeholder="__('messages.select_department')"
+                        placeholder="{{ __('messages.select_department') }}"
                     />
                 </form>
                 @slot('footer')
@@ -446,7 +505,7 @@
                     ['value' => 'pedia', 'label' => __('messages.pediatrics')],
                     ['value' => 'radiology', 'label' => __('messages.radiology')],
                 ]"
-                :placeholder="__('messages.choose_department')"
+                placeholder="{{ __('messages.choose_department') }}"
             />
         </x-card>
 
@@ -462,7 +521,7 @@
                     ['value' => 'dr_brown', 'label' => __('messages.dr_brown')],
                     ['value' => 'dr_davis', 'label' => __('messages.dr_davis')],
                 ]"
-                :placeholder="__('messages.search_select_doctor')"
+                placeholder="{{ __('messages.search_select_doctor') }}"
             />
         </x-card>
     </x-grid>
@@ -659,6 +718,340 @@
                     <button class="px-3 py-2 rounded-lg border border-border hover:bg-surface-hover text-sm theme-dark:bg-slate-700 theme-dark:border-slate-600 theme-stylis:border-teal-200">10</button>
                     <button class="px-3 py-2 rounded-lg border border-border hover:bg-surface-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm theme-dark:border-slate-600 theme-stylis:border-teal-200" data-translate="last">{{ __('messages.last') }}</button>
                 </div>
+            </div>
+        </div>
+    </x-card>
+</x-section>
+
+ {{-- Skeleton Loaders Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.skeleton_loaders') }}</h2>
+    <x-grid :cols="2">
+        <x-card :title="__('messages.text_skeleton')">
+            <x-skeleton type="text" :lines="3" />
+        </x-card>
+
+        <x-card :title="__('messages.circle_skeleton')">
+            <div class="flex items-center gap-4">
+                <x-skeleton type="circle" width="48px" />
+                <x-skeleton type="circle" width="64px" />
+                <x-skeleton type="circle" width="40px" />
+            </div>
+        </x-card>
+
+        <x-card :title="__('messages.card_skeleton')">
+            <x-skeleton type="card" />
+        </x-card>
+
+        <x-card :title="__('messages.table_skeleton')">
+            <x-skeleton type="table" />
+        </x-card>
+    </x-grid>
+</x-section>
+
+ {{-- Progress Bars Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.progress_bars') }}</h2>
+    <x-card>
+        <div class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-text-primary mb-2">{{ __('messages.basic_progress') }}</label>
+                <x-progress :value="75" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-text-primary mb-2">{{ __('messages.with_label') }}</label>
+                <x-progress :value="60" label="Upload Progress" :showPercentage="true" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-text-primary mb-2">{{ __('messages.variants') }}</label>
+                <div class="space-y-3">
+                    <x-progress :value="100" variant="success" />
+                    <x-progress :value="30" variant="danger" />
+                    <x-progress :value="50" variant="warning" />
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-text-primary mb-2">{{ __('messages.sizes') }}</label>
+                <div class="space-y-3">
+                    <x-progress :value="45" size="sm" />
+                    <x-progress :value="45" size="md" />
+                    <x-progress :value="45" size="lg" />
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-text-primary mb-2">{{ __('messages.striped_animated') }}</label>
+                <div class="space-y-3">
+                    <x-progress :value="70" :striped="true" />
+                    <x-progress :value="80" :striped="true" :animated="true" />
+                </div>
+            </div>
+        </div>
+    </x-card>
+</x-section>
+
+ {{-- Tooltip Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.tooltips') }}</h2>
+    <x-card>
+        <div class="flex flex-wrap items-center gap-4">
+            <x-tooltip content="Top tooltip" position="top">
+                <x-button variant="secondary">Top</x-button>
+            </x-tooltip>
+
+            <x-tooltip content="Bottom tooltip" position="bottom">
+                <x-button variant="secondary">Bottom</x-button>
+            </x-tooltip>
+
+            <x-tooltip content="Left tooltip" position="left">
+                <x-button variant="secondary">Left</x-button>
+            </x-tooltip>
+
+            <x-tooltip content="Right tooltip" position="right">
+                <x-button variant="secondary">Right</x-button>
+            </x-tooltip>
+
+            <x-tooltip content="<strong>Rich</strong> <em>content</em> tooltip">
+                <x-button variant="secondary">Rich Content</x-button>
+            </x-tooltip>
+
+            <x-tooltip trigger="click" content="Click to see tooltip">
+                <x-button variant="secondary">Click Trigger</x-button>
+            </x-tooltip>
+        </div>
+    </x-card>
+</x-section>
+
+ {{-- Popover Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.popovers') }}</h2>
+    <x-card>
+        <div class="flex flex-wrap items-center gap-4">
+            <x-popover title="Popover Title" content="This is a popover content">
+                <x-button variant="primary">Basic Popover</x-button>
+            </x-popover>
+
+            <x-popover placement="bottom" content="Bottom popover content">
+                <x-button variant="secondary">Bottom Popover</x-button>
+            </x-popover>
+
+            <x-popover trigger="hover" content="Hover to see popover">
+                <x-button variant="success">Hover Popover</x-button>
+            </x-popover>
+        </div>
+    </x-card>
+</x-section>
+
+ {{-- File Upload Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.file_upload') }}</h2>
+    <x-grid :cols="2">
+        <x-card :title="__('messages.single_upload')">
+            <x-file-upload
+                name="document"
+                label="Upload Document"
+                accept=".pdf,.doc,.docx"
+                :maxSize="5120"
+            />
+        </x-card>
+
+        <x-card :title="__('messages.image_upload')">
+            <x-file-upload
+                name="image"
+                label="Upload Image"
+                accept="image/*"
+                :multiple="true"
+                :maxFiles="5"
+            />
+        </x-card>
+    </x-grid>
+</x-section>
+
+ {{-- Date/Time Picker Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.date_time_pickers') }}</h2>
+    <x-grid :cols="2">
+        <x-card :title="__('messages.date_picker')">
+            <x-date-time-picker
+                name="date"
+                type="date"
+                label="Select Date"
+                :clearable="true"
+                :todayButton="true"
+            />
+        </x-card>
+
+        <x-card :title="__('messages.time_picker')">
+            <x-date-time-picker
+                name="time"
+                type="time"
+                label="Select Time"
+            />
+        </x-card>
+
+        <x-card :title="__('messages.datetime_picker')">
+            <x-date-time-picker
+                name="datetime"
+                type="datetime"
+                label="Select Date & Time"
+            />
+        </x-card>
+
+        <x-card :title="__('messages.inline_calendar')">
+            <div x-data="dateTimePickerController({
+                type: 'date',
+                inline: true,
+                todayButton: true
+            })">
+                @slot('calendar')
+                <div class="calendar-container p-4 rounded-xl shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <button type="button" @click="prevMonth()" class="p-2 rounded hover:bg-gray-100">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <div class="text-lg font-semibold">
+                            <span x-text="monthNames[currentMonth]"></span>
+                            <span x-text="currentYear" class="ml-1"></span>
+                        </div>
+                        <button type="button" @click="nextMonth()" class="p-2 rounded hover:bg-gray-100">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="calendar-grid grid grid-cols-7 gap-1 mb-2">
+                        <template x-for="day in dayNames" :key="day">
+                            <div class="text-center text-xs text-text-tertiary py-1" x-text="day"></div>
+                        </template>
+                    </div>
+                    <div class="calendar-grid grid grid-cols-7 gap-1">
+                        <template x-for="(day, index) in calendarDays" :key="index">
+                            <button type="button"
+                                    :disabled="isDisabled(day)"
+                                    @click="selectDay(day)"
+                                    class="calendar-day aspect-square flex items-center justify-center rounded-lg text-sm"
+                                    :class="{
+                                        'selected': isSelected(day),
+                                        'today': isToday(day),
+                                        'invisible': !day
+                                    }"
+                                    x-text="day">
+                            </button>
+                        </template>
+                    </div>
+                </div>
+                @endslot
+            </div>
+        </x-card>
+    </x-grid>
+</x-section>
+
+ {{-- Toast Notifications Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.toast_notifications') }}</h2>
+    <x-card>
+        <p class="text-text-secondary mb-4">{{ __('messages.toast_description') }}</p>
+        <div class="flex flex-wrap items-center gap-3">
+            <x-button @click="$toast.success('Success message!')" variant="success">
+                Success Toast
+            </x-button>
+            <x-button @click="$toast.error('Error message!')" variant="danger">
+                Error Toast
+            </x-button>
+            <x-button @click="$toast.warning('Warning message!')" variant="warning">
+                Warning Toast
+            </x-button>
+            <x-button @click="$toast.info('Info message!')" variant="info">
+                Info Toast
+            </x-button>
+            <x-button @click="$toast.show('Custom toast with title', 'info', { title: 'Custom Title' })" variant="secondary">
+                Custom Toast
+            </x-button>
+            <x-button @click="$toast.clear()" variant="ghost">
+                Clear All
+            </x-button>
+        </div>
+
+        {{-- Toast Container --}}
+        <x-toast />
+    </x-card>
+</x-section>
+
+ {{-- Chart Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.charts') }}</h2>
+    <x-grid :cols="2">
+        <x-card :title="__('messages.line_chart')">
+            <div x-data="chartController" class="chart-container" data-type="line" data-data='{"labels":["Jan","Feb","Mar","Apr","May","Jun"],"datasets":[{"label":"Revenue","data":[65,59,80,81,56,55],"color":"#3b82f6"}]}' style="height:250px">
+                <canvas></canvas>
+            </div>
+        </x-card>
+
+        <x-card :title="__('messages.bar_chart')">
+            <div x-data="chartController" class="chart-container" data-type="bar" data-data='{"labels":["Q1","Q2","Q3","Q4"],"datasets":[{"label":"Sales","data":[120,190,30,50],"color":"#22c55e"}]}' style="height:250px">
+                <canvas></canvas>
+            </div>
+        </x-card>
+
+        <x-card :title="__('messages.doughnut_chart')">
+            <div x-data="chartController" class="chart-container" data-type="doughnut" data-data='{"labels":["Active","Pending","Inactive"],"datasets":[{"label":"Status","data":[300,50,100],"color":"#3b82f6"}]}' style="height:250px">
+                <canvas></canvas>
+            </div>
+        </x-card>
+
+        <x-card :title="__('messages.pie_chart')">
+            <div x-data="chartController" class="chart-container" data-type="pie" data-data='{"labels":["Cardiology","Neurology","Orthopedics","Pediatrics"],"datasets":[{"label":"Departments","data":[35,25,20,20],"color":"#f43f5e"}]}' style="height:250px">
+                <canvas></canvas>
+            </div>
+        </x-card>
+    </x-grid>
+</x-section>
+
+ {{-- Accessibility Features Section --}}
+ <x-section class="mt-6">
+    <h2 class="text-xl font-bold text-text-primary mb-4">{{ __('messages.accessibility_features') }}</h2>
+    <x-card>
+        <div class="space-y-6">
+            {{-- Font Size --}}
+            <div class="flex items-center justify-between p-4 bg-surface-alt rounded-xl">
+                <div>
+                    <h3 class="font-medium text-text-primary">{{ __('messages.font_size') }}</h3>
+                    <p class="text-sm text-text-secondary">{{ __('messages.current_font') }}: <span x-text="fontSize"></span> (<span x-text="customScale"></span>%)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button @click="decreaseFontSize()" class="p-2 rounded-lg hover:bg-surface-hover border border-border transition-colors">A-</button>
+                    <button @click="resetFontSize()" class="p-2 rounded-lg hover:bg-surface-hover border border-border transition-colors">Reset</button>
+                    <button @click="increaseFontSize()" class="p-2 rounded-lg hover:bg-surface-hover border border-border transition-colors">A+</button>
+                </div>
+            </div>
+
+            {{-- High Contrast --}}
+            <div class="flex items-center justify-between p-4 bg-surface-alt rounded-xl">
+                <div>
+                    <h3 class="font-medium text-text-primary">{{ __('messages.high_contrast') }}</h3>
+                    <p class="text-sm text-text-secondary">{{ __('messages.high_contrast_desc') }}</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" :checked="highContrast" @change="toggleHighContrast()" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600 dark:peer-checked:bg-primary-500"></div>
+                </label>
+            </div>
+
+            {{-- Reduced Motion --}}
+            <div class="flex items-center justify-between p-4 bg-surface-alt rounded-xl">
+                <div>
+                    <h3 class="font-medium text-text-primary">{{ __('messages.reduced_motion') }}</h3>
+                    <p class="text-sm text-text-secondary">{{ __('messages.reduced_motion_desc') }}</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" :checked="reducedMotion" @change="toggleReducedMotion()" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600 dark:peer-checked:bg-primary-500"></div>
+                </label>
             </div>
         </div>
     </x-card>

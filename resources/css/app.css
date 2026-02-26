@@ -829,3 +829,398 @@ input[type="radio"].custom-radio:focus {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
+
+/* ============================================
+ * RTL SUPPORT & PRINT STYLES
+ * ============================================ */
+
+@import "./rtl-print.css";
+
+/* ============================================
+ * HIGH CONTRAST MODE
+ * ============================================ */
+
+.high-contrast {
+    /* Override all colors with high contrast variants */
+    --color-text-primary: #ffffff !important;
+    --color-text-secondary: #e0e0e0 !important;
+    --color-text-tertiary: #b0b0b0 !important;
+    --color-background: #000000 !important;
+    --color-surface: #1a1a1a !important;
+    --color-surface-alt: #2a2a2a !important;
+    --color-border: #ffffff !important;
+    --color-primary: #ffff00 !important;
+    --color-primary-500: #ffff00 !important;
+    --color-primary-600: #e6e600 !important;
+    --color-success: #00ff00 !important;
+    --color-success-500: #00ff00 !important;
+    --color-danger: #ff0000 !important;
+    --color-danger-500: #ff0000 !important;
+    --color-warning: #ffff00 !important;
+    --color-warning-500: #ffff00 !important;
+    --color-info: #00ffff !important;
+    --color-info-500: #00ffff !important;
+}
+
+.high-contrast,
+.high-contrast *,
+.high-contrast *::before,
+.high-contrast *::after {
+    /* Force text colors */
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+.high-contrast a,
+.high-contrast a *,
+.high-contrast button,
+.high-contrast button * {
+    color: #ffff00 !important;
+}
+
+.high-contrast a:hover,
+.high-contrast a:focus,
+.high-contrast button:hover,
+.high-contrast button:focus {
+    color: #e6e600 !important;
+    outline: 2px solid #ffffff !important;
+    outline-offset: 2px !important;
+}
+
+.high-contrast input,
+.high-contrast textarea,
+.high-contrast select {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+.high-contrast input:focus,
+.high-contrast textarea:focus,
+.high-contrast select:focus {
+    outline: 2px solid #ffff00 !important;
+    border-color: #ffff00 !important;
+}
+
+.high-contrast .bg-primary,
+.high-contrast .bg-primary-500,
+.high-contrast .bg-success,
+.high-contrast .bg-success-500,
+.high-contrast .bg-danger,
+.high-contrast .bg-danger-500,
+.high-contrast .bg-warning,
+.high-contrast .bg-warning-500,
+.high-contrast .bg-info,
+.high-contrast .bg-info-500 {
+    background-color: #1a1a1a !important;
+    color: #ffff00 !important;
+}
+
+.high-contrast .text-primary,
+.high-contrast .text-success,
+.high-contrast .text-danger,
+.high-contrast .text-warning,
+.high-contrast .text-info {
+    color: #ffff00 !important;
+}
+
+.high-contrast .border {
+    border-color: #ffffff !important;
+}
+
+.high-contrast .shadow-lg,
+.high-contrast .shadow-xl,
+.high-contrast .shadow-2xl {
+    box-shadow: 0 0 0 2px #ffffff !important;
+}
+
+/* High contrast for specific components */
+.high-contrast .card {
+    border: 2px solid #ffffff !important;
+}
+
+.high-contrast .btn-primary {
+    background-color: #1a1a1a !important;
+    border: 2px solid #ffff00 !important;
+    color: #ffff00 !important;
+}
+
+.high-contrast .btn-primary:hover {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
+}
+
+/* High contrast badges */
+.high-contrast .badge {
+    border: 1px solid #ffffff !important;
+}
+
+.high-contrast .badge-success {
+    background-color: #00ff00 !important;
+    color: #000000 !important;
+}
+
+.high-contrast .badge-danger {
+    background-color: #ff0000 !important;
+    color: #ffffff !important;
+}
+
+.high-contrast .badge-warning {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
+}
+
+/* High contrast tables */
+.high-contrast table th,
+.high-contrast table td {
+    border-color: #ffffff !important;
+}
+
+.high-contrast table tbody tr:hover {
+    background-color: #2a2a2a !important;
+}
+
+/* High contrast tooltips and popovers */
+.high-contrast .tooltip,
+.high-contrast .popover-content {
+    background-color: #000000 !important;
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+}
+
+.high-contrast .popover-arrow {
+    background-color: #000000 !important;
+    border-color: #ffffff !important;
+}
+
+/* High contrast for skeleton loaders */
+.high-contrast .skeleton {
+    background-color: #2a2a2a !important;
+    border: 1px solid #ffffff !important;
+}
+
+/* High contrast progress bars */
+.high-contrast .progress-bar-container {
+    background-color: #2a2a2a !important;
+    border: 1px solid #ffffff !important;
+}
+
+.high-contrast .progress-bar-fill {
+    border: 1px solid #ffffff !important;
+}
+
+/* High contrast charts */
+.high-contrast canvas {
+    filter: contrast(1.2) saturate(1.5);
+}
+
+/* High contrast focus indicators */
+.high-contrast *:focus {
+    outline: 3px solid #ffff00 !important;
+    outline-offset: 2px !important;
+}
+
+.high-contrast *:focus:not(:focus-visible) {
+    outline: 3px solid #ffff00 !important;
+}
+
+/* ============================================
+ * REDUCED MOTION
+ * ============================================ */
+
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+.reduced-motion .tooltip,
+.reduced-motion .popover,
+.reduced-motion .modal,
+.reduced-motion .dropdown-menu {
+    transition: none !important;
+}
+
+.reduced-motion .progress-bar-fill,
+.reduced-motion .skeleton {
+    animation: none !important;
+}
+
+/* ============================================
+ * DATE/TIME PICKER & POPOVER THEME ENHANCEMENTS
+ * ============================================ */
+
+/* Popover content theme fixes */
+.popover-content,
+.calendar-dropdown {
+    /* Light theme */
+    background-color: var(--color-surface, #ffffff);
+    color: var(--color-text-primary, #0f172a);
+    border-color: var(--color-border, #e2e8f0);
+}
+
+/* Dark theme overrides */
+.theme-dark .popover-content,
+.theme-dark .calendar-dropdown {
+    background-color: var(--color-surface, #1e293b);
+    color: var(--color-text-primary, #f1f5f9);
+    border-color: var(--color-border, #334155);
+}
+
+/* Stylis theme overrides */
+.theme-stylis .popover-content,
+.theme-stylis .calendar-dropdown {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #1e293b;
+    border-color: rgba(20, 184, 166, 0.3);
+    backdrop-filter: blur(12px);
+}
+
+.theme-stylis.theme-dark .popover-content,
+.theme-stylis.theme-dark .calendar-dropdown {
+    background-color: rgba(30, 41, 59, 0.95);
+    color: #f1f5f9;
+    border-color: rgba(153, 213, 201, 0.3);
+}
+
+/* Popover arrow theme fixes */
+.popover-arrow {
+    background-color: var(--color-surface, #ffffff);
+    border-color: var(--color-border, #e2e8f0);
+}
+
+.theme-dark .popover-arrow {
+    background-color: var(--color-surface, #1e293b);
+    border-color: var(--color-border, #334155);
+}
+
+.theme-stylis .popover-arrow {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-color: rgba(20, 184, 166, 0.3);
+}
+
+.theme-stylis.theme-dark .popover-arrow {
+    background-color: rgba(30, 41, 59, 0.95);
+    border-color: rgba(153, 213, 201, 0.3);
+}
+
+/* Popover title and content text */
+.popover-content h3,
+.popover-content .text-text-primary,
+.calendar-dropdown .text-text-primary {
+    color: inherit;
+    opacity: 1;
+}
+
+.theme-dark .popover-content h3,
+.theme-dark .calendar-dropdown .text-text-primary {
+    color: #ffffff;
+}
+
+.theme-stylis .popover-content h3,
+.theme-stylis .calendar-dropdown .text-text-primary {
+    color: #1e293b;
+}
+
+.theme-stylis.theme-dark .popover-content h3,
+.theme-stylis.theme-dark .calendar-dropdown .text-text-primary {
+    color: #f1f5f9;
+}
+
+/* Popover secondary text */
+.popover-content .text-text-secondary,
+.calendar-dropdown .text-text-secondary {
+    color: var(--color-text-secondary, #64748b);
+    opacity: 0.85;
+}
+
+.theme-dark .popover-content .text-text-secondary,
+.theme-dark .calendar-dropdown .text-text-secondary {
+    color: #cbd5e1;
+}
+
+.theme-stylis .popover-content .text-text-secondary,
+.theme-stylis .calendar-dropdown .text-text-secondary {
+    color: #64748b;
+}
+
+.theme-stylis.theme-dark .popover-content .text-text-secondary,
+.theme-stylis.theme-dark .calendar-dropdown .text-text-secondary {
+    color: #cbd5e1;
+}
+
+/* Calendar dropdown specific styles */
+.calendar-dropdown .p-4 {
+    background: transparent;
+}
+
+/* Button hover states in calendar */
+.theme-stylis .calendar-dropdown button:hover:not(:disabled) {
+    background-color: rgba(20, 184, 166, 0.1);
+    color: #0d9488;
+}
+
+.theme-dark .calendar-dropdown button:hover:not(:disabled) {
+    background-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Today button specific styling */
+.calendar-dropdown button[onclick*="selectToday"] {
+    color: var(--color-primary-600, #2563eb);
+}
+
+.theme-stylis .calendar-dropdown button[onclick*="selectToday"] {
+    color: #0d9488;
+}
+
+.theme-dark .calendar-dropdown button[onclick*="selectToday"] {
+    color: #60a5fa;
+}
+
+/* Calendar day headers */
+.calendar-dropdown .text-text-tertiary,
+.theme-dark .calendar-dropdown .text-text-tertiary {
+    color: var(--color-text-tertiary, #94a3b8);
+}
+
+.theme-stylis .calendar-dropdown .text-text-tertiary {
+    color: rgba(20, 184, 166, 0.7);
+}
+
+/* Border colors for sections */
+.popover-content .border-b,
+.popover-content .border-t,
+.calendar-dropdown .border-b,
+.calendar-dropdown .border-t {
+    border-color: var(--color-border, #e2e8f0);
+}
+
+.theme-dark .popover-content .border-b,
+.theme-dark .popover-content .border-t,
+.theme-dark .calendar-dropdown .border-b,
+.theme-dark .calendar-dropdown .border-t {
+    border-color: #334155;
+}
+
+.theme-stylis .popover-content .border-b,
+.theme-stylis .popover-content .border-t,
+.theme-stylis .calendar-dropdown .border-b,
+.theme-stylis .calendar-dropdown .border-t {
+    border-color: rgba(20, 184, 166, 0.3);
+}
+
+/* Footer background */
+.popover-content .px-4.py-3 {
+    background-color: var(--color-surface-alt, #f8fafc);
+}
+
+.theme-dark .popover-content .px-4.py-3 {
+    background-color: rgba(51, 65, 85, 0.5);
+}
+
+.theme-stylis .popover-content .px-4.py-3 {
+    background-color: rgba(20, 184, 166, 0.05);
+}
