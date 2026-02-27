@@ -103,11 +103,24 @@
 
 ## 🔮 Future Enhancements (NOT IN SCOPE)
 
-### Backend Integration
-- [ ] Real authentication
-- [ ] Database integration
-- [ ] API endpoints
-- [ ] Real validation
+### 🚫 Backend Integration - TERKUNCI (LOCKED)
+**STATUS: MENUNGGU PERINTAH DARI USER**
+
+> **⚠️ PENTING**: Backend development DIKUNCI sampai user memberikan perintah.
+>
+> **DILARANG**:
+> - ❌ Implementasi real authentication
+> - ❌ Database integration
+> - ❌ API endpoints
+> - ❌ Real validation
+> - ❌ CRUD operations
+>
+> **Lihat**: `docs/GUIDELINES.md` untuk aturan lengkap development.
+
+- [🔒] Real authentication (LOCKED - TUNGGU PERINTAH)
+- [🔒] Database integration (LOCKED - TUNGGU PERINTAH)
+- [🔒] API endpoints (LOCKED - TUNGGU PERINTAH)
+- [🔒] Real validation (LOCKED - TUNGGU PERINTAH)
 
 ### Additional Features
 - [x] Chart.js integration
@@ -118,6 +131,28 @@
 - [x] Progress bars
 - [x] Tooltip component
 - [x] Popover component
+- [x] Checkbox component (BARU - 2026-02-26)
+- [x] Radio component (BARU - 2026-02-26)
+- [x] PDF generation with domPDF (BARU - 2026-02-26)
+- [x] Terms of Service Modal (BARU - 2026-02-26)
+- [x] PDF Signature Layout (3-row table structure) (BARU - 2026-02-27)
+- [x] Shared Agreement Partial (consistency between PDF & preview) (BARU - 2026-02-27)
+- [x] Agreement Bilingual Support (Indonesian & English) (BARU - 2026-02-27)
+- [x] Fixed PDF data population using PHP variables instead of JavaScript (BARU - 2026-02-27)
+- [x] Fixed bilingual support in PDF with proper language detection (BARU - 2026-02-27)
+- [x] Synchronized Terms of Service modal preview with PDF styling (BARU - 2026-02-27)
+- [x] Fixed modal preview to use exact same CSS as PDF for consistency (BARU - 2026-02-27)
+- [x] Auto-format Full Name to Title Case (MiChAel MooRe → Michael Moore) (BARU - 2026-02-27)
+- [x] Auto-format Citizen ID to UPPERCASE (JhsjS212 → JHSJS212) (BARU - 2026-02-27)
+- [x] Digital Signature Pad with signature_pad.js library (BARU - 2026-02-27)
+- [x] Signature Upload with Auto Background Removal (BARU - 2026-02-27)
+- [x] Signature stored as PNG in user folder (BARU - 2026-02-27)
+- [x] Bilingual support for signature feature (BARU - 2026-02-27)
+- [x] Preview PDF form with required fields (name, batch, citizen_id, signature) (BARU - 2026-02-27)
+- [x] Migration for `ttd` column in user_rh table (BARU - 2026-02-27)
+- [x] Fixed signature color to black (was appearing red) (BARU - 2026-02-27)
+- [x] Enhanced signature height in PDF (80px for better visibility) (BARU - 2026-02-27)
+- [x] Fixed signature transparency issues in registration (BARU - 2026-02-27)
 
 ### Advanced Features
 - [x] Dark mode auto-detect system preference
@@ -126,6 +161,16 @@
 - [x] Reduced motion mode
 - [x] RTL support
 - [x] Print styles
+
+---
+
+## 🧹 Pending Cleanup Tasks
+
+### PDF Development Cleanup
+- [ ] Keep preview PDF routes for testing purposes:
+  - `/preview-pdf/id` → `AuthController@previewPdfIndonesian`
+  - `/preview-pdf/en` → `AuthController@previewPdfEnglish`
+- [ ] Preview PDF form page is now a feature, not temporary
 
 ---
 
@@ -155,4 +200,4 @@ npm run build
 
 ---
 
-*Last Updated: 2026-02-26*
+*Last Updated: 2026-02-27*

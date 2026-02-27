@@ -12,6 +12,29 @@
         :dataTranslateSubtitle="'login_subtitle'"
     />
 
+    {{-- Success/Error Messages --}}
+    @if(session('success'))
+        <x-alert type="success" :icon="true" :autoHide="true" :title="session('success_title')">
+            <p class="text-sm">{{ session('success') }}</p>
+        </x-alert>
+    @endif
+
+    @if(session('error'))
+        <x-alert type="danger" :icon="true">
+            <p class="text-sm">{{ session('error') }}</p>
+        </x-alert>
+    @endif
+
+    @if ($errors->any())
+        <x-alert type="danger" :icon="true">
+            <ul class="list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </x-alert>
+    @endif
+
     {{-- Login Form --}}
     <form method="POST" action="{{ route('login.post') }}" class="space-y-5">
         @csrf
@@ -48,14 +71,13 @@
         />
 
         {{-- Remember Me & Forgot Password --}}
-        <div class="flex items-center justify-between">
-            <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="remember" class="w-4 h-4 rounded border-border text-primary-500 focus:ring-primary-500 focus:ring-offset-0">
-                <span class="text-sm text-text-secondary" data-translate="remember_me">
-                    {{ __('messages.remember_me') }}
-                </span>
-            </label>
-            <a href="#" class="text-sm text-primary-500 hover:text-primary-600" data-translate="forgot_password">
+        <div class="flex items-center justify-between gap-4">
+            <x-checkbox
+                name="remember"
+                :label="__('messages.remember_me')"
+                :dataTranslateLabel="'remember_me'"
+            />
+            <a href="#" class="text-sm text-primary-500 hover:text-primary-600 theme-stylis:text-teal-600 theme-stylis:hover:text-teal-700 whitespace-nowrap" data-translate="forgot_password">
                 {{ __('messages.forgot_password') }}
             </a>
         </div>
@@ -78,7 +100,7 @@
     {{-- Register Link --}}
     <p class="mt-6 text-center text-sm text-text-secondary">
         <span data-translate="dont_have_account">{{ __('messages.dont_have_account') }}</span>
-        <a href="{{ route('register') }}" class="text-primary-500 hover:text-primary-600 font-medium" data-translate="register">
+        <a href="{{ route('register') }}" class="text-primary-500 hover:text-primary-600 theme-stylis:text-teal-600 theme-stylis:hover:text-teal-700 font-medium" data-translate="register">
             {{ __('messages.register') }}
         </a>
     </p>

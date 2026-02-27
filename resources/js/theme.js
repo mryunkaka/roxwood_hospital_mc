@@ -119,6 +119,15 @@ export default function themeController() {
 
         closeMobileMenu() {
             this.mobileMenuOpen = false;
+        },
+
+        // Language switching function - delegates to global function
+        async switchLanguage(code) {
+            if (typeof window.switchLanguage === 'function') {
+                return await window.switchLanguage(code);
+            }
+            console.error('switchLanguage function not available');
+            return false;
         }
     };
 }

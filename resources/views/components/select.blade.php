@@ -5,7 +5,9 @@
     'label' => null,
     'dataTranslateLabel' => null,
     'options' => [],
+    'dataTranslateOptions' => null, // JSON map of value -> translation key
     'placeholder' => null,
+    'dataTranslatePlaceholder' => null,
     'value' => null,
     'required' => false,
     'disabled' => false,
@@ -18,6 +20,17 @@
     $inputId = $id ?? $name ?: 'select-' . uniqid();
     $hasError = $error !== null;
     $dataTranslateHint = $attributes->get('data-translate-hint') ?? $attributes->get('dataTranslateHint');
+
+    // Build options map for dynamic translation
+    $optionsMap = [];
+    if ($dataTranslateOptions) {
+        foreach ($options as $option) {
+            if (is_array($option) && isset($option['value'])) {
+                $val = $option['value'];
+                $optionsMap[$val] = $option['label'] ?? $option;
+            }
+        }
+    }
 @endphp
 
 <div class="w-full {{ $class }}">
@@ -47,9 +60,10 @@
                          'disabled:bg-surface-hover disabled:cursor-not-allowed ' .
                          ($hasError ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500/20' : '')
             ]) }}
+            @if($dataTranslateOptions) data-translate-select="{{ json_encode($optionsMap) }}" @endif
         >
             @if($placeholder)
-                <option value="">{{ $placeholder }}</option>
+                <option value="" @if($dataTranslatePlaceholder) data-translate-placeholder="{{ $dataTranslatePlaceholder }}" @endif>{{ $placeholder }}</option>
             @endif
 
             @foreach($options as $key => $option)

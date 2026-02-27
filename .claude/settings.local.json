@@ -7,7 +7,10 @@
       "Bash(cd \"D:\\\\Project\\\\Web\\\\roxwood_temp\" && cp -r app bootstrap config database public tests storage vendor .env .env.example artisan composer.json composer.lock package.json phpunit.xml vite.config.js \"../roxwood_hospital_mc/\" 2>&1)",
       "Bash(sleep 3 && curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000 2>&1)",
       "Bash(sleep 2 && curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000 2>&1)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(cd:*)",
+      "Bash(cd /d/Project/Web/roxwood_hospital_mc && composer require intervention/image 2>&1)",
+      "Bash(cd /d/Project/Web/roxwood_hospital_mc && composer install --no-interaction 2>&1)"
     ]
   }
 }

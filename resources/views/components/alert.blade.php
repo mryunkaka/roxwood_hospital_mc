@@ -3,7 +3,10 @@
     'type' => 'info', // 'success', 'danger', 'warning', 'info'
     'dismissible' => false,
     'icon' => true,
-    'class' => ''
+    'class' => '',
+    'autoHide' => false,
+    'autoHideDelay' => 10000, // milliseconds (default 10 seconds)
+    'title' => null
 ])
 
 @php
@@ -23,6 +26,7 @@
 @endphp
 
 <div x-data="{ show: true }"
+     x-init="{{ $autoHide ? 'setTimeout(() => show = false, ' . $autoHideDelay . ')' : '' }}"
      x-show="show"
      x-transition:enter="transition ease-out duration-200"
      x-transition:enter-start="opacity-0 scale-95"
@@ -45,7 +49,12 @@
         @endif
 
         <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium leading-5 alert-content">
+            @if($title)
+                <div class="text-sm font-semibold leading-5 alert-content mb-1">
+                    {{ $title }}
+                </div>
+            @endif
+            <div class="text-sm leading-5 {{ $title ? 'opacity-90' : '' }}">
                 {{ $slot }}
             </div>
         </div>

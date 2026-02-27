@@ -224,6 +224,194 @@ Button dengan berbagai variant dan size.
 - `icon`: string (SVG HTML)
 - `iconPosition`: `'left'` | `'right'`
 
+### x-checkbox
+
+Checkbox dengan label, error handling, dan theme support untuk light, dark, dan stylis themes.
+
+```blade
+{{-- Basic checkbox --}}
+<x-checkbox
+    name="terms"
+    :label="__('messages.agree_terms')"
+    :required="true"
+/>
+
+{{-- Checkbox dengan description --}}
+<x-checkbox
+    name="newsletter"
+    :label="__('messages.subscribe_newsletter')"
+    :description="__('messages.newsletter_description')"
+    :checked="true"
+/>
+
+{{-- Checkbox dengan error --}}
+<x-checkbox
+    name="privacy"
+    :label="__('messages.privacy_policy')"
+    :error="$errors->first('privacy')"
+/>
+
+{{-- Disabled checkbox --}}
+<x-checkbox
+    name="disabled_option"
+    :label="__('messages.disabled_option')"
+    :disabled="true"
+/>
+
+{{-- Checkbox dengan HTML label --}}
+<x-checkbox
+    name="terms"
+    :label="__('messages.agree_terms') . ' <a href=\"#\">' . __('messages.terms_link') . '</a>'"
+    :required="true"
+/>
+```
+
+**Props:**
+- `name`: string (required) - Input name
+- `label`: string - Label text (mendukung HTML)
+- `value`: string (default: '1') - Checkbox value
+- `checked`: boolean (default: false)
+- `required`: boolean (default: false)
+- `disabled`: boolean (default: false)
+- `description`: string - Additional text di bawah label
+- `error`: string - Error message
+- `class`: string untuk additional classes
+
+**Theme Support:**
+- **Light Theme**: White background dengan blue checkmark (#3b82f6)
+- **Dark Theme**: Dark background (#1e293b) dengan blue checkmark
+- **Stylis Theme**: Teal border dan teal checkmark (#14b8a6)
+
+**Visual Features:**
+- Custom SVG checkmark icon
+- Smooth hover dan transition effects
+- Proper focus states untuk keyboard navigation
+- Disabled state dengan reduced opacity
+- Responsive sizing (w-4 h-4)
+
+**Accessibility:**
+- Proper label association
+- Keyboard navigable
+- ARIA compliant
+- Focus indicators untuk semua themes
+
+---
+
+### x-file-input
+
+File upload component dengan drag & drop, theme-aware untuk light, dark, dan stylis themes.
+
+```blade
+{{-- Basic File Input --}}
+<x-file-input
+    name="ktp"
+    :label="__('messages.ktp_file')"
+    :dataTranslateLabel="'ktp_file'"
+    :dataTranslateUpload="'click_to_upload'"
+    accept="image/png,image/jpeg,image/jpg"
+    :required="true"
+/>
+
+{{-- With Hint --}}
+<x-file-input
+    name="document"
+    label="Upload Document"
+    hint="Supported formats: PDF, PNG, JPG (max 5MB)"
+    accept=".pdf,.png,.jpg,.jpeg"
+/>
+```
+
+**Props:**
+- `name`: string (required) - Input name
+- `label`: string - Field label
+- `dataTranslateLabel`: string - Translation key for label
+- `dataTranslateUpload`: string - Translation key for upload button text
+- `accept`: string - File types accepted (e.g., "image/png,image/jpeg")
+- `required`: boolean (default: false)
+- `disabled`: boolean (default: false)
+- `error`: string - Error message
+- `hint`: string - Helper text
+
+**Features:**
+- Drag & drop support
+- File preview for images
+- File size display
+- Remove file button
+- Progress indicator
+- Theme-aware styling
+
+**Theme Support:**
+- **Light Theme**: White background dengan dashed border
+- **Dark Theme**: Slate background dengan slate-600 border
+- **Stylis Theme**: Semi-transparent background dengan teal border
+
+---
+
+### x-signature-input
+
+Signature input component dengan digital signature pad dan file upload, theme-aware untuk light, dark, dan stylis themes.
+
+```blade
+{{-- Basic Signature Input --}}
+<x-signature-input
+    name="signature"
+    :label="__('messages.signature')"
+    :dataTranslateLabel="'signature'"
+    :required="true"
+    :dataTranslateHint="'signature_hint'"
+/>
+```
+
+**Props:**
+- `name`: string (default: 'signature') - Input name
+- `label`: string - Field label
+- `dataTranslateLabel`: string - Translation key for label
+- `required`: boolean (default: false) - Required validation
+- `dataTranslateHint`: string - Translation key for hint text
+
+**Features:**
+- **Digital Signature**: Canvas-based drawing dengan signature_pad.js
+  - Touch/stylus support
+  - Black pen color
+  - Clear button
+  - Velocity-based stroke width
+- **Upload Option**: File upload dengan automatic background removal
+  - PNG, JPEG, JPG support
+  - White/near-white pixel transparency
+  - Preserves signature strokes
+- **Toggle**: Switch between digital and upload modes
+
+**Data Flow:**
+1. Digital signature saves as base64 PNG to hidden input (`signature_data`)
+2. Upload saves to file input (`signature_file`)
+3. Server processes either format with transparency preservation
+
+**Theme Support:**
+- **Light Theme**: White canvas dengan gray-200 border
+- **Dark Theme**: Slate-800 canvas dengan slate-600 border
+- **Stylis Theme**: Semi-transparent canvas dengan teal border
+
+**Required Libraries:**
+```html
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+```
+
+**Server-Side Processing:**
+```php
+// For digital signature (base64)
+$signatureImage = imagecreatefromstring(base64_decode($signatureData));
+imagepalettetotruecolor($signatureImage);
+imagealphablending($signatureImage, false);
+imagesavealpha($signatureImage, true);
+imagepng($signatureImage, $path, 9);
+
+// For uploaded file
+// Background removal with strict threshold (245)
+if ($r > 245 && $g > 245 && $b > 245) {
+    imagesetpixel($image, $x, $y, imagecolorallocatealpha($image, 255, 255, 255, 127));
+}
+```
+
 ---
 
 ## Feedback Components
@@ -961,6 +1149,76 @@ Modal dialog dengan backdrop, theme-aware untuk light, dark, dan stylis themes.
 - Backdrop blur untuk focus
 - Close button dengan hover scale effect
 - Responsive sizing dengan max-width variants
+
+---
+
+### Terms of Service Modal (Surat Pernyataan)
+
+Modal khusus untuk menampilkan surat pernyataan/commitment statement dengan kemampuan generate PDF.
+
+**Fitur:**
+- Menampilkan surat pernyataan kerja dengan format formal
+- Mendukung bilingual (Indonesia/English)
+- Generate PDF menggunakan html2pdf.js
+- Preview PDF sebelum download
+- Validasi input (Nama Lengkap, ID Kewarganegaraan, Batch wajib diisi)
+
+**Cara Penggunaan:**
+
+Dalam halaman register, link "Syarat & Ketentuan" akan membuka modal:
+
+```blade
+<a href="#" onclick="openTermsModal(); return false;">
+    Syarat & Ketentuan
+</a>
+```
+
+**Validasi:**
+- Nama Lengkap - Wajib diisi
+- ID Kewarganegaraan - Wajib diisi
+- Batch - Wajib diisi
+
+**Controller:**
+
+```javascript
+function termsModalController() {
+    return {
+        isOpen: false,
+        currentTab: 'content',
+        translations: {},
+        formData: { fullName: '', citizenId: '', batch: '' },
+        generatedPdfBlob: null,
+
+        open(fullName, citizenId, batch) {
+            // Validate inputs
+            // Open modal with data
+            // Update content
+        },
+
+        updateContent() {
+            // Update content based on language
+            // Apply form data to template
+        },
+
+        async generatePDF() {
+            // Generate PDF using html2pdf.js
+        },
+
+        downloadPDF() {
+            // Download generated PDF
+        }
+    };
+}
+```
+
+**Dependency:**
+- html2pdf.js (CDN: https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js)
+
+**File Terkait:**
+- `resources/views/partials/terms-modal.blade.php`
+- `resources/views/pages/register.blade.php` (controller script)
+- `lang/id/messages.php` - translations untuk Indonesian
+- `lang/en/messages.php` - translations untuk English
 
 ---
 

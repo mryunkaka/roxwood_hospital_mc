@@ -30,6 +30,8 @@ class UserRh extends Model
         'file_sim',
         'file_kta',
         'file_skb',
+        'signature',
+        'ttd',
         'sertifikat_heli',
         'sertifikat_operasi',
         'dokumen_lainnya',
@@ -99,14 +101,24 @@ class UserRh extends Model
         return $this->role === 'Vice Director';
     }
 
+    public function isHeadManager(): bool
+    {
+        return $this->role === 'Head Manager';
+    }
+
+    public function isLeadManager(): bool
+    {
+        return in_array($this->role, ['Lead Manager', 'Head Manager', 'Vice Director', 'Director']);
+    }
+
     public function isManager(): bool
     {
-        return in_array($this->role, ['Manager', 'Vice Director', 'Director']);
+        return in_array($this->role, ['Lead Manager', 'Head Manager', 'Vice Director', 'Director']);
     }
 
     public function isStaffManager(): bool
     {
-        return in_array($this->role, ['Staff Manager', 'Manager', 'Vice Director', 'Director']);
+        return in_array($this->role, ['Staff Manager', 'Lead Manager', 'Head Manager', 'Vice Director', 'Director']);
     }
 
     public function isStaff(): bool
@@ -119,9 +131,10 @@ class UserRh extends Model
         $roleHierarchy = [
             'Staff' => 1,
             'Staff Manager' => 2,
-            'Manager' => 3,
-            'Vice Director' => 4,
-            'Director' => 5,
+            'Lead Manager' => 3,
+            'Head Manager' => 4,
+            'Vice Director' => 5,
+            'Director' => 6,
         ];
 
         return ($roleHierarchy[$this->role] ?? 0) > ($roleHierarchy[$user->role] ?? 0);

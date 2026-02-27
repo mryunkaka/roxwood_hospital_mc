@@ -31,6 +31,11 @@ const globalLangState = {
                 const labelSpan = el.querySelector('.label-text');
                 if (labelSpan) {
                     labelSpan.textContent = text;
+                } else if (el.tagName === 'A' || el.tagName === 'SPAN' || el.tagName === 'P') {
+                    // For links, spans, and paragraphs - preserve child elements if any
+                    if (el.children.length === 0) {
+                        el.textContent = text;
+                    }
                 } else {
                     el.textContent = text;
                 }
@@ -52,6 +57,43 @@ const globalLangState = {
             const hint = translations[key];
             if (hint) {
                 el.textContent = hint;
+            }
+        });
+
+        // Update select options by finding parent select with data-translate-select
+        document.querySelectorAll('[data-translate-select]').forEach(select => {
+            const optionsData = select.getAttribute('data-translate-select');
+            if (optionsData) {
+                try {
+                    const optionsMap = JSON.parse(optionsData);
+                    select.querySelectorAll('option').forEach(option => {
+                        const value = option.value;
+                        // Handle empty option (placeholder) with data-translate-placeholder attribute
+                        if (value === '' && option.hasAttribute('data-translate-placeholder')) {
+                            const placeholderKey = option.getAttribute('data-translate-placeholder');
+                            if (translations[placeholderKey]) {
+                                option.textContent = translations[placeholderKey];
+                            }
+                        } else if (optionsMap[value]) {
+                            // Use the translation key to get the actual translated text
+                            const translationKey = optionsMap[value];
+                            if (translations[translationKey]) {
+                                option.textContent = translations[translationKey];
+                            }
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error parsing select options:', e);
+                }
+            }
+        });
+
+        // Update file input upload text
+        document.querySelectorAll('[data-translate-upload]').forEach(el => {
+            const key = el.getAttribute('data-translate-upload');
+            const text = translations[key];
+            if (text) {
+                el.textContent = text;
             }
         });
 
@@ -158,6 +200,9 @@ if (document.readyState === 'loading') {
     globalLangState.init();
 }
 
+// Expose globalLangState to window for other components to access
+window.globalLangState = globalLangState;
+
 // Listen untuk custom event dari komponen lain
 window.addEventListener('language-changed', (e) => {
     globalLangState.currentLang = e.detail.lang;
@@ -214,3 +259,12 @@ export default function langController() {
 document.addEventListener('alpine:init', () => {
     Alpine.data('langController', langController);
 });
+
+// Global function untuk switch language (bisa dipanggil dari mana saja)
+window.switchLanguage = async function(code) {
+    if (typeof globalLangState !== 'undefined') {
+        return await globalLangState.setLang(code);
+    }
+    console.error('globalLangState not available');
+    return false;
+};

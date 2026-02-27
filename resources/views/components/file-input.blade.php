@@ -4,6 +4,7 @@
     'id' => null,
     'label' => null,
     'dataTranslateLabel' => null,
+    'dataTranslateUpload' => null, // Translation key for "Click to upload" text
     'accept' => 'image/png,image/jpeg',
     'required' => false,
     'error' => null,
@@ -15,6 +16,7 @@
     $inputId = $id ?? $name ?: 'file-' . uniqid();
     $hasError = $error !== null;
     $dataTranslateHint = $attributes->get('data-translate-hint') ?? $attributes->get('dataTranslateHint');
+    $uploadTextKey = $dataTranslateUpload ?? 'click_to_upload';
 @endphp
 
 <div class="w-full {{ $class }}">
@@ -33,7 +35,9 @@
 
     {{-- File Input Area --}}
     <div
-        x-data="filePreview('{{ $inputId }}')"
+        x-data="filePreview"
+        x-data-input-id="{{ $inputId }}"
+        x-data-upload-key="{{ $uploadTextKey }}"
         class="relative"
     >
         {{-- Hidden File Input --}}
@@ -44,7 +48,7 @@
             {{ $attributes->merge([
                 'accept' => $accept,
                 'required' => $required,
-                'class' => 'hidden',
+                'class' => 'absolute opacity-0 -z-10 w-0 h-0',
                 '@change' => 'handleFileSelect($event)'
             ]) }}
         >
@@ -66,7 +70,7 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm font-medium text-text-primary">
+                <p class="text-sm font-medium text-text-primary" data-translate-upload="{{ $uploadTextKey }}" x-text="uploadText">
                     {{ __('messages.click_to_upload') }}
                 </p>
             </div>
@@ -151,13 +155,41 @@
 </div>
 
 <script>
-function filePreview(inputId) {
+function filePreview() {
     return {
         preview: null,
         fileName: '',
         fileSize: '',
         showModal: false,
-        labelText: '{{ __('messages.click_to_upload') }}',
+        inputId: null,
+        uploadTextKey: 'click_to_upload',
+        uploadText: '',
+
+        init() {
+            // Get input ID from data attribute
+            const inputIdAttr = this.$el.getAttribute('x-data-input-id');
+            const uploadKeyAttr = this.$el.getAttribute('x-data-upload-key');
+            if (inputIdAttr) this.inputId = inputIdAttr;
+            if (uploadKeyAttr) this.uploadTextKey = uploadKeyAttr;
+
+            // Initial text update
+            this.updateLabelText();
+
+            // Listen for language changes
+            window.addEventListener('language-changed', (e) => {
+                this.updateLabelText();
+            });
+        },
+
+        updateLabelText() {
+            // Get current translations from global state
+            if (typeof globalLangState !== 'undefined' && globalLangState.translations) {
+                const newText = globalLangState.translations[this.uploadTextKey];
+                if (newText) {
+                    this.uploadText = newText;
+                }
+            }
+        },
 
         handleFileSelect(event) {
             const file = event.target.files[0];
@@ -181,8 +213,10 @@ function filePreview(inputId) {
         },
 
         removeFile() {
-            const input = document.getElementById(inputId);
-            input.value = '';
+            const input = document.getElementById(this.inputId);
+            if (input) {
+                input.value = '';
+            }
             this.preview = null;
             this.fileName = '';
             this.fileSize = '';

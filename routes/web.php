@@ -30,6 +30,13 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ============================================================
+// TEMPORARY PDF PREVIEW ROUTES (DELETE AFTER TESTING)
+// ============================================================
+
+Route::match(['get', 'post'], '/preview-pdf/id', [AuthController::class, 'previewPdfIndonesian'])->name('preview.pdf.id');
+Route::match(['get', 'post'], '/preview-pdf/en', [AuthController::class, 'previewPdfEnglish'])->name('preview.pdf.en');
+
+// ============================================================
 // LANGUAGE ROUTES
 // ============================================================
 

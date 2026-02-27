@@ -36,14 +36,18 @@ roxwood_hospital_mc/
 │       │   ├── badge.blade.php
 │       │   ├── button.blade.php
 │       │   ├── card.blade.php
+│       │   ├── checkbox.blade.php
 │       │   ├── container.blade.php
 │       │   ├── dropdown.blade.php
+│       │   ├── file-input.blade.php
 │       │   ├── grid.blade.php
 │       │   ├── input.blade.php
+│       │   ├── login-card.blade.php
 │       │   ├── modal.blade.php
 │       │   ├── pagination.blade.php
 │       │   ├── select.blade.php
 │       │   ├── section.blade.php
+│       │   ├── signature-input.blade.php
 │       │   ├── stat-card.blade.php
 │       │   ├── table.blade.php
 │       │   ├── tabs.blade.php
@@ -58,9 +62,11 @@ roxwood_hospital_mc/
 │       │   └── content.blade.php
 │       └── pages/
 │           ├── login.blade.php
+│           ├── register.blade.php
 │           ├── dashboard.blade.php
 │           ├── components.blade.php
-│           └── settings.blade.php
+│           ├── settings.blade.php
+│           └── preview-pdf.blade.php
 ├── routes/
 │   └── web.php                   # Web routes
 ├── lang/
@@ -71,10 +77,12 @@ roxwood_hospital_mc/
 ├── docs/
 │   ├── ARCHITECTURE.md          # File ini
 │   ├── TODO.md
+│   ├── GUIDELINES.md
 │   ├── THEME_SYSTEM.md
 │   ├── COMPONENT_LIBRARY.md
 │   ├── RESPONSIVE_GUIDE.md
-│   └── CRASH_RECOVERY_PROTOCOL.md
+│   ├── CRASH_RECOVERY_PROTOCOL.md
+│   └── PDF_SIGNATURE_GUIDE.md   # PDF & Signature documentation
 ├── public/                      # Public assets
 ├── vite.config.js               # Vite configuration
 ├── postcss.config.js            # PostCSS configuration
@@ -202,11 +210,17 @@ Route::get('/lang/{code}', LanguageController::class);
 - `x-input` - Input field dengan label
 - `x-select` - Dropdown select
 - `x-button` - Button dengan berbagai variant
+- `x-checkbox` - Checkbox dengan label
+- `x-file-input` - File upload dengan drag & drop
+- `x-signature-input` - Signature input (digital/upload)
 
 ### Feedback Components
 - `x-alert` - Alert/notification
 - `x-badge` - Badge/status indicator
 - `x-avatar` - User avatar
+- `x-modal` - Modal/dialog
+- `x-dropdown` - Dropdown menu
+- `x-toast` - Toast notifications
 
 ### Data Components
 - `x-table` - Data table
@@ -232,6 +246,60 @@ php artisan serve
 ```bash
 npm run build
 ```
+
+---
+
+## 📄 PDF Generation System
+
+### Overview
+Sistem pembuatan surat perjanjian kerja (Agreement Letter) dengan dukungan:
+- Bilingual (Indonesia & Inggris)
+- Digital signature integration
+- Base64 image encoding untuk reliable PDF rendering
+
+### Key Files
+```
+resources/views/pdf/
+├── agreement.blade.php              # PDF template dengan styles
+└── agreement-content.blade.php      # Shared content (PDF + preview)
+
+resources/views/pages/
+└── preview-pdf.blade.php             # Preview PDF form page
+
+app/Http/Controllers/AuthController.php
+├── generateAgreementPDF()           # Private: Generate PDF
+├── previewPdfIndonesian()           # Public: Preview Indonesian
+└── previewPdfEnglish()              # Public: Preview English
+```
+
+### Dependencies
+- **barryvdh/laravel-dompdf**: PDF generation
+- **signature_pad.js** (v4.1.7): Digital signature pad
+
+### Routes
+- `/preview-pdf/id` - Preview PDF Indonesian (GET/POST)
+- `/preview-pdf/en` - Preview PDF English (GET/POST)
+
+### Features
+1. **PDF Styling**: A4 portrait, Times New Roman, 10pt
+2. **Signature Layout**: 3-row table structure (Title, Signature/Logo, Name)
+3. **Bilingual**: Full Indonesian & English support
+4. **Auto-format**: Title Case names, UPPERCASE citizen IDs
+5. **Signature Processing**: Transparency preservation, background removal
+
+### Storage Structure
+```
+public/storage/user_docs/
+└── user_{id}-{sanitized_name}-{citizen_id}/
+    ├── signature.png              # Digital/uploaded signature
+    ├── file_ktp.jpg               # KTP (compressed)
+    ├── file_skb.jpg               # SKB (compressed)
+    ├── file_sim.jpg               # SIM (optional)
+    ├── profile_photo.jpg          # Profile photo (optional)
+    └── agreement_letter.pdf       # Generated agreement PDF
+```
+
+**Full Documentation**: Lihat `docs/PDF_SIGNATURE_GUIDE.md`
 
 ---
 
