@@ -27,6 +27,9 @@
         :root {
             --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
         }
+        html {
+            scrollbar-gutter: stable;
+        }
         body {
             font-family: var(--font-sans);
             -webkit-font-smoothing: antialiased;
@@ -38,7 +41,7 @@
 
     @stack('styles')
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen bg-background">
 
     {{-- Language & Theme Switcher (Top Right) --}}
     <div class="fixed top-4 right-4 z-50 flex items-center gap-2">
@@ -114,7 +117,7 @@
     </div>
 
     {{-- Guest Content --}}
-    <div class="min-h-screen flex items-center justify-center p-4 sm:p-6 w-full">
+    <div class="min-h-screen grid place-items-center px-4 sm:px-6 py-12">
         @yield('content')
     </div>
 

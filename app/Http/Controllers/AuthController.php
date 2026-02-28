@@ -3,21 +3,242 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserRh;
+use App\Models\UserFarmasiSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class AuthController extends Controller
 {
+    private function avatarVariant(?string $position, ?string $role): string
+    {
+        $positionNorm = Str::of((string) $position)->lower()->replace([' ', '_'], '-')->toString();
+        $roleNorm = Str::of((string) $role)->lower()->replace([' ', '_'], '-')->toString();
+
+        // Role-based variant must win over position (e.g., Director who is also a doctor).
+        if (str_contains($roleNorm, 'director')) {
+            return 'director';
+        }
+        if (str_contains($roleNorm, 'manager')) {
+            return 'manager';
+        }
+
+        if ($positionNorm !== '') {
+            if (str_contains($positionNorm, 'trainee')) {
+                return 'trainee';
+            }
+            if (str_contains($positionNorm, 'paramedic')) {
+                return 'paramedic';
+            }
+            if (str_contains($positionNorm, 'co.ast') || str_contains($positionNorm, 'co-ast') || str_contains($positionNorm, 'coast')) {
+                return 'coast';
+            }
+            if (
+                (str_contains($positionNorm, 'specialist') && str_contains($positionNorm, 'doctor')) ||
+                (str_contains($positionNorm, 'dokter') && str_contains($positionNorm, 'spesialis')) ||
+                (str_contains($positionNorm, 'spesialist') && str_contains($positionNorm, 'dokter'))
+            ) {
+                return 'specialist-doctor';
+            }
+            if (str_contains($positionNorm, 'doctor') || str_contains($positionNorm, 'dokter')) {
+                return 'doctor';
+            }
+            if (str_contains($positionNorm, 'manager')) {
+                return 'manager';
+            }
+        }
+
+        return 'trainee';
+    }
+
+    private function defaultProfilePhotoUrl(?string $position, ?string $role, ?string $jenisKelamin): string
+    {
+        $genderKey = ($jenisKelamin === 'Perempuan') ? 'Female' : 'Male';
+
+        $positionNorm = Str::of((string) $position)->lower()->replace([' ', '_'], '-')->toString();
+        $roleNorm = Str::of((string) $role)->lower()->replace([' ', '_'], '-')->toString();
+
+        $prefix = null;
+
+        // If permission role is Director/Vice Director, force Director avatar.
+        if (str_contains($roleNorm, 'director')) {
+            $prefix = 'Director';
+        } elseif (str_contains($roleNorm, 'manager')) {
+            // Staff Manager / Lead Manager / Head Manager / Manager
+            $prefix = 'Manager';
+        }
+
+        // Prefer job position first (medical role), then permission role as fallback.
+        if ($prefix === null && $positionNorm !== '') {
+            if (str_contains($positionNorm, 'co.ast') || str_contains($positionNorm, 'co-ast') || str_contains($positionNorm, 'coast')) {
+                $prefix = 'Co.Ast';
+            } elseif (
+                (str_contains($positionNorm, 'specialist') && str_contains($positionNorm, 'doctor')) ||
+                (str_contains($positionNorm, 'dokter') && str_contains($positionNorm, 'spesialis')) ||
+                (str_contains($positionNorm, 'spesialist') && str_contains($positionNorm, 'dokter'))
+            ) {
+                $prefix = 'Specialist-Doctor';
+            } elseif (str_contains($positionNorm, 'doctor') || str_contains($positionNorm, 'dokter')) {
+                $prefix = 'Doctor';
+            } elseif (str_contains($positionNorm, 'paramedic')) {
+                $prefix = 'Paramedic';
+            } elseif (str_contains($positionNorm, 'trainee')) {
+                $prefix = 'Trainee';
+            } elseif (str_contains($positionNorm, 'manager')) {
+                $prefix = 'Manager';
+            }
+        }
+
+        if ($prefix === null && $roleNorm !== '') {
+            if (str_contains($roleNorm, 'director')) {
+                $prefix = 'Director';
+            } elseif (str_contains($roleNorm, 'manager')) {
+                $prefix = 'Manager';
+            } elseif (str_contains($roleNorm, 'staff')) {
+                $prefix = 'Trainee';
+            }
+        }
+
+        $prefix ??= 'Trainee';
+
+        $candidate = "logo_profile/{$prefix}-{$genderKey}.png";
+        if (!Storage::disk('public')->exists($candidate)) {
+            $candidate = "logo_profile/Trainee-{$genderKey}.png";
+        }
+
+        return asset('storage/' . $candidate);
+    }
+
     /**
      * Tampilkan halaman login
      */
     public function showLogin()
     {
-        return view('pages.login');
+        // Jika sudah login dan session masih valid, langsung ke dashboard
+        $userId = Session::get('user.id');
+        $sessionId = Session::get('farmasi_session_id');
+        $expiresAt = Session::get('expires_at');
+        if ($userId && $sessionId && $expiresAt) {
+            try {
+                $expiryDate = \Carbon\Carbon::parse($expiresAt);
+                if ($expiryDate->isFuture()) {
+                    $exists = UserFarmasiSession::where('id', $sessionId)
+                        ->where('user_id', $userId)
+                        ->whereNull('session_end')
+                        ->exists();
+                    if ($exists) {
+                        return redirect()->route('dashboard');
+                    }
+                }
+            } catch (\Throwable $e) {
+                // ignore parse errors
+            }
+        }
+
+        // Check if user has saved credentials (remember me)
+        $savedFullName = Session::get('remember_full_name');
+        $savedPin = Session::get('remember_pin');
+
+        $deviceId = request()->cookie('rh_device_id');
+        if (!$deviceId) {
+            $deviceId = (string) Str::uuid();
+        }
+
+        return response()
+            ->view('pages.login', [
+            'savedFullName' => $savedFullName,
+            'savedPin' => $savedPin,
+            ])
+            ->cookie('rh_device_id', $deviceId, 60 * 24 * 365 * 5);
+    }
+
+    /**
+     * Search users for autocomplete (min 2 characters)
+     */
+    public function searchUsers(Request $request)
+    {
+        $query = $request->get('q', '');
+
+        // Validate minimum 2 characters
+        if (strlen($query) < 2) {
+            return response()->json([
+                'results' => []
+            ]);
+        }
+
+        // Search users by full_name
+        $users = UserRh::where('full_name', 'like', '%' . $query . '%')
+            ->select(['id', 'full_name', 'photo_profile', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin'])
+            ->limit(10)
+            ->get();
+
+        // Check active sessions for each user
+        $results = $users->map(function ($user) {
+            // Check if user has active session (session_end is null and within last hour)
+            $activeSession = UserFarmasiSession::where('user_id', $user->id)
+                ->whereNull('session_end')
+                ->where('session_start', '>=', now()->subHours(24))
+                ->first();
+
+            // Get photo URL
+            $photoUrl = null;
+            if (!empty($user->photo_profile)) {
+                $photoUrl = Str::startsWith($user->photo_profile, ['http://', 'https://'])
+                    ? $user->photo_profile
+                    : asset($user->photo_profile);
+            } else {
+                $photoUrl = $this->defaultProfilePhotoUrl($user->position, $user->role, $user->jenis_kelamin);
+            }
+
+            return [
+                'id' => $user->id,
+                'full_name' => $user->full_name,
+                'photo' => $photoUrl,
+                'avatar_variant' => $this->avatarVariant($user->position, $user->role),
+                'position' => $user->position ?? 'Trainee',
+                'role' => $user->role,
+                'batch' => $user->batch,
+                'is_active' => $user->is_active,
+                'is_online' => $activeSession !== null,
+            ];
+        });
+
+        return response()->json([
+            'results' => $results
+        ]);
+    }
+
+    /**
+     * Get active session info for a user
+     */
+    public function getActiveSession(Request $request)
+    {
+        $userId = $request->get('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'has_active_session' => false
+            ]);
+        }
+
+        $activeSession = UserFarmasiSession::where('user_id', $userId)
+            ->whereNull('session_end')
+            ->where('session_start', '>=', now()->subHours(24))
+            ->first();
+
+        return response()->json([
+            'has_active_session' => $activeSession !== null,
+            'session_info' => $activeSession ? [
+                'device_info' => $this->sanitizeSessionInfo($activeSession->medic_jabatan ?? 'Unknown Device'),
+                'started_at' => $activeSession->session_start?->format('Y-m-d H:i:s'),
+            ] : null,
+        ]);
     }
 
     /**
@@ -25,51 +246,276 @@ class AuthController extends Controller
      */
     public function showRegister()
     {
-        return view('pages.register');
+        $deviceId = request()->cookie('rh_device_id');
+        if (!$deviceId) {
+            $deviceId = (string) Str::uuid();
+        }
+
+        return response()
+            ->view('pages.register')
+            ->cookie('rh_device_id', $deviceId, 60 * 24 * 365 * 5);
     }
 
     /**
-     * Proses login
+     * Proses login dengan full_name dan PIN
      */
     public function login(Request $request)
     {
+        $locale = Session::get('locale', 'id');
+        app()->setLocale($locale);
+
         // Validate input
         $validated = $request->validate([
-            'pin' => 'required|string|size:4',
+            'full_name' => 'required|string|max:100',
+            'pin' => 'required|string|size:4|regex:/^[0-9]+$/',
+            'remember' => 'nullable',
+            'force_login' => 'nullable|boolean',
+        ], [
+            'full_name.required' => __('messages.full_name') . ' ' . __('messages.required_field'),
+            'pin.required' => __('messages.pin') . ' ' . __('messages.required_field'),
+            'pin.regex' => __('messages.pin') . ' harus berupa angka',
+            'pin.size' => __('messages.pin') . ' harus 4 digit',
         ]);
 
-        // Find user by PIN (check both hashed and plain text for existing users)
-        $user = UserRh::where('pin', $validated['pin'])->first();
+        // Find user by full_name (case insensitive)
+        $user = UserRh::whereRaw('LOWER(full_name) = LOWER(?)', [$validated['full_name']])->first();
 
-        // Jika tidak ditemukan dengan hash, coba check plain text (backward compatibility)
-        if (!$user) {
-            $user = UserRh::whereRaw('BINARY pin = ?', [$validated['pin']])->first();
-        }
-
+        // Check if user exists
         if (!$user) {
             return back()->withErrors([
-                'pin' => 'PIN tidak valid',
-            ]);
+                'full_name' => __('messages.full_name_not_found'),
+            ])->withInput();
         }
 
-        // Cek apakah user aktif
+        // Verify PIN (check hashed first, then plain text for backward compatibility)
+        $pinValid = false;
+        if (Hash::check($validated['pin'], $user->pin)) {
+            $pinValid = true;
+        } elseif ($user->pin === $validated['pin']) {
+            // For backward compatibility with plain text PINs
+            $pinValid = true;
+        }
+
+        if (!$pinValid) {
+            return back()->withErrors([
+                'pin' => __('messages.pin_incorrect'),
+            ])->withInput();
+        }
+
+        // Check if user is active (validated)
         if (!$user->is_active) {
             return back()->withErrors([
-                'pin' => 'Akun belum aktif. Silakan hubungi manager untuk verifikasi.',
-            ]);
+                'full_name' => __('messages.account_not_validated'),
+            ])->withInput();
         }
 
-        // Simpan user session
-        Session::put('user', [
-            'id' => $user->id,
-            'name' => $user->full_name,
-            'role' => $user->role,
-            'citizen_id' => $user->citizen_id,
-            'batch' => $user->batch,
-            'position' => $user->position ?? 'Trainee',
-        ]);
+        $forceLogin = (bool) ($validated['force_login'] ?? false);
 
-        return redirect()->route('dashboard');
+        $deviceId = $request->cookie('rh_device_id') ?: (string) Str::uuid();
+
+        // Jika ada session aktif dan user belum memilih "Paksa Login" -> tampilkan modal konfirmasi
+        $existingSession = UserFarmasiSession::where('user_id', $user->id)
+            ->whereNull('session_end')
+            ->where('session_start', '>=', now()->subHours(24))
+            ->first();
+
+        // Jika session aktif itu dari device yang sama (browser yang sama), jangan munculkan modal.
+        // Karena table session bisa dihapus, kita simpan mapping session->device di cache.
+        $existingSessionDeviceId = null;
+        if ($existingSession) {
+            $existingSessionDeviceId = Cache::get('farmasi_session_device:' . $existingSession->id);
+            if (!$existingSessionDeviceId) {
+                $existingSessionDeviceId = $this->extractDeviceIdFromSessionInfo($existingSession->medic_jabatan);
+            }
+            if (!$forceLogin && $existingSessionDeviceId && hash_equals((string) $existingSessionDeviceId, (string) $deviceId)) {
+                $forceLogin = true;
+            }
+
+            // Fallback untuk session lama (sebelum ada device_id di cache):
+            // jika signature device sama, anggap ini device yang sama (tanpa "Paksa Login").
+            if (!$forceLogin && !$existingSessionDeviceId) {
+                $sig = $this->getDeviceSignature();
+                $activeInfo = (string) ($existingSession->medic_jabatan ?? '');
+                if ($sig !== '' && str_starts_with($activeInfo, $sig)) {
+                    $forceLogin = true;
+                }
+            }
+        }
+
+        if ($existingSession && !$forceLogin) {
+            $activeDevice = $this->sanitizeSessionInfo($existingSession->medic_jabatan ?? 'Unknown Device');
+            if (!empty($existingSessionDeviceId)) {
+                $activeDevice .= ' · ID:' . substr((string) $existingSessionDeviceId, -6);
+            }
+            return back()
+                ->with([
+                    'confirm_force_login' => true,
+                    'active_device' => $activeDevice,
+                    'full_name' => $validated['full_name'],
+                    'pin' => $validated['pin'],
+                    'remember' => (bool) ($validated['remember'] ?? false),
+                ])
+                ->withInput();
+        }
+
+        // Check for active session on another device (force login path)
+        $deviceInfo = $this->getDeviceInfo();
+        DB::transaction(function () use ($user, $deviceInfo, $deviceId) {
+            $sig = $this->getDeviceSignature();
+
+            $activeSessions = UserFarmasiSession::where('user_id', $user->id)
+                ->whereNull('session_end')
+                ->where('session_start', '>=', now()->subHours(24))
+                ->get();
+
+            if ($activeSessions->isNotEmpty()) {
+                $endAt = now();
+                foreach ($activeSessions as $session) {
+                    $sessionDeviceId = Cache::get('farmasi_session_device:' . $session->id);
+                    if (!$sessionDeviceId) {
+                        $sessionDeviceId = $this->extractDeviceIdFromSessionInfo($session->medic_jabatan);
+                    }
+                    $isSameDevice = false;
+                    if ($sessionDeviceId && hash_equals((string) $sessionDeviceId, (string) $deviceId)) {
+                        $isSameDevice = true;
+                    } elseif (!$sessionDeviceId && $sig !== '' && str_starts_with((string) ($session->medic_jabatan ?? ''), $sig)) {
+                        // Legacy session fallback
+                        $isSameDevice = true;
+                    }
+
+                    // Simpan info untuk notifikasi device lain (karena row akan dihapus)
+                    // Jangan set forced logout jika session yang digantikan berasal dari device yang sama.
+                    if (!$isSameDevice) {
+                        Cache::put(
+                            'forced_logout:' . $session->id,
+                            [
+                                'forced_by_device' => $deviceInfo,
+                                'ended_at' => $endAt->toIso8601String(),
+                            ],
+                            now()->addDay()
+                        );
+                    }
+
+                    $session->update([
+                        'session_end' => $endAt,
+                        'duration_seconds' => abs((int) $endAt->diffInSeconds($session->session_start, false)),
+                        'end_reason' => $isSameDevice ? 'auto_offline' : 'force_offline',
+                        'ended_by_user_id' => $user->id,
+                    ]);
+                    // User request: hapus session sebelumnya dari database
+                    $session->delete();
+
+                    Cache::forget('farmasi_session_device:' . $session->id);
+                }
+            }
+
+            // Create new session record
+            $newSession = UserFarmasiSession::create([
+                'user_id' => $user->id,
+                'medic_name' => $user->full_name,
+                'medic_jabatan' => $this->getDeviceInfoForSession($deviceId),
+                'session_start' => now(),
+            ]);
+
+            Session::put('farmasi_session_id', $newSession->id);
+
+            Cache::put('farmasi_session_device:' . $newSession->id, $deviceId, now()->addDays(7));
+        });
+
+        // Set session with 1 year expiration
+        $sessionData = [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->full_name,
+                'role' => $user->role,
+                'citizen_id' => $user->citizen_id,
+                'batch' => $user->batch,
+                'position' => $user->position ?? 'Trainee',
+                'photo' => $user->photo_profile,
+            ],
+            'logged_in_at' => now()->toIso8601String(),
+            'expires_at' => now()->addYear()->toIso8601String(),
+        ];
+
+        Session::put($sessionData);
+
+        // Remember me - save credentials to session
+        if ($validated['remember'] ?? false) {
+            Session::put('remember_full_name', $validated['full_name']);
+            Session::put('remember_pin', $validated['pin']);
+        } else {
+            Session::forget('remember_full_name');
+            Session::forget('remember_pin');
+        }
+
+        // Redirect to intended page or dashboard
+        return redirect()
+            ->intended(route('dashboard'))
+            ->cookie('rh_device_id', $deviceId, 60 * 24 * 365 * 5);
+    }
+
+    /**
+     * Get device information from request
+     */
+    private function getDeviceSignature(): string
+    {
+        $userAgent = request()->userAgent();
+        $deviceType = 'Unknown';
+
+        if (strpos($userAgent, 'Mobile') !== false || strpos($userAgent, 'Android') !== false || strpos($userAgent, 'iPhone') !== false) {
+            $deviceType = 'Mobile Device';
+        } elseif (strpos($userAgent, 'Tablet') !== false || strpos($userAgent, 'iPad') !== false) {
+            $deviceType = 'Tablet';
+        } elseif (strpos($userAgent, 'Windows') !== false) {
+            $deviceType = 'Windows PC';
+        } elseif (strpos($userAgent, 'Mac') !== false) {
+            $deviceType = 'Mac';
+        } elseif (strpos($userAgent, 'Linux') !== false) {
+            $deviceType = 'Linux PC';
+        }
+
+        // Add browser info
+        $browser = 'Unknown Browser';
+        // Order matters: Edge/Opera UAs include "Chrome"
+        if (strpos($userAgent, 'Edg') !== false || strpos($userAgent, 'Edge') !== false) {
+            $browser = 'Edge';
+        } elseif (strpos($userAgent, 'OPR') !== false || strpos($userAgent, 'Opera') !== false) {
+            $browser = 'Opera';
+        } elseif (strpos($userAgent, 'Firefox') !== false) {
+            $browser = 'Firefox';
+        } elseif (strpos($userAgent, 'Chrome') !== false) {
+            $browser = 'Chrome';
+        } elseif (strpos($userAgent, 'Safari') !== false) {
+            $browser = 'Safari';
+        }
+
+        return $deviceType . ' - ' . $browser;
+    }
+
+    private function getDeviceInfo(): string
+    {
+        return $this->getDeviceSignature() . ' (' . now()->format('Y-m-d H:i') . ')';
+    }
+
+    private function getDeviceInfoForSession(string $deviceId): string
+    {
+        // Persist device_id in DB without new column
+        return $this->getDeviceInfo() . ' [did:' . $deviceId . ']';
+    }
+
+    private function extractDeviceIdFromSessionInfo(?string $info): ?string
+    {
+        if (!$info) return null;
+        if (preg_match('/\\[did:([a-f0-9\\-]{10,})\\]/i', $info, $m)) {
+            return (string) $m[1];
+        }
+        return null;
+    }
+
+    private function sanitizeSessionInfo(?string $info): string
+    {
+        $value = (string) ($info ?? '');
+        return trim((string) preg_replace('/\\s*\\[did:[^\\]]+\\]\\s*/i', ' ', $value));
     }
 
     /**
@@ -652,8 +1098,72 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        $userId = Session::get('user.id');
+        $sessionId = Session::get('farmasi_session_id');
+
+        // User request: hapus session dari database
+        if ($userId && $sessionId) {
+            UserFarmasiSession::where('id', $sessionId)
+                ->where('user_id', $userId)
+                ->delete();
+            Cache::forget('farmasi_session_device:' . $sessionId);
+        }
+
+        // Clear session
         Session::forget('user');
+        Session::forget('logged_in_at');
+        Session::forget('expires_at');
+        Session::forget('farmasi_session_id');
+
         return redirect()->route('login');
+    }
+
+    /**
+     * Check session validity (for middleware)
+     */
+    public function checkSession()
+    {
+        $userId = Session::get('user.id');
+        $sessionId = Session::get('farmasi_session_id');
+        $expiresAt = Session::get('expires_at');
+
+        if (!$userId || !$sessionId || !$expiresAt) {
+            return response()->json(['valid' => false, 'reason' => 'missing'], 401);
+        }
+
+        $expiryDate = \Carbon\Carbon::parse($expiresAt);
+
+        if ($expiryDate->isPast()) {
+            Session::forget('user');
+            Session::forget('logged_in_at');
+            Session::forget('expires_at');
+            Session::forget('farmasi_session_id');
+            return response()->json(['valid' => false, 'reason' => 'expired'], 401);
+        }
+
+        $exists = UserFarmasiSession::where('id', $sessionId)
+            ->where('user_id', $userId)
+            ->whereNull('session_end')
+            ->exists();
+
+        if (!$exists) {
+            // Session sudah dihapus/diakhiri karena login dari device lain
+            $forced = Cache::pull('forced_logout:' . $sessionId);
+            $reason = $forced ? 'force_offline' : 'superseded';
+
+            Session::forget('user');
+            Session::forget('logged_in_at');
+            Session::forget('expires_at');
+            Session::forget('farmasi_session_id');
+            Cache::forget('farmasi_session_device:' . $sessionId);
+            return response()->json([
+                'valid' => false,
+                'reason' => $reason,
+                'forced_by_device' => $forced['forced_by_device'] ?? null,
+            ], 401);
+        }
+
+        return response()->json(['valid' => true]);
     }
 
     /**

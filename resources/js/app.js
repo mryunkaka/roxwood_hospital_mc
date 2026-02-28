@@ -19,6 +19,24 @@ import chartController, { ChartData, updateAllCharts } from './chart.js';
 // Setup Alpine
 window.Alpine = Alpine;
 
+// Global session-guard store (used for forced logout / session invalid modal)
+Alpine.store('sessionGuard', {
+    open: false,
+    reason: null,
+    forcedByDevice: null,
+
+    show(payload = {}) {
+        this.reason = payload.reason || 'superseded';
+        this.forcedByDevice = payload.forcedByDevice || null;
+        this.open = true;
+    },
+
+    acknowledge() {
+        this.open = false;
+        window.location.href = '/login';
+    }
+});
+
 // Register controllers (toastController is registered in toast.js alpine:init event)
 Alpine.data('themeController', themeController);
 Alpine.data('langController', langController);

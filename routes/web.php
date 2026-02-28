@@ -29,6 +29,11 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// API endpoints for login (no auth required)
+Route::get('/api/users/search', [AuthController::class, 'searchUsers'])->name('api.users.search');
+Route::get('/api/users/session/check', [AuthController::class, 'getActiveSession'])->name('api.users.session.check');
+Route::get('/api/session/valid', [AuthController::class, 'checkSession'])->name('api.session.check');
+
 // ============================================================
 // TEMPORARY PDF PREVIEW ROUTES (DELETE AFTER TESTING)
 // ============================================================

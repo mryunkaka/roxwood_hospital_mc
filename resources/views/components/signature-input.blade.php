@@ -16,10 +16,10 @@
 
 <div class="space-y-4">
     {{-- Label --}}
-    <label for="{{ $name }}_digital" class="block text-sm font-medium text-text-primary" data-translate="{{ $dataTranslateLabel }}">
+    <div id="{{ $name }}_label" class="block text-sm font-medium text-text-primary" data-translate="{{ $dataTranslateLabel }}">
         {{ $label }}
         {!! $requiredStar !!}
-    </label>
+    </div>
 
     {{-- Hint --}}
     @if($dataTranslateHint)
@@ -59,9 +59,11 @@
     </div>
 
     {{-- Digital Signature Canvas --}}
-    <div x-show="document.querySelector('.signature-type-btn[data-type=\"digital\"]')?.classList.contains('border-primary-500') ?? true" class="signature-container">
+    <div x-show="document.querySelector('.signature-type-btn[data-type=digital]')?.classList.contains('border-primary-500') ?? true" class="signature-container">
         <canvas
             id="{{ $name }}_canvas"
+            aria-labelledby="{{ $name }}_label"
+            tabindex="0"
             class="w-full border-2 border-dashed border-border rounded-lg bg-white cursor-crosshair"
             style="touch-action: none;"
             height="200"
@@ -80,7 +82,7 @@
     </div>
 
     {{-- Upload File Option --}}
-    <div x-show="document.querySelector('.signature-type-btn[data-type=\"upload\"]')?.classList.contains('border-primary-500') ?? false" class="signature-upload hidden">
+    <div x-show="document.querySelector('.signature-type-btn[data-type=upload]')?.classList.contains('border-primary-500') ?? false" class="signature-upload hidden">
         <x-file-input
             name="{{ $name }}_file"
             :label="__('messages.signature_upload_desc')"

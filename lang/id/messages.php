@@ -580,4 +580,27 @@ return [
     // Validation messages
     'required_field' => 'Kolom ini wajib diisi',
     'registration_success' => 'Pendaftaran berhasil! Akun Anda telah dibuat.',
+
+    // Login messages
+    'full_name_not_found' => 'Nama lengkap tidak ditemukan',
+    'pin_incorrect' => 'PIN salah',
+    'account_not_validated' => 'Akun Anda masih belum divalidasi',
+    'searching_users' => 'Mencari pengguna...',
+    'no_users_found' => 'Tidak ada pengguna ditemukan',
+    'currently_active' => 'Sedang Aktif',
+    'currently_inactive' => 'Tidak Aktif',
+    'login_confirm_title' => 'Konfirmasi Login',
+    'login_confirm_message' => 'Apakah Anda yakin ingin login karena saat ini akun sedang digunakan pada device lain?',
+    'force_login' => 'Paksa Login',
+    'cancel_login' => 'Batal',
+    'ok' => 'OK',
+    'forced_logout_title' => 'Anda Dipaksa Logout',
+    'forced_logout_message' => 'Anda telah dipaksa logout oleh device lain.',
+    'forced_logout_by_device' => 'Dipaksa oleh',
+    'session_invalid_title' => 'Sesi Berakhir',
+    'session_invalid_message' => 'Sesi Anda sudah tidak valid. Silakan login kembali.',
+    'login_cooldown_prefix' => 'Silakan tunggu',
+    'login_cooldown_suffix' => 'detik sebelum login ulang.',
+    'logged_out_from_other_device' => 'Anda telah logout dari device lain',
+    'session_expired' => 'Sesi Anda telah berakhir. Silakan login kembali.',
 ];

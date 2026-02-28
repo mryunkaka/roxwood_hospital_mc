@@ -82,6 +82,54 @@
     {{-- Toast Container --}}
     <x-toast />
 
+    {{-- Forced Logout / Session Invalid Modal --}}
+    <div
+        x-data
+        x-show="$store.sessionGuard?.open"
+        x-transition
+        x-cloak
+        class="fixed inset-0 z-[9998] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+        @keydown.escape.window="$store.sessionGuard?.acknowledge()"
+    >
+        <div class="w-full max-w-md rounded-2xl bg-surface border border-border shadow-xl p-6">
+            <h3 class="text-lg font-semibold text-text-primary mb-2"
+                x-show="$store.sessionGuard?.reason === 'force_offline'"
+                data-translate="forced_logout_title">
+                {{ __('messages.forced_logout_title') }}
+            </h3>
+            <h3 class="text-lg font-semibold text-text-primary mb-2"
+                x-show="$store.sessionGuard?.reason !== 'force_offline'"
+                data-translate="session_invalid_title">
+                {{ __('messages.session_invalid_title') }}
+            </h3>
+
+            <p class="text-sm text-text-secondary mb-4"
+               x-show="$store.sessionGuard?.reason === 'force_offline'">
+                <span data-translate="forced_logout_message">{{ __('messages.forced_logout_message') }}</span>
+                <template x-if="$store.sessionGuard?.forcedByDevice">
+                    <span class="block mt-2 text-xs text-text-tertiary">
+                        <span data-translate="forced_logout_by_device">{{ __('messages.forced_logout_by_device') }}</span>:
+                        <span class="font-medium" x-text="$store.sessionGuard.forcedByDevice"></span>
+                    </span>
+                </template>
+            </p>
+
+            <p class="text-sm text-text-secondary mb-4"
+               x-show="$store.sessionGuard?.reason !== 'force_offline'"
+               data-translate="session_invalid_message">
+                {{ __('messages.session_invalid_message') }}
+            </p>
+
+            <div class="flex justify-end gap-3">
+                <button type="button"
+                        class="px-4 py-2 rounded-xl bg-primary text-white hover:bg-primary-600 transition-colors"
+                        @click="$store.sessionGuard?.acknowledge()">
+                    <span data-translate="ok">{{ __('messages.ok') }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     {{-- Vite JS --}}
     @vite(['resources/js/app.js'])
 

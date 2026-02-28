@@ -583,4 +583,27 @@ return [
     // Validation messages
     'required_field' => 'This field is required',
     'registration_success' => 'Registration successful! Your account has been created.',
+
+    // Login messages
+    'full_name_not_found' => 'Full name not found',
+    'pin_incorrect' => 'PIN is incorrect',
+    'account_not_validated' => 'Your account has not been validated yet',
+    'searching_users' => 'Searching users...',
+    'no_users_found' => 'No users found',
+    'currently_active' => 'Currently Active',
+    'currently_inactive' => 'Inactive',
+    'login_confirm_title' => 'Confirm Login',
+    'login_confirm_message' => 'Are you sure you want to login? Your account is currently being used on another device.',
+    'force_login' => 'Force Login',
+    'cancel_login' => 'Cancel',
+    'ok' => 'OK',
+    'forced_logout_title' => 'Forced Logout',
+    'forced_logout_message' => 'You have been forced to logout by another device.',
+    'forced_logout_by_device' => 'Forced by',
+    'session_invalid_title' => 'Session Ended',
+    'session_invalid_message' => 'Your session is no longer valid. Please login again.',
+    'login_cooldown_prefix' => 'Please wait',
+    'login_cooldown_suffix' => 'seconds before logging in again.',
+    'logged_out_from_other_device' => 'You have been logged out from another device',
+    'session_expired' => 'Your session has expired. Please login again.',
 ];
