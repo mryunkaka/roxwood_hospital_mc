@@ -112,7 +112,9 @@
                                 <input type="radio" name="language" value="en" class="peer sr-only">
                                 <div class="p-4 rounded-lg border-2 border-border cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-primary-50 theme-dark:peer-checked:bg-primary-900/20 hover:bg-surface theme-dark:hover:bg-slate-800">
                                     <div class="flex items-center gap-3">
-                                        <span class="text-2xl">🇺🇸</span>
+                                        <svg class="w-6 h-6 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                                        </svg>
                                         <span class="font-medium text-text-primary theme-dark:text-white">English</span>
                                     </div>
                                 </div>
@@ -122,7 +124,9 @@
                                 <input type="radio" name="language" value="id" class="peer sr-only">
                                 <div class="p-4 rounded-lg border-2 border-border cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-primary-50 theme-dark:peer-checked:bg-primary-900/20 hover:bg-surface theme-dark:hover:bg-slate-800">
                                     <div class="flex items-center gap-3">
-                                        <span class="text-2xl">🇮🇩</span>
+                                        <svg class="w-6 h-6 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                                        </svg>
                                         <span class="font-medium text-text-primary theme-dark:text-white">Bahasa Indonesia</span>
                                     </div>
                                 </div>

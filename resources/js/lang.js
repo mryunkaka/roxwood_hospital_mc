@@ -14,8 +14,8 @@ const globalLangState = {
     translations: {},
     isLoading: false,
     availableLangs: [
-        { code: 'en', name: 'English', flag: '🇺🇸' },
-        { code: 'id', name: 'Bahasa Indonesia', flag: '🇮🇩' }
+        { code: 'en', name: 'English' },
+        { code: 'id', name: 'Bahasa Indonesia' }
     ],
 
     // Update semua elemen di seluruh halaman

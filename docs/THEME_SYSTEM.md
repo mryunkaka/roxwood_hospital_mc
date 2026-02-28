@@ -1,4 +1,4 @@
-# Theme System Documentation
+﻿# Theme System Documentation
 
 ## Overview
 
@@ -9,7 +9,7 @@ Sistem tema Roxwood Health Medical Center menggunakan CSS Variables + Alpine.js 
 
 ---
 
-## 🎨 Design Tokens
+## ðŸŽ¨ Design Tokens
 
 ### Color Palette
 
@@ -100,7 +100,7 @@ Logo menggunakan CSS variables yang berubah sesuai tema:
 
 ---
 
-## 🌗 Theme Implementation
+## ðŸŒ— Theme Implementation
 
 ### 1. HTML Structure
 
@@ -160,7 +160,7 @@ Dark + Stylis combination:
 
 ---
 
-## 🏢 Brand Components
+## ðŸ¢ Brand Components
 
 ### x-brand-logo
 
@@ -226,7 +226,7 @@ Komponen header halaman dengan logo, judul, dan deskripsi yang konsisten.
 
 ---
 
-## 🔧 Theme Controller
+## ðŸ”§ Theme Controller
 
 ### Alpine.js Component
 
@@ -278,7 +278,7 @@ export default function themeController() {
 
 ---
 
-## 🎨 Stylis Theme
+## ðŸŽ¨ Stylis Theme
 
 ### Glassmorphism Effect
 
@@ -307,16 +307,16 @@ Kelas `.glass` untuk efek glassmorphism:
 
 ---
 
-## 🎯 Best Practices
+## ðŸŽ¯ Best Practices
 
 ### 1. SELALU gunakan CSS variables
 
-❌ **JANGAN:**
+âŒ **JANGAN:**
 ```blade
 <div class="bg-blue-500">
 ```
 
-✅ **GUNAKAN:**
+âœ… **GUNAKAN:**
 ```blade
 <div class="bg-primary text-primary-500">
 ```
@@ -340,7 +340,7 @@ Pastikan setiap komponen ditest di:
 
 ---
 
-## 📋 Theme Checklist
+## ðŸ“‹ Theme Checklist
 
 - [ ] Semua komponen menggunakan design tokens
 - [ ] Tidak ada hardcoded colors
@@ -352,7 +352,7 @@ Pastikan setiap komponen ditest di:
 
 ---
 
-## 🔮 Future Enhancements
+## ðŸ”® Future Enhancements
 
 1. Custom theme colors
 2. Font size scaling

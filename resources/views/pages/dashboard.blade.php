@@ -3,248 +3,129 @@
 @section('title', __('messages.dashboard') . ' - ' . __('messages.app_name'))
 
 @section('page-title', __('messages.dashboard'))
-@section('page-description', __('messages.overview') . ' - ' . __('messages.welcome'))
+@section('page-description', __('messages.dashboard_subtitle'))
 
 @section('content')
-{{-- Stats Cards --}}
-<x-grid :cols="1" :gap="'default'" class="mb-6">
-    <x-stat-card
-        :title="__('messages.total_patients')"
-        value="2,847"
-        change="+12.5%"
-        changeType="positive"
-        :icon="'<svg class=\'w-6 h-6 text-white\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z\'/></svg>'"
-        color="primary"
-    />
+@php
+    $thousandSep = app()->getLocale() === 'id' ? '.' : ',';
+    $decimalSep = app()->getLocale() === 'id' ? ',' : '.';
+    $fmt = fn ($n) => number_format((float) $n, 0, $decimalSep, $thousandSep);
+@endphp
 
-    <x-stat-card
-        :title="__('messages.total_doctors')"
-        value="156"
-        change="+3"
-        changeType="positive"
-        :icon="'<svg class=\'w-6 h-6 text-white\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z\'/></svg>'"
-        color="success"
-    />
+<script>
+    window.DASHBOARD_DATA = @json($dashboard);
+</script>
 
-    <x-stat-card
-        :title="__('messages.total_appointments')"
-        value="384"
-        change="-2.4%"
-        changeType="negative"
-        :icon="'<svg class=\'w-6 h-6 text-white\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\'/></svg>'"
-        color="warning"
-    />
+<p class="text-sm text-text-secondary mb-6">
+    {{ $rangeLabel }}
+</p>
 
-    <x-stat-card
-        :title="__('messages.total_revenue')"
-        value="Rp 1.2M"
-        change="+8.1%"
-        changeType="positive"
-        :icon="'<svg class=\'w-6 h-6 text-white\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z\'/></svg>'"
-        color="info"
-    />
-</x-grid>
+<x-section class="mb-6">
+    <div class="flex items-center gap-2 mb-4">
+        <svg class="w-5 h-5 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+        </svg>
+        <h3 class="text-lg font-semibold text-text-primary" data-translate="dashboard_farmasi_summary">
+            {{ __('messages.dashboard_farmasi_summary') }}
+        </h3>
+    </div>
 
-{{-- Charts & Tables Grid --}}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    {{-- Line Chart - Patient Visits --}}
-    <x-card :title="__('messages.patient_visits')" :cols="'lg:col-span-2'" class="h-full">
-        <div class="h-72">
-            <canvas
-                x-data="chartController()"
-                x-init="{
-                    type = 'line';
-                    data = {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        datasets: [
-                            {
-                                label: '2024',
-                                data: [650, 720, 810, 890, 920, 1050, 1180, 1250, 1320, 1400, 1480, 1550],
-                                color: '#3b82f6',
-                                fill: true
-                            },
-                            {
-                                label: '2025',
-                                data: [1550, 1620, 1710, 1790, 1850, 1920, 2010, 2100, 2180, 2250, 2320, 2400],
-                                color: '#14b8a6',
-                                fill: true
+    <x-grid :cols="4" :gap="'default'">
+        <x-stat-card :title="__('messages.dashboard_total_medic_serving')" data-translate-title="dashboard_total_medic_serving" :value="$fmt($dashboard['total_medic'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_consumer_farmasi')" data-translate-title="dashboard_total_consumer_farmasi" :value="$fmt($dashboard['total_consumer'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_paket_a_sold')" data-translate-title="dashboard_paket_a_sold" :value="$fmt($dashboard['total_paket_a'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_paket_b_sold')" data-translate-title="dashboard_paket_b_sold" :value="$fmt($dashboard['total_paket_b'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_bandage_sold')" data-translate-title="dashboard_bandage_sold" :value="$fmt($dashboard['total_bandage'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_painkiller_sold')" data-translate-title="dashboard_painkiller_sold" :value="$fmt($dashboard['total_painkiller'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_ifaks_sold')" data-translate-title="dashboard_ifaks_sold" :value="$fmt($dashboard['total_ifaks'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_transactions')" data-translate-title="dashboard_total_transactions" :value="$fmt($dashboard['total_transaksi'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_items_sold')" data-translate-title="dashboard_total_items_sold" :value="$fmt($dashboard['total_item'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_income')" data-translate-title="dashboard_total_income" :value="'$ ' . $fmt($dashboard['total_income'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_medic_bonus_40')" data-translate-title="dashboard_medic_bonus_40" :value="'$ ' . $fmt($dashboard['total_bonus'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_company_profit_60')" data-translate-title="dashboard_company_profit_60" :value="'$ ' . $fmt($dashboard['company_profit'] ?? 0)" />
+    </x-grid>
+</x-section>
+
+<x-section class="mb-6">
+    <div class="flex items-center gap-2 mb-4">
+        <svg class="w-5 h-5 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+        </svg>
+        <h3 class="text-lg font-semibold text-text-primary" data-translate="dashboard_medis_summary">
+            {{ __('messages.dashboard_medis_summary') }}
+        </h3>
+    </div>
+
+    <x-grid :cols="4" :gap="'default'">
+        <x-stat-card :title="__('messages.dashboard_total_p3k')" data-translate-title="dashboard_total_p3k" :value="$fmt($dashboard['rekap_medis']['p3k'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_bandage')" data-translate-title="dashboard_total_bandage" :value="$fmt($dashboard['rekap_medis']['bandage'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_gauze')" data-translate-title="dashboard_total_gauze" :value="$fmt($dashboard['rekap_medis']['gauze'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_iodine')" data-translate-title="dashboard_total_iodine" :value="$fmt($dashboard['rekap_medis']['iodine'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_total_syringe')" data-translate-title="dashboard_total_syringe" :value="$fmt($dashboard['rekap_medis']['syringe'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_operasi_plastik')" data-translate-title="dashboard_operasi_plastik" :value="$fmt($dashboard['rekap_medis']['operasi_plastik'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_operasi_ringan')" data-translate-title="dashboard_operasi_ringan" :value="$fmt($dashboard['rekap_medis']['operasi_ringan'] ?? 0)" />
+        <x-stat-card :title="__('messages.dashboard_operasi_berat')" data-translate-title="dashboard_operasi_berat" :value="$fmt($dashboard['rekap_medis']['operasi_berat'] ?? 0)" />
+    </x-grid>
+</x-section>
+
+<x-card class="mb-6">
+    <div class="flex items-center gap-2 mb-4">
+        <svg class="w-5 h-5 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+        </svg>
+        <h3 class="text-lg font-semibold text-text-primary" data-translate="dashboard_weekly_sales_company">
+            {{ __('messages.dashboard_weekly_sales_company') }}
+        </h3>
+    </div>
+    <div class="h-72">
+        <canvas
+            x-data="chartController()"
+            x-init="(() => {
+                type = 'bar'
+                const weekly = window.DASHBOARD_DATA?.chart_weekly ?? { labels: [], values: [] }
+                data = window.ChartData.barChart(weekly.labels, [{
+                    label: @js(__('messages.dashboard_weekly_profit_100')),
+                    data: weekly.values,
+                    color: '#0ea5e9'
+                }])
+                options = {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: (value) => '$ ' + Number(value).toLocaleString(window.globalLangState?.currentLang === 'id' ? 'id-ID' : 'en-US')
                             }
-                        ]
-                    };
-                    options = {
-                        plugins: {
-                            legend: { position: 'top' }
-                        },
-                        interaction: {
-                            intersect: false,
-                            mode: 'index'
                         }
-                    };
-                    createChart();
-                }"
-                x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
-            ></canvas>
-        </div>
-    </x-card>
-
-    {{-- Recent Activity & Patient Status --}}
-    <div class="space-y-6">
-        {{-- Doughnut Chart - Patient Status --}}
-        <x-card :title="__('messages.patient_status')">
-            <div class="h-52">
-                <canvas
-                    x-data="chartController()"
-                    x-init="{
-                        type = 'doughnut';
-                        data = {
-                            labels: ['Active', 'Recovered', 'Pending', 'Critical'],
-                            datasets: [{
-                                data: [1847, 680, 220, 100],
-                            }]
-                        };
-                        options = {
-                            plugins: {
-                                legend: { position: 'right' }
-                            }
-                        };
-                        createChart();
-                    }"
-                    x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
-                ></canvas>
-            </div>
-        </x-card>
-
-        {{-- Recent Activity --}}
-        <x-card :title="__('messages.recent_activity')">
-            <div class="space-y-4">
-            @foreach([
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>', 'title_key' => 'new_patient_registered', 'time_key' => 'two_minutes_ago', 'color' => 'text-primary-500'],
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>', 'title_key' => 'appointment_scheduled', 'time_key' => 'fifteen_minutes_ago', 'color' => 'text-success-500'],
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>', 'title_key' => 'lab_report_approved', 'time_key' => 'one_hour_ago', 'color' => 'text-info-500'],
-                ['icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>', 'title_key' => 'payment_received', 'time_key' => 'hours_ago', 'time_param' => '2', 'color' => 'text-success-500'],
-            ] as $activity)
-            <div class="flex items-start gap-3">
-                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-surface flex items-center justify-center {{ $activity['color'] }}">
-                    {!! $activity['icon'] !!}
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-text-primary" data-translate="{{ $activity['title_key'] }}">{{ __($activity['title_key']) }}</p>
-                    <p class="text-xs text-text-secondary" data-translate="{{ $activity['time_key'] }}">{{ __($activity['time_key'], ['minutes' => $activity['time_param'] ?? 2, 'hours' => $activity['time_param'] ?? 2]) }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </x-card>
-</div>
-
- {{-- Patients Table --}}
- <x-card :title="__('messages.recent_patients')" class="mt-6">
-    <div class="overflow-x-auto -mx-5 sm:mx-0">
-        <x-table
-            :headers="[
-                ['label' => __('messages.patient'), 'key' => 'name'],
-                ['label' => __('messages.id'), 'key' => 'id'],
-                ['label' => __('messages.visit_date'), 'key' => 'date'],
-                ['label' => __('messages.status'), 'key' => 'status'],
-                ['label' => __('messages.actions'), 'key' => 'actions'],
-            ]"
-            :striped="true"
-            :hoverable="true"
-            class="sm:mx-0"
-        >
-            @foreach([
-                ['name' => 'John Doe', 'id' => 'P-001', 'date' => 'Feb 24, 2026', 'status' => 'Active', 'statusColor' => 'success'],
-                ['name' => 'Jane Smith', 'id' => 'P-002', 'date' => 'Feb 23, 2026', 'status' => 'Pending', 'statusColor' => 'warning'],
-                ['name' => 'Robert Johnson', 'id' => 'P-003', 'date' => 'Feb 22, 2026', 'status' => 'Active', 'statusColor' => 'success'],
-                ['name' => 'Emily Davis', 'id' => 'P-004', 'date' => 'Feb 21, 2026', 'status' => 'Inactive', 'statusColor' => 'default'],
-            ] as $patient)
-            <tr>
-                <td class="px-4 py-3">
-                    <div class="flex items-center gap-3">
-                        <x-avatar :name="$patient['name']" size="sm" />
-                        <span class="font-medium text-text-primary">{{ $patient['name'] }}</span>
-                    </div>
-                </td>
-                <td class="px-4 py-3 text-text-secondary">{{ $patient['id'] }}</td>
-                <td class="px-4 py-3 text-text-secondary">{{ $patient['date'] }}</td>
-                <td class="px-4 py-3">
-                    <x-badge :variant="$patient['statusColor']">
-                        <span data-translate="{{ $patient['status'] }}">{{ __($patient['status']) }}</span>
-                    </x-badge>
-                </td>
-                <td class="px-4 py-3">
-                    <div class="flex items-center gap-2">
-                        <button class="p-1.5 rounded-lg hover:bg-surface-hover transition-colors" title="{{ __('messages.view') }}">
-                            <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                            </svg>
-                        </button>
-                        <button class="p-1.5 rounded-lg hover:bg-surface-hover transition-colors" title="{{ __('messages.edit') }}">
-                            <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            @endforeach
-        </x-table>
+                    }
+                }
+                createChart()
+            })()"
+        ></canvas>
     </div>
 </x-card>
 
- {{-- More Charts --}}
- <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-    {{-- Bar Chart - Department Revenue --}}
-    <x-card :title="__('messages.department_revenue')">
-        <div class="h-64">
-            <canvas
-                x-data="chartController()"
-                x-init="{
-                    type = 'bar';
-                    data = {
-                        labels: ['Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'Radiology'],
-                        datasets: [{
-                            label: 'Revenue (Million Rp)',
-                            data: [450, 320, 280, 190, 150],
-                            color: '#3b82f6'
-                        }]
-                    };
-                    options = {
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    };
-                    createChart();
-                }"
-                x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
-            ></canvas>
-        </div>
-    </x-card>
+<x-card>
+    <div class="flex items-center gap-2 mb-4">
+        <svg class="w-5 h-5 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+        </svg>
+        <h3 class="text-lg font-semibold text-text-primary" data-translate="dashboard_weekly_winner_medic">
+            {{ __('messages.dashboard_weekly_winner_medic') }}
+        </h3>
+    </div>
+    <x-grid :cols="4" :gap="'default'">
+        @foreach(($dashboard['weekly_winner'] ?? []) as $weekLabel => $data)
+            <x-card padding="default" shadow="sm" :border="true">
+                <p class="text-sm font-semibold text-text-primary mb-2">{{ $weekLabel }}</p>
+                <p class="text-sm text-text-secondary mb-1">{{ $data['medic'] ?? '-' }}</p>
+                <p class="text-sm text-text-tertiary">
+                    <span data-translate="dashboard_bonus_prefix">{{ __('messages.dashboard_bonus_prefix') }}</span>
+                    <span class="font-medium">$ {{ $fmt($data['bonus_40'] ?? 0) }}</span>
+                </p>
+            </x-card>
+        @endforeach
+    </x-grid>
+</x-card>
 
-    {{-- Pie Chart - Appointment Types --}}
-    <x-card :title="__('messages.appointment_types')">
-        <div class="h-64">
-            <canvas
-                x-data="chartController()"
-                x-init="{
-                    type = 'pie';
-                    data = {
-                        labels: ['Consultation', 'Follow-up', 'Emergency', 'Surgery', 'Lab Test'],
-                        datasets: [{
-                            data: [35, 25, 15, 10, 15]
-                        }]
-                    };
-                    options = {
-                        plugins: {
-                            legend: { position: 'right' }
-                        }
-                    };
-                    createChart();
-                }"
-                x-intersect="$el._chart_init || ($el._chart_init = true, createChart())"
-            ></canvas>
-        </div>
-    </x-card>
-</div>
 @endsection

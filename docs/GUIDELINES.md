@@ -1,21 +1,21 @@
-# Development Guidelines - Roxwood Health Medical Center
+﻿# Development Guidelines - Roxwood Health Medical Center
 
-## 🚨 CRITICAL RULES - WAJIB DIBACA!
+## ðŸš¨ CRITICAL RULES - WAJIB DIBACA!
 
 ---
 
-## 📋 Component Usage Rules
+## ðŸ“‹ Component Usage Rules
 
-### ✅ WAJIB: Gunakan Komponen yang Sudah Ada
+### âœ… WAJIB: Gunakan Komponen yang Sudah Ada
 **SEMUA halaman HARUS menggunakan komponen dari `resources/views/components/`**
 
 **DILARANG:**
-- ❌ Mendesain langsung di halaman/view
-- ❌ Menulis HTML/CSS raw di dalam view
-- ❌ Menambahkan style inline kecuali untuk Alpine.js bindings
-- ❌ Membuat komponen baru tanpa persetujuan
+- âŒ Mendesain langsung di halaman/view
+- âŒ Menulis HTML/CSS raw di dalam view
+- âŒ Menambahkan style inline kecuali untuk Alpine.js bindings
+- âŒ Membuat komponen baru tanpa persetujuan
 
-### ✅ Komponen yang Tersedia:
+### âœ… Komponen yang Tersedia:
 
 #### Layout Components
 - `x-container` - Container dengan responsive width
@@ -60,16 +60,16 @@
 
 ---
 
-## 🗄️ Database Rules
+## ðŸ—„ï¸ Database Rules
 
-### ✅ WAJIB: Gunakan Tabel & Kolom yang SUDAH ADA
+### âœ… WAJIB: Gunakan Tabel & Kolom yang SUDAH ADA
 
 **DILARANG:**
-- ❌ Menambahkan tabel baru ke database
-- ❌ Menambahkan kolom baru ke tabel yang sudah ada
-- ❌ Mengubah struktur database yang sudah ada
+- âŒ Menambahkan tabel baru ke database
+- âŒ Menambahkan kolom baru ke tabel yang sudah ada
+- âŒ Mengubah struktur database yang sudah ada
 
-### 📊 Struktur Database yang SUDAH ADA:
+### ðŸ“Š Struktur Database yang SUDAH ADA:
 
 **Jika diperlukan backend di masa depan:**
 - Gunakan migration yang sudah ada
@@ -78,26 +78,26 @@
 
 ---
 
-## 🔒 Backend Rules
+## ðŸ”’ Backend Rules
 
-### 🚫 DIKUNCI: Backend Implementation
+### ðŸš« DIKUNCI: Backend Implementation
 
 **Status: TERKUNCI - TUNGGU PERINTAH**
 
 **DILARANG:**
-- ❌ Implementasi backend authentication
-- ❌ Implementasi backend validation
-- ❌ Implementasi database queries
-- ❌ Implementasi API endpoints
-- ❌ Implementasi CRUD operations
+- âŒ Implementasi backend authentication
+- âŒ Implementasi backend validation
+- âŒ Implementasi database queries
+- âŒ Implementasi API endpoints
+- âŒ Implementasi CRUD operations
 
 **MENUNGGU:**
-- ⏳ Persetujuan dari owner proyek
-- ⏳ Spesifikasi business logic
-- ⏳ Spesifikasi validation rules
-- ⏳ Spesifikasi API structure
+- â³ Persetujuan dari owner proyek
+- â³ Spesifikasi business logic
+- â³ Spesifikasi validation rules
+- â³ Spesifikasi API structure
 
-### ✅ Yang Boleh Dilakukan Sekarang:
+### âœ… Yang Boleh Dilakukan Sekarang:
 1. **UI/UX Development** - Frontend only
 2. **Component Development** - Menambah komponen UI baru jika diperlukan
 3. **Theme Enhancement** - Memperbaiki theme support
@@ -107,7 +107,7 @@
 
 ---
 
-## 🎨 Design Rules
+## ðŸŽ¨ Design Rules
 
 ### Theme Support
 **SEMUA komponen/halaman WAJIB support 3 tema:**
@@ -115,15 +115,19 @@
 2. **Dark Theme** - `theme-dark`
 3. **Stylis Theme** - `theme-stylis` (Teal-based)
 
+### Icons (WAJIB)
+**DILARANG menggunakan emoticon/emoji di UI.**
+- Gunakan **Heroicons (SVG)** yang konsisten dengan desain sistem.
+
 ### Class Naming Convention
 Gunakan Tailwind classes dengan proper theme modifiers:
 
 ```blade
-<!-- ✅ BENAR -->
+<!-- âœ… BENAR -->
 <div class="bg-white dark:bg-gray-800 theme-stylis:bg-teal-50">
 <div class="text-text-primary dark:text-white theme-stylis:text-gray-800">
 
-<!-- ❌ SALAH -->
+<!-- âŒ SALAH -->
 <div class="bg-white" style="background: #fff">
 <div style="color: #333">
 ```
@@ -132,26 +136,26 @@ Gunakan Tailwind classes dengan proper theme modifiers:
 Gunakan CSS variables yang sudah didefinisikan:
 
 ```blade
-<!-- ✅ BENAR -->
+<!-- âœ… BENAR -->
 <div class="bg-surface border-border text-text-primary">
 
-<!-- ❌ SALAH -->
+<!-- âŒ SALAH -->
 <div class="bg-white border-gray-200 text-gray-900">
 ```
 
 ---
 
-## 🌐 Multi-Language Rules
+## ðŸŒ Multi-Language Rules
 
 ### Translation Keys
 **SEMUA text HARUS menggunakan translation keys:**
 
 ```blade
-<!-- ✅ BENAR -->
+<!-- âœ… BENAR -->
 <h1>{{ __('messages.dashboard') }}</h1>
 <button>{{ __('messages.submit') }}</button>
 
-<!-- ❌ SALAH -->
+<!-- âŒ SALAH -->
 <h1>Dashboard</h1>
 <button>Submit</button>
 ```
@@ -163,7 +167,7 @@ Gunakan CSS variables yang sudah didefinisikan:
 
 ---
 
-## 📱 Responsive Design Rules
+## ðŸ“± Responsive Design Rules
 
 ### Mobile-First Approach
 ```blade
@@ -180,7 +184,7 @@ Gunakan CSS variables yang sudah didefinisikan:
 
 ---
 
-## ♿ Accessibility Rules
+## â™¿ Accessibility Rules
 
 ### Mandatory Features
 Semua halaman WAJIB mendukung:
@@ -192,12 +196,12 @@ Semua halaman WAJIB mendukung:
 
 ### ARIA Attributes
 ```blade
-<!-- ✅ BENAR -->
+<!-- âœ… BENAR -->
 <button aria-label="Close modal" @click="close()">
     <svg>...</svg>
 </button>
 
-<!-- ❌ SALAH -->
+<!-- âŒ SALAH -->
 <button @click="close()">
     <svg>...</svg>
 </button>
@@ -205,52 +209,52 @@ Semua halaman WAJIB mendukung:
 
 ---
 
-## 🧪 Testing & Quality Assurance Rules
+## ðŸ§ª Testing & Quality Assurance Rules
 
-### 🚨 CRITICAL: Test Before Declare Complete
+### ðŸš¨ CRITICAL: Test Before Declare Complete
 **SEBELUM mengatakan "selesai", WAJIB:**
 
 1. **Uji Coba Langsung** - Test di environment yang sebenarnya
-   - ✅ PDF: Generate PDF, buka file, periksa hasil
-   - ✅ Form: Submit form, cek validation
-   - ✅ UI: Buka di browser, test interaksi
-   - ✅ Responsive: Test di mobile, tablet, desktop
+   - âœ… PDF: Generate PDF, buka file, periksa hasil
+   - âœ… Form: Submit form, cek validation
+   - âœ… UI: Buka di browser, test interaksi
+   - âœ… Responsive: Test di mobile, tablet, desktop
 
 2. **Jangan Asumsikan Berhasil**
-   - ❌ Jangan hanya melihat code
-   - ❌ Jangan mengasumsikan "seharusnya jalan"
-   - ❌ Jangan katakan "selesai" tanpa testing
+   - âŒ Jangan hanya melihat code
+   - âŒ Jangan mengasumsikan "seharusnya jalan"
+   - âŒ Jangan katakan "selesai" tanpa testing
 
 3. **Perbaiki Sampai Benar-Benar Berhasil**
-   - ✅ Test → Gagal → Perbaiki → Test → Ulangi
-   - ✅ Pastikan hasil sesuai ekspektasi user
-   - ✅ Baru setelah itu katakan "selesai"
+   - âœ… Test â†’ Gagal â†’ Perbaiki â†’ Test â†’ Ulangi
+   - âœ… Pastikan hasil sesuai ekspektasi user
+   - âœ… Baru setelah itu katakan "selesai"
 
-### 📋 Development Workflow
+### ðŸ“‹ Development Workflow
 
 #### Step-by-Step Process:
 ```
 1. Pahami Requirement
-   ↓
+   â†“
 2. Buat Implementasi
-   ↓
+   â†“
 3. TEST DI ENVIRONMENT YANG SEBENARNYA
-   ↓
-4. Jika Gagal → Perbaiki → Kembali ke Step 3
-   ↓
-5. Jika Berhasil → Verifikasi dengan User
-   ↓
+   â†“
+4. Jika Gagal â†’ Perbaiki â†’ Kembali ke Step 3
+   â†“
+5. Jika Berhasil â†’ Verifikasi dengan User
+   â†“
 6. Baru kemudian katakan "Selesai"
 ```
 
 #### Contoh Kasus PDF:
 ```
-❌ SALAH:
+âŒ SALAH:
 - Edit code
 - Katakan "selesai"
-- User test → gagal → frustrasi
+- User test â†’ gagal â†’ frustrasi
 
-✅ BENAR:
+âœ… BENAR:
 - Edit code
 - Generate PDF
 - Buka file PDF
@@ -262,25 +266,25 @@ Semua halaman WAJIB mendukung:
 - Baru katakan "selesai"
 ```
 
-### 🎯 Problem Solving Principles
+### ðŸŽ¯ Problem Solving Principles
 
 #### 1. Think Simple, Not Complex
-- ✅ Mulai dengan solusi paling sederhana
-- ✅ Jika simple solution works, selesai
-- ❌ Jangan langsung ke complex solution
+- âœ… Mulai dengan solusi paling sederhana
+- âœ… Jika simple solution works, selesai
+- âŒ Jangan langsung ke complex solution
 
 **Contoh:**
 ```
 Problem: Spasi terlalu tinggi di atas garis tanda tangan
 
-❌ Overthinking:
+âŒ Overthinking:
 - Coba pakai flexbox
 - Coba pakai absolute positioning
 - Coba pakai transform
 - Coba 10 pendekatan berbeda
 - Hasil: 2 jam, belum selesai
 
-✅ Simple Solution:
+âœ… Simple Solution:
 - Lihat CSS: `height: 50px` pada .signature-line
 - Hapus `height: 50px`
 - Test: Berhasil
@@ -288,15 +292,15 @@ Problem: Spasi terlalu tinggi di atas garis tanda tangan
 ```
 
 #### 2. Test Changes Incrementally
-- ✅ Buat 1 perubahan kecil
-- ✅ Test hasilnya
-- ✅ Jika berhasil, lanjut ke perubahan berikutnya
-- ❌ Jangan buat 10 perubahan sekaligus, baru test
+- âœ… Buat 1 perubahan kecil
+- âœ… Test hasilnya
+- âœ… Jika berhasil, lanjut ke perubahan berikutnya
+- âŒ Jangan buat 10 perubahan sekaligus, baru test
 
 #### 3. Use Preview/Testing Routes
 Untuk fitur seperti PDF, email, dll:
 ```php
-// ✅ BENAR: Buat route testing sementara
+// âœ… BENAR: Buat route testing sementara
 Route::get('/test-pdf', [Controller::class, 'testPdf']);
 Route::get('/preview-feature', [Controller::class, 'previewFeature']);
 
@@ -304,42 +308,42 @@ Route::get('/preview-feature', [Controller::class, 'previewFeature']);
 // Setelah berhasil, hapus route testing
 ```
 
-### ⚠️ Common Mistakes to Avoid
+### âš ï¸ Common Mistakes to Avoid
 
 #### 1. "Overthinking" Solutions
 ```
-❌ "Mungkin perlu pakai complex algorithm"
-❌ "Mungkin perlu refactor semua code"
-❌ "Mungkin perlu tambah 10 CSS classes"
+âŒ "Mungkin perlu pakai complex algorithm"
+âŒ "Mungkin perlu refactor semua code"
+âŒ "Mungkin perlu tambah 10 CSS classes"
 
-✅ "Apa problem sebenarnya?"
-✅ "Solusi paling simple apa?"
-✅ "Apakah ada built-in method/function?"
+âœ… "Apa problem sebenarnya?"
+âœ… "Solusi paling simple apa?"
+âœ… "Apakah ada built-in method/function?"
 ```
 
 #### 2. Saying "Done" Without Testing
 ```
-❌ "Sudah saya perbaiki" (tapi belum di-test)
-❌ "Seharusnya jalan" (tapi belum dibuka di browser)
-❌ "Code sudah benar" (tapi PDF belum digenerate)
+âŒ "Sudah saya perbaiki" (tapi belum di-test)
+âŒ "Seharusnya jalan" (tapi belum dibuka di browser)
+âŒ "Code sudah benar" (tapi PDF belum digenerate)
 
-✅ "Saya test, hasilnya seperti ini..."
-✅ "Bisa dicek di /test-route"
-✅ "Screenshot hasilnya terlampir"
+âœ… "Saya test, hasilnya seperti ini..."
+âœ… "Bisa dicek di /test-route"
+âœ… "Screenshot hasilnya terlampir"
 ```
 
 #### 3. Being Inconsistent
 ```
-❌ Kadang pakai component, kadang langsung HTML
-❌ Kadang test, kadang tidak
-❌ Kadang ikuti guidelines, kadang tidak
+âŒ Kadang pakai component, kadang langsung HTML
+âŒ Kadang test, kadang tidak
+âŒ Kadang ikuti guidelines, kadang tidak
 
-✅ Selalu ikuti guidelines yang sama
-✅ Selalu test sebelum katakan selesai
-✅ Selalu gunakan komponen yang sudah ada
+âœ… Selalu ikuti guidelines yang sama
+âœ… Selalu test sebelum katakan selesai
+âœ… Selalu gunakan komponen yang sudah ada
 ```
 
-### 📊 Quality Checklist
+### ðŸ“Š Quality Checklist
 
 Sebelum mengatakan "selesai", pastikan:
 
@@ -354,14 +358,14 @@ Sebelum mengatakan "selesai", pastikan:
 
 ---
 
-## 🔧 Code Quality Rules
+## ðŸ”§ Code Quality Rules
 
 ### File Organization
 ```
 resources/views/
-├── components/        # Reusable components (x- prefix)
-├── layouts/          # Layout templates
-└── pages/            # Page views (gunakan komponen!)
+â”œâ”€â”€ components/        # Reusable components (x- prefix)
+â”œâ”€â”€ layouts/          # Layout templates
+â””â”€â”€ pages/            # Page views (gunakan komponen!)
 ```
 
 ### Naming Convention
@@ -371,24 +375,24 @@ resources/views/
 
 ### Comment Rules
 ```blade
-{{-- ✅ BENAR: Section comment --}}
+{{-- âœ… BENAR: Section comment --}}
 {{-- User Profile Section --}}
 
-{{-- ❌ SALAH: HTML comment --}}
+{{-- âŒ SALAH: HTML comment --}}
 <!-- User Profile Section -->
 ```
 
 ---
 
-## 🚀 Deployment Rules
+## ðŸš€ Deployment Rules
 
 ### Before Deploying
-1. ✅ Test semua halaman di 3 tema
-2. ✅ Test responsive design (mobile/tablet/desktop)
-3. ✅ test multi-language (EN/ID)
-4. ✅ Test accessibility features
-5. ✅ Run `npm run build`
-6. ✅ Clear view cache: `php artisan view:clear`
+1. âœ… Test semua halaman di 3 tema
+2. âœ… Test responsive design (mobile/tablet/desktop)
+3. âœ… test multi-language (EN/ID)
+4. âœ… Test accessibility features
+5. âœ… Run `npm run build`
+6. âœ… Clear view cache: `php artisan view:clear`
 
 ### Production Build
 ```bash
@@ -400,7 +404,7 @@ php artisan view:cache
 
 ---
 
-## 📝 Template untuk Halaman Baru
+## ðŸ“ Template untuk Halaman Baru
 
 ```blade
 @extends('layouts.app')
@@ -422,7 +426,7 @@ php artisan view:cache
 
 ---
 
-## 🚨 Emergency Contacts
+## ðŸš¨ Emergency Contacts
 
 Jika menemukan masalah atau butuh klarifikasi:
 1. Cek `docs/TODO.md` untuk status
@@ -437,15 +441,15 @@ Jika menemukan masalah atau butuh klarifikasi:
 
 ---
 
-## ⚠️ PENTING UNTUK AI/CLAUDE CLI
+## âš ï¸ PENTING UNTUK AI/CLAUDE CLI
 
 **Jika ini dibaca oleh AI atau Claude CLI:**
 
-### 🚨 WAJIB DILAKUKAN:
+### ðŸš¨ WAJIB DILAKUKAN:
 1. **TEST SEBELUM KATAKAN "SELESAI"**
-   - Generate PDF → Buka file → Periksa hasil
-   - Edit form → Submit → Cek hasil
-   - Ubah UI → Buka browser → Test interaksi
+   - Generate PDF â†’ Buka file â†’ Periksa hasil
+   - Edit form â†’ Submit â†’ Cek hasil
+   - Ubah UI â†’ Buka browser â†’ Test interaksi
    - JANGAN katakan "selesai" tanpa testing
 
 2. **PIKIRKAN SOLUSI SEDERHANA**
@@ -458,14 +462,14 @@ Jika menemukan masalah atau butuh klarifikasi:
    - Selalu test sebelum katakan selesai
    - Selalu ikuti workflow yang sama
 
-### 🚫 DILARANG:
+### ðŸš« DILARANG:
 1. **JANGAN** buat desain langsung di halaman
 2. **JANGAN** tambah tabel/kolom database
 3. **JANGAN** implementasi backend tanpa perintah
 4. **JANGAN** katakan "selesai" tanpa testing
 5. **JANGAN** overthinking solusi sederhana
 
-### 📋 Checklist Sebelum Katakan "Selesai":
+### ðŸ“‹ Checklist Sebelum Katakan "Selesai":
 - [ ] Sudah di-test di environment nyata?
 - [ ] Hasil sesuai requirement?
 - [ ] Tidak ada error/glitch?
@@ -474,9 +478,9 @@ Jika menemukan masalah atau butuh klarifikasi:
 **Pertanyaan? Tanya user dulu, jangan asumsikan. JANGAN katakan selesai sebelum testing.**
 
 **Contoh Baik:**
-✅ "Saya sudah test PDF yang di-generate. Logo muncul, margin benar. Bisa dicek di /preview-pdf/id"
+âœ… "Saya sudah test PDF yang di-generate. Logo muncul, margin benar. Bisa dicek di /preview-pdf/id"
 
 **Contoh Buruk:**
-❌ "Sudah saya perbaiki" (tanpa testing)
-❌ "Seharusnya jalan" (tanpa buka file)
-❌ "Code sudah benar" (tanpa verify)
+âŒ "Sudah saya perbaiki" (tanpa testing)
+âŒ "Seharusnya jalan" (tanpa buka file)
+âŒ "Code sudah benar" (tanpa verify)

@@ -13,7 +13,7 @@ const toastIntervals = new Map();
 
 // Register Alpine store untuk toast state (GLOBAL & REAKTIF)
 document.addEventListener('alpine:init', () => {
-    console.log('🍞 Alpine:init fired - registering toast store');
+    console.log('Alpine:init fired - registering toast store');
 
     // Buat store global yang reaktif
     Alpine.store('toast', {
@@ -31,7 +31,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         add(message, type = 'info', options = {}) {
-            console.log('🍞 Menambahkan toast:', message, type);
+            console.log('Menambahkan toast:', message, type);
 
             const id = ++this.toastIdCounter;
             const toast = {
@@ -59,7 +59,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         remove(id) {
-            console.log('🍞 Menghapus toast:', id);
+            console.log('Menghapus toast:', id);
             const index = this.toasts.findIndex(t => t.id === id);
             if (index > -1) {
                 // Bersihkan interval
@@ -105,7 +105,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         clear() {
-            console.log('🍞 Membersihkan semua toasts');
+            console.log('Membersihkan semua toasts');
             // Bersihkan semua interval
             toastIntervals.forEach(interval => clearInterval(interval));
             toastIntervals.clear();
@@ -139,7 +139,7 @@ document.addEventListener('alpine:init', () => {
         };
     });
 
-    console.log('🍞 Toast store dan magic helper terdaftar');
+    console.log('Toast store dan magic helper terdaftar');
 });
 
 // Global API untuk vanilla JS
@@ -176,4 +176,4 @@ window.$toast = {
     }
 };
 
-console.log('🍞 window.$toast global API terdaftar');
+console.log('window.$toast global API terdaftar');

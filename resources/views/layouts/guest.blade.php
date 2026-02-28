@@ -12,7 +12,7 @@
     <title>@yield('title', __('messages.login') . ' - ' . __('messages.app_name'))</title>
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
     {{-- Vite CSS --}}
     @vite(['resources/css/app.css'])
@@ -78,7 +78,9 @@
                     class="w-full px-4 py-2 text-left text-sm hover:bg-surface-hover transition-colors flex items-center gap-3"
                     :class="{ 'bg-surface-alt': currentLang === 'en' }"
                 >
-                    <span class="text-lg">🇺🇸</span>
+                    <svg class="w-5 h-5 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                    </svg>
                     <div>
                         <div class="font-medium text-text-primary">English</div>
                         <div class="text-xs text-text-tertiary">United States</div>
@@ -89,7 +91,9 @@
                     class="w-full px-4 py-2 text-left text-sm hover:bg-surface-hover transition-colors flex items-center gap-3"
                     :class="{ 'bg-surface-alt': currentLang === 'id' }"
                 >
-                    <span class="text-lg">🇮🇩</span>
+                    <svg class="w-5 h-5 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                    </svg>
                     <div>
                         <div class="font-medium text-text-primary">Bahasa Indonesia</div>
                         <div class="text-xs text-text-tertiary">Indonesia</div>

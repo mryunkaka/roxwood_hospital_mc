@@ -1,4 +1,4 @@
-# Roxwood Health Medical Center - Architecture
+﻿# Roxwood Health Medical Center - Architecture
 
 ## Proyek: Sistem UI Rumah Sakit
 
@@ -9,90 +9,90 @@
 
 ---
 
-## 📁 Struktur Proyek
+## ðŸ“ Struktur Proyek
 
 ```
 roxwood_hospital_mc/
-├── app/
-│   └── Http/
-│       └── Controllers/         # Controller (minimal - UI only)
-│           ├── AuthController.php
-│           ├── DashboardController.php
-│           ├── ComponentController.php
-│           ├── SettingsController.php
-│           └── LanguageController.php
-├── resources/
-│   ├── css/
-│   │   └── app.css              # Tailwind CSS v4 entry + Theme Tokens
-│   ├── js/
-│   │   ├── app.js               # Main entry point
-│   │   ├── theme.js             # Theme controller
-│   │   ├── lang.js              # Language controller
-│   │   └── clock.js             # Polling clock controller
-│   └── views/
-│       ├── components/          # Blade Components
-│       │   ├── alert.blade.php
-│       │   ├── avatar.blade.php
-│       │   ├── badge.blade.php
-│       │   ├── button.blade.php
-│       │   ├── card.blade.php
-│       │   ├── checkbox.blade.php
-│       │   ├── container.blade.php
-│       │   ├── dropdown.blade.php
-│       │   ├── file-input.blade.php
-│       │   ├── grid.blade.php
-│       │   ├── input.blade.php
-│       │   ├── login-card.blade.php
-│       │   ├── modal.blade.php
-│       │   ├── pagination.blade.php
-│       │   ├── select.blade.php
-│       │   ├── section.blade.php
-│       │   ├── signature-input.blade.php
-│       │   ├── stat-card.blade.php
-│       │   ├── table.blade.php
-│       │   ├── tabs.blade.php
-│       │   └── breadcrumb.blade.php
-│       ├── layouts/
-│       │   ├── app.blade.php      # Master layout
-│       │   ├── guest.blade.php    # Auth layout
-│       │   ├── navbar.blade.php
-│       │   ├── sidebar.blade.php
-│       │   ├── footer.blade.php
-│       │   ├── header.blade.php
-│       │   └── content.blade.php
-│       └── pages/
-│           ├── login.blade.php
-│           ├── register.blade.php
-│           ├── dashboard.blade.php
-│           ├── components.blade.php
-│           ├── settings.blade.php
-│           └── preview-pdf.blade.php
-├── routes/
-│   └── web.php                   # Web routes
-├── lang/
-│   ├── en/
-│   │   └── messages.php
-│   └── id/
-│       └── messages.php
-├── docs/
-│   ├── ARCHITECTURE.md          # File ini
-│   ├── TODO.md
-│   ├── GUIDELINES.md
-│   ├── THEME_SYSTEM.md
-│   ├── COMPONENT_LIBRARY.md
-│   ├── RESPONSIVE_GUIDE.md
-│   ├── CRASH_RECOVERY_PROTOCOL.md
-│   └── PDF_SIGNATURE_GUIDE.md   # PDF & Signature documentation
-├── public/                      # Public assets
-├── vite.config.js               # Vite configuration
-├── postcss.config.js            # PostCSS configuration
-├── composer.json                # PHP dependencies
-└── package.json                 # Node dependencies
+â”œâ”€â”€ app/
+â”‚   â””â”€â”€ Http/
+â”‚       â””â”€â”€ Controllers/         # Controller (minimal - UI only)
+â”‚           â”œâ”€â”€ AuthController.php
+â”‚           â”œâ”€â”€ DashboardController.php
+â”‚           â”œâ”€â”€ ComponentController.php
+â”‚           â”œâ”€â”€ SettingsController.php
+â”‚           â””â”€â”€ LanguageController.php
+â”œâ”€â”€ resources/
+â”‚   â”œâ”€â”€ css/
+â”‚   â”‚   â””â”€â”€ app.css              # Tailwind CSS v4 entry + Theme Tokens
+â”‚   â”œâ”€â”€ js/
+â”‚   â”‚   â”œâ”€â”€ app.js               # Main entry point
+â”‚   â”‚   â”œâ”€â”€ theme.js             # Theme controller
+â”‚   â”‚   â”œâ”€â”€ lang.js              # Language controller
+â”‚   â”‚   â””â”€â”€ clock.js             # Polling clock controller
+â”‚   â””â”€â”€ views/
+â”‚       â”œâ”€â”€ components/          # Blade Components
+â”‚       â”‚   â”œâ”€â”€ alert.blade.php
+â”‚       â”‚   â”œâ”€â”€ avatar.blade.php
+â”‚       â”‚   â”œâ”€â”€ badge.blade.php
+â”‚       â”‚   â”œâ”€â”€ button.blade.php
+â”‚       â”‚   â”œâ”€â”€ card.blade.php
+â”‚       â”‚   â”œâ”€â”€ checkbox.blade.php
+â”‚       â”‚   â”œâ”€â”€ container.blade.php
+â”‚       â”‚   â”œâ”€â”€ dropdown.blade.php
+â”‚       â”‚   â”œâ”€â”€ file-input.blade.php
+â”‚       â”‚   â”œâ”€â”€ grid.blade.php
+â”‚       â”‚   â”œâ”€â”€ input.blade.php
+â”‚       â”‚   â”œâ”€â”€ login-card.blade.php
+â”‚       â”‚   â”œâ”€â”€ modal.blade.php
+â”‚       â”‚   â”œâ”€â”€ pagination.blade.php
+â”‚       â”‚   â”œâ”€â”€ select.blade.php
+â”‚       â”‚   â”œâ”€â”€ section.blade.php
+â”‚       â”‚   â”œâ”€â”€ signature-input.blade.php
+â”‚       â”‚   â”œâ”€â”€ stat-card.blade.php
+â”‚       â”‚   â”œâ”€â”€ table.blade.php
+â”‚       â”‚   â”œâ”€â”€ tabs.blade.php
+â”‚       â”‚   â””â”€â”€ breadcrumb.blade.php
+â”‚       â”œâ”€â”€ layouts/
+â”‚       â”‚   â”œâ”€â”€ app.blade.php      # Master layout
+â”‚       â”‚   â”œâ”€â”€ guest.blade.php    # Auth layout
+â”‚       â”‚   â”œâ”€â”€ navbar.blade.php
+â”‚       â”‚   â”œâ”€â”€ sidebar.blade.php
+â”‚       â”‚   â”œâ”€â”€ footer.blade.php
+â”‚       â”‚   â”œâ”€â”€ header.blade.php
+â”‚       â”‚   â””â”€â”€ content.blade.php
+â”‚       â””â”€â”€ pages/
+â”‚           â”œâ”€â”€ login.blade.php
+â”‚           â”œâ”€â”€ register.blade.php
+â”‚           â”œâ”€â”€ dashboard.blade.php
+â”‚           â”œâ”€â”€ components.blade.php
+â”‚           â”œâ”€â”€ settings.blade.php
+â”‚           â””â”€â”€ preview-pdf.blade.php
+â”œâ”€â”€ routes/
+â”‚   â””â”€â”€ web.php                   # Web routes
+â”œâ”€â”€ lang/
+â”‚   â”œâ”€â”€ en/
+â”‚   â”‚   â””â”€â”€ messages.php
+â”‚   â””â”€â”€ id/
+â”‚       â””â”€â”€ messages.php
+â”œâ”€â”€ docs/
+â”‚   â”œâ”€â”€ ARCHITECTURE.md          # File ini
+â”‚   â”œâ”€â”€ TODO.md
+â”‚   â”œâ”€â”€ GUIDELINES.md
+â”‚   â”œâ”€â”€ THEME_SYSTEM.md
+â”‚   â”œâ”€â”€ COMPONENT_LIBRARY.md
+â”‚   â”œâ”€â”€ RESPONSIVE_GUIDE.md
+â”‚   â”œâ”€â”€ CRASH_RECOVERY_PROTOCOL.md
+â”‚   â””â”€â”€ PDF_SIGNATURE_GUIDE.md   # PDF & Signature documentation
+â”œâ”€â”€ public/                      # Public assets
+â”œâ”€â”€ vite.config.js               # Vite configuration
+â”œâ”€â”€ postcss.config.js            # PostCSS configuration
+â”œâ”€â”€ composer.json                # PHP dependencies
+â””â”€â”€ package.json                 # Node dependencies
 ```
 
 ---
 
-## 🎯 Prinsip Desain
+## ðŸŽ¯ Prinsip Desain
 
 ### 1. UI First Approach
 - Tidak ada backend logic
@@ -117,7 +117,7 @@ roxwood_hospital_mc/
 
 ---
 
-## 🔧 Teknologi
+## ðŸ”§ Teknologi
 
 | Teknologi | Versi | Penggunaan |
 |-----------|-------|------------|
@@ -129,7 +129,7 @@ roxwood_hospital_mc/
 
 ---
 
-## 🎨 Sistem Tema
+## ðŸŽ¨ Sistem Tema
 
 ### Design Tokens (CSS Variables)
 
@@ -162,7 +162,7 @@ roxwood_hospital_mc/
 
 ---
 
-## 🌍 Sistem Bahasa
+## ðŸŒ Sistem Bahasa
 
 ### Dukungan Bahasa
 - English (en)
@@ -179,19 +179,19 @@ Route::get('/lang/{code}', LanguageController::class);
 
 ---
 
-## 📱 Breakpoints
+## ðŸ“± Breakpoints
 
 | Breakpoint | Ukuran | Kolom Grid |
 |------------|--------|------------|
 | mobile | < 640px | 1 kolom |
-| sm | ≥ 640px | 2 kolom |
-| md | ≥ 768px | 2 kolom |
-| lg | ≥ 1024px | 3 kolom |
-| xl | ≥ 1280px | 4 kolom |
+| sm | â‰¥ 640px | 2 kolom |
+| md | â‰¥ 768px | 2 kolom |
+| lg | â‰¥ 1024px | 3 kolom |
+| xl | â‰¥ 1280px | 4 kolom |
 
 ---
 
-## 🧩 Komponen
+## ðŸ§© Komponen
 
 ### Layout Components
 - `x-container` - Container dengan max-width
@@ -228,7 +228,7 @@ Route::get('/lang/{code}', LanguageController::class);
 
 ---
 
-## 🚀 Development
+## ðŸš€ Development
 
 ### Install Dependencies
 ```bash
@@ -249,7 +249,7 @@ npm run build
 
 ---
 
-## 📄 PDF Generation System
+## ðŸ“„ PDF Generation System
 
 ### Overview
 Sistem pembuatan surat perjanjian kerja (Agreement Letter) dengan dukungan:
@@ -260,16 +260,16 @@ Sistem pembuatan surat perjanjian kerja (Agreement Letter) dengan dukungan:
 ### Key Files
 ```
 resources/views/pdf/
-├── agreement.blade.php              # PDF template dengan styles
-└── agreement-content.blade.php      # Shared content (PDF + preview)
+â”œâ”€â”€ agreement.blade.php              # PDF template dengan styles
+â””â”€â”€ agreement-content.blade.php      # Shared content (PDF + preview)
 
 resources/views/pages/
-└── preview-pdf.blade.php             # Preview PDF form page
+â””â”€â”€ preview-pdf.blade.php             # Preview PDF form page
 
 app/Http/Controllers/AuthController.php
-├── generateAgreementPDF()           # Private: Generate PDF
-├── previewPdfIndonesian()           # Public: Preview Indonesian
-└── previewPdfEnglish()              # Public: Preview English
+â”œâ”€â”€ generateAgreementPDF()           # Private: Generate PDF
+â”œâ”€â”€ previewPdfIndonesian()           # Public: Preview Indonesian
+â””â”€â”€ previewPdfEnglish()              # Public: Preview English
 ```
 
 ### Dependencies
@@ -290,20 +290,20 @@ app/Http/Controllers/AuthController.php
 ### Storage Structure
 ```
 public/storage/user_docs/
-└── user_{id}-{sanitized_name}-{citizen_id}/
-    ├── signature.png              # Digital/uploaded signature
-    ├── file_ktp.jpg               # KTP (compressed)
-    ├── file_skb.jpg               # SKB (compressed)
-    ├── file_sim.jpg               # SIM (optional)
-    ├── profile_photo.jpg          # Profile photo (optional)
-    └── agreement_letter.pdf       # Generated agreement PDF
+â””â”€â”€ user_{id}-{sanitized_name}-{citizen_id}/
+    â”œâ”€â”€ signature.png              # Digital/uploaded signature
+    â”œâ”€â”€ file_ktp.jpg               # KTP (compressed)
+    â”œâ”€â”€ file_skb.jpg               # SKB (compressed)
+    â”œâ”€â”€ file_sim.jpg               # SIM (optional)
+    â”œâ”€â”€ profile_photo.jpg          # Profile photo (optional)
+    â””â”€â”€ agreement_letter.pdf       # Generated agreement PDF
 ```
 
 **Full Documentation**: Lihat `docs/PDF_SIGNATURE_GUIDE.md`
 
 ---
 
-## 📝 Catatan Penting
+## ðŸ“ Catatan Penting
 
 1. **JANGAN ubah struktur file tanpa persetujuan**
 2. **Gunakan Blade Components, bukan inline HTML**

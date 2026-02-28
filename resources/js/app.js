@@ -33,6 +33,7 @@ Alpine.store('sessionGuard', {
 
     acknowledge() {
         this.open = false;
+        try { sessionStorage.removeItem('forcedLogoutShown'); } catch { /* ignore */ }
         window.location.href = '/login';
     }
 });
@@ -55,4 +56,4 @@ Alpine.start();
 import '../css/app.css';
 
 // Log init
-console.log('🏥 Roxwood Health Medical Center - UI System Initialized');
+console.log('Roxwood Health Medical Center - UI System Initialized');

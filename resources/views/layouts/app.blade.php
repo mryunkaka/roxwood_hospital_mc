@@ -19,7 +19,7 @@
     <title>@yield('title', __('messages.app_name'))</title>
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
     {{-- Vite CSS --}}
     @vite(['resources/css/app.css'])
@@ -44,19 +44,136 @@
     @stack('styles')
 </head>
 <body class="bg-background text-text-primary antialiased min-h-screen"
-      :class="{ 'overflow-hidden': sidebarOpen && window.innerWidth < 1024 }">
+      :class="{ 'overflow-hidden': sidebarOpen && !sidebarHidden && window.innerWidth < 1024 }">
+
+    @php
+        use App\Models\UserRh;
+        use Carbon\Carbon;
+        use Illuminate\Support\Facades\Storage;
+        use Illuminate\Support\Str;
+
+        $authUserUi = null;
+        $sessionUser = session('user', []);
+        $authUser = null;
+
+        if (!empty($sessionUser['id'])) {
+            $authUser = UserRh::find($sessionUser['id']);
+        }
+
+        $fullName = $authUser?->full_name ?? ($sessionUser['name'] ?? '');
+        $batch = $authUser?->batch ?? ($sessionUser['batch'] ?? null);
+        $position = $authUser?->position ?? ($sessionUser['position'] ?? null);
+        $role = $authUser?->role ?? ($sessionUser['role'] ?? null);
+        $gender = $authUser?->jenis_kelamin;
+        $photoProfile = $authUser?->photo_profile ?? ($sessionUser['photo'] ?? null);
+
+        $photoUrl = null;
+        if (!empty($photoProfile)) {
+            $photoUrl = Str::startsWith($photoProfile, ['http://', 'https://'])
+                ? $photoProfile
+                : asset($photoProfile);
+        } else {
+            $genderKey = ($gender === 'Perempuan') ? 'Female' : 'Male';
+            $positionNorm = Str::of((string) $position)->lower()->replace([' ', '_'], '-')->toString();
+            $roleNorm = Str::of((string) $role)->lower()->replace([' ', '_'], '-')->toString();
+
+            $prefix = null;
+            if (str_contains($roleNorm, 'director')) {
+                $prefix = 'Director';
+            } elseif (str_contains($roleNorm, 'manager')) {
+                $prefix = 'Manager';
+            }
+
+            if ($prefix === null && $positionNorm !== '') {
+                if (str_contains($positionNorm, 'co.ast') || str_contains($positionNorm, 'co-ast') || str_contains($positionNorm, 'coast')) {
+                    $prefix = 'Co.Ast';
+                } elseif (
+                    (str_contains($positionNorm, 'specialist') && str_contains($positionNorm, 'doctor')) ||
+                    (str_contains($positionNorm, 'dokter') && str_contains($positionNorm, 'spesialis')) ||
+                    (str_contains($positionNorm, 'spesialist') && str_contains($positionNorm, 'dokter'))
+                ) {
+                    $prefix = 'Specialist-Doctor';
+                } elseif (str_contains($positionNorm, 'doctor') || str_contains($positionNorm, 'dokter')) {
+                    $prefix = 'Doctor';
+                } elseif (str_contains($positionNorm, 'paramedic')) {
+                    $prefix = 'Paramedic';
+                } elseif (str_contains($positionNorm, 'trainee')) {
+                    $prefix = 'Trainee';
+                } elseif (str_contains($positionNorm, 'manager')) {
+                    $prefix = 'Manager';
+                }
+            }
+
+            if ($prefix === null && $roleNorm !== '') {
+                if (str_contains($roleNorm, 'director')) {
+                    $prefix = 'Director';
+                } elseif (str_contains($roleNorm, 'manager')) {
+                    $prefix = 'Manager';
+                } elseif (str_contains($roleNorm, 'staff')) {
+                    $prefix = 'Trainee';
+                }
+            }
+
+            $prefix ??= 'Trainee';
+
+            $candidate = "logo_profile/{$prefix}-{$genderKey}.png";
+            if (!Storage::disk('public')->exists($candidate)) {
+                $candidate = "logo_profile/Trainee-{$genderKey}.png";
+            }
+
+            $photoUrl = asset('storage/' . $candidate);
+        }
+
+        $initial = Str::of($fullName)->trim()->substr(0, 1)->upper()->toString();
+
+        $joinedAt = $authUser?->tanggal_masuk ?? $authUser?->created_at;
+
+        $joinDateId = $joinedAt instanceof Carbon ? $joinedAt->copy()->locale('id')->translatedFormat('d M Y') : null;
+        $joinDateEn = $joinedAt instanceof Carbon ? $joinedAt->copy()->locale('en')->translatedFormat('d M Y') : null;
+
+        $tenureId = null;
+        $tenureEn = null;
+        if ($joinedAt instanceof Carbon) {
+            $diff = $joinedAt->copy()->startOfDay()->diff(now()->startOfDay());
+            $totalMonths = ($diff->y * 12) + $diff->m;
+
+            if ($totalMonths > 0) {
+                $days = $diff->d;
+                $tenureId = trim(($totalMonths ? "{$totalMonths} bulan" : '') . ($days ? " {$days} hari" : '')) ?: '0 hari';
+                $tenureEn = trim(($totalMonths ? "{$totalMonths} month" . ($totalMonths > 1 ? 's' : '') : '') . ($days ? " {$days} day" . ($days > 1 ? 's' : '') : '')) ?: '0 days';
+            } else {
+                $weeks = intdiv((int) $diff->days, 7);
+                $days = (int) $diff->days % 7;
+                $tenureId = trim(($weeks ? "{$weeks} minggu" : '') . ($days ? " {$days} hari" : '')) ?: '0 hari';
+                $tenureEn = trim(($weeks ? "{$weeks} week" . ($weeks > 1 ? 's' : '') : '') . ($days ? " {$days} day" . ($days > 1 ? 's' : '') : '')) ?: '0 days';
+            }
+        }
+
+        $authUserUi = [
+            'full_name' => $fullName,
+            'initial' => $initial ?: 'A',
+            'batch' => $batch,
+            'position' => $position,
+            'role' => $role,
+            'photo_url' => $photoUrl,
+            'join_date_id' => $joinDateId,
+            'join_date_en' => $joinDateEn,
+            'tenure_id' => $tenureId,
+            'tenure_en' => $tenureEn,
+        ];
+    @endphp
 
     {{-- App Container --}}
     <div class="flex h-screen overflow-hidden bg-pattern">
 
         {{-- Sidebar --}}
-        @include('layouts.sidebar')
+        @include('layouts.sidebar', ['authUserUi' => $authUserUi])
 
         {{-- Main Content Area --}}
         <div class="flex-1 flex flex-col overflow-hidden">
 
             {{-- Navbar --}}
-            @include('layouts.navbar')
+            @include('layouts.navbar', ['authUserUi' => $authUserUi])
 
             {{-- Page Content --}}
             <main class="flex-1 overflow-y-auto p-4 lg:p-6">
@@ -68,7 +185,7 @@
     </div>
 
     {{-- Mobile Overlay --}}
-    <div x-show="sidebarOpen && window.innerWidth < 1024"
+    <div x-show="sidebarOpen && !sidebarHidden && window.innerWidth < 1024"
          x-transition:enter="transition-opacity ease-linear duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"

@@ -1,4 +1,4 @@
-# Responsive Design Guide
+﻿# Responsive Design Guide
 
 ## Mobile-First Approach
 
@@ -6,20 +6,20 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 📱 Breakpoints
+## ðŸ“± Breakpoints
 
 | Nama | Ukuran | Device Target |
 |------|--------|---------------|
 | `mobile` | < 640px | Phone |
-| `sm` | ≥ 640px | Large Phone, Small Tablet |
-| `md` | ≥ 768px | Tablet |
-| `lg` | ≥ 1024px | Small Desktop, Laptop |
-| `xl` | ≥ 1280px | Desktop |
-| `2xl` | ≥ 1536px | Large Desktop |
+| `sm` | â‰¥ 640px | Large Phone, Small Tablet |
+| `md` | â‰¥ 768px | Tablet |
+| `lg` | â‰¥ 1024px | Small Desktop, Laptop |
+| `xl` | â‰¥ 1280px | Desktop |
+| `2xl` | â‰¥ 1536px | Large Desktop |
 
 ---
 
-## 🎯 Responsive Grid
+## ðŸŽ¯ Responsive Grid
 
 ### Default Grid Behavior
 
@@ -41,14 +41,14 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 🧭 Navigation
+## ðŸ§­ Navigation
 
 ### Sidebar Behavior
 
 | Breakpoint | Behavior |
 |------------|----------|
 | Mobile (< 1024px) | Hidden by default, slide-in drawer |
-| Desktop (≥ 1024px) | Always visible, collapsible |
+| Desktop (â‰¥ 1024px) | Always visible, collapsible |
 
 ### Mobile Menu Toggle
 
@@ -61,7 +61,7 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 📊 Tables
+## ðŸ“Š Tables
 
 ### Mobile Responsive Table
 
@@ -76,7 +76,7 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 🎨 Cards & Containers
+## ðŸŽ¨ Cards & Containers
 
 ### Responsive Padding
 
@@ -101,7 +101,7 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 📝 Forms
+## ðŸ“ Forms
 
 ### Stacked on Mobile, Side-by-Side on Desktop
 
@@ -122,7 +122,7 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 🔍 Search & Filters
+## ðŸ” Search & Filters
 
 ### Hide on Mobile, Show on Desktop
 
@@ -135,7 +135,7 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 📐 Spacing System
+## ðŸ“ Spacing System
 
 ### Responsive Spacing
 
@@ -153,7 +153,7 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 🎯 Best Practices
+## ðŸŽ¯ Best Practices
 
 ### 1. Use Responsive Classes
 
@@ -195,7 +195,7 @@ Roxwood Health Medical Center menggunakan **mobile-first design**, artinya semua
 
 ---
 
-## 📋 Responsive Checklist
+## ðŸ“‹ Responsive Checklist
 
 Setiap halaman harus ditest pada:
 
@@ -207,7 +207,7 @@ Setiap halaman harus ditest pada:
 
 ---
 
-## 🧪 Testing Tools
+## ðŸ§ª Testing Tools
 
 ### Browser DevTools
 
@@ -227,22 +227,22 @@ Desktop:  1920x1080 (Full HD)
 
 ---
 
-## 📚 Tailwind Responsive Modifiers
+## ðŸ“š Tailwind Responsive Modifiers
 
 ```blade
 <!-- Syntax: breakpoint:class -->
 
 mobile:   class="text-sm"          <!-- Always applied -->
-sm:       class="sm:text-base"     <!-- ≥ 640px -->
-md:       class="md:text-lg"       <!-- ≥ 768px -->
-lg:       class="xl:text-xl"       <!-- ≥ 1024px -->
-xl:       class="xl:text-2xl"      <!-- ≥ 1280px -->
-2xl:      class="2xl:text-3xl"     <!-- ≥ 1536px -->
+sm:       class="sm:text-base"     <!-- â‰¥ 640px -->
+md:       class="md:text-lg"       <!-- â‰¥ 768px -->
+lg:       class="xl:text-xl"       <!-- â‰¥ 1024px -->
+xl:       class="xl:text-2xl"      <!-- â‰¥ 1280px -->
+2xl:      class="2xl:text-3xl"     <!-- â‰¥ 1536px -->
 ```
 
 ---
 
-## 🎯 Quick Reference
+## ðŸŽ¯ Quick Reference
 
 | Element | Mobile | Tablet | Desktop |
 |---------|--------|--------|---------|

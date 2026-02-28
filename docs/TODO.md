@@ -1,10 +1,10 @@
-# TODO - Roxwood Health Medical Center
+﻿# TODO - Roxwood Health Medical Center
 
-## 🎯 Development Phases
+## ðŸŽ¯ Development Phases
 
 ---
 
-### ✅ PHASE 1: Install Laravel 12 & Dependencies
+### âœ… PHASE 1: Install Laravel 12 & Dependencies
 - [x] Install Laravel 12
 - [x] Install Tailwind CSS v4
 - [x] Install Alpine.js
@@ -13,7 +13,7 @@
 
 ---
 
-### ✅ PHASE 2: Theme Token System
+### âœ… PHASE 2: Theme Token System
 - [x] Create app.css dengan theme tokens
 - [x] Setup theme switcher (Light/Dark/Stylis)
 - [x] Create theme.js dengan Alpine.js
@@ -21,7 +21,7 @@
 
 ---
 
-### ✅ PHASE 3: Multi Language System
+### âœ… PHASE 3: Multi Language System
 - [x] Create lang/en/messages.php
 - [x] Create lang/id/messages.php
 - [x] Setup language switcher
@@ -29,7 +29,7 @@
 
 ---
 
-### ✅ PHASE 4: Layout System
+### âœ… PHASE 4: Layout System
 - [x] layouts/app.blade.php - Master layout
 - [x] layouts/guest.blade.php - Auth layout
 - [x] layouts/navbar.blade.php
@@ -40,7 +40,7 @@
 
 ---
 
-### ✅ PHASE 5: Component Library
+### âœ… PHASE 5: Component Library
 
 #### Layout Components
 - [x] x-container
@@ -75,7 +75,7 @@
 
 ---
 
-### ✅ PHASE 6: Responsive Design
+### âœ… PHASE 6: Responsive Design
 - [x] Mobile-first breakpoints
 - [x] Sidebar collapsible
 - [x] Drawer navigation mobile
@@ -86,7 +86,7 @@
 
 ---
 
-### ✅ PHASE 7: Documentation & Pages
+### âœ… PHASE 7: Documentation & Pages
 - [x] docs/ARCHITECTURE.md
 - [x] docs/TODO.md
 - [x] docs/THEME_SYSTEM.md
@@ -101,26 +101,26 @@
 
 ---
 
-## 🔮 Future Enhancements (NOT IN SCOPE)
+## ðŸ”® Future Enhancements (NOT IN SCOPE)
 
-### 🚫 Backend Integration - TERKUNCI (LOCKED)
+### ðŸš« Backend Integration - TERKUNCI (LOCKED)
 **STATUS: MENUNGGU PERINTAH DARI USER**
 
-> **⚠️ PENTING**: Backend development DIKUNCI sampai user memberikan perintah.
+> **âš ï¸ PENTING**: Backend development DIKUNCI sampai user memberikan perintah.
 >
 > **DILARANG**:
-> - ❌ Implementasi real authentication
-> - ❌ Database integration
-> - ❌ API endpoints
-> - ❌ Real validation
-> - ❌ CRUD operations
+> - âŒ Implementasi real authentication
+> - âŒ Database integration
+> - âŒ API endpoints
+> - âŒ Real validation
+> - âŒ CRUD operations
 >
 > **Lihat**: `docs/GUIDELINES.md` untuk aturan lengkap development.
 
-- [🔒] Real authentication (LOCKED - TUNGGU PERINTAH)
-- [🔒] Database integration (LOCKED - TUNGGU PERINTAH)
-- [🔒] API endpoints (LOCKED - TUNGGU PERINTAH)
-- [🔒] Real validation (LOCKED - TUNGGU PERINTAH)
+- [ðŸ”’] Real authentication (LOCKED - TUNGGU PERINTAH)
+- [ðŸ”’] Database integration (LOCKED - TUNGGU PERINTAH)
+- [ðŸ”’] API endpoints (LOCKED - TUNGGU PERINTAH)
+- [ðŸ”’] Real validation (LOCKED - TUNGGU PERINTAH)
 
 ### Additional Features
 - [x] Chart.js integration
@@ -142,8 +142,8 @@
 - [x] Fixed bilingual support in PDF with proper language detection (BARU - 2026-02-27)
 - [x] Synchronized Terms of Service modal preview with PDF styling (BARU - 2026-02-27)
 - [x] Fixed modal preview to use exact same CSS as PDF for consistency (BARU - 2026-02-27)
-- [x] Auto-format Full Name to Title Case (MiChAel MooRe → Michael Moore) (BARU - 2026-02-27)
-- [x] Auto-format Citizen ID to UPPERCASE (JhsjS212 → JHSJS212) (BARU - 2026-02-27)
+- [x] Auto-format Full Name to Title Case (MiChAel MooRe â†’ Michael Moore) (BARU - 2026-02-27)
+- [x] Auto-format Citizen ID to UPPERCASE (JhsjS212 â†’ JHSJS212) (BARU - 2026-02-27)
 - [x] Digital Signature Pad with signature_pad.js library (BARU - 2026-02-27)
 - [x] Signature Upload with Auto Background Removal (BARU - 2026-02-27)
 - [x] Signature stored as PNG in user folder (BARU - 2026-02-27)
@@ -164,17 +164,17 @@
 
 ---
 
-## 🧹 Pending Cleanup Tasks
+## ðŸ§¹ Pending Cleanup Tasks
 
 ### PDF Development Cleanup
 - [ ] Keep preview PDF routes for testing purposes:
-  - `/preview-pdf/id` → `AuthController@previewPdfIndonesian`
-  - `/preview-pdf/en` → `AuthController@previewPdfEnglish`
+  - `/preview-pdf/id` â†’ `AuthController@previewPdfIndonesian`
+  - `/preview-pdf/en` â†’ `AuthController@previewPdfEnglish`
 - [ ] Preview PDF form page is now a feature, not temporary
 
 ---
 
-## 📋 Notes
+## ðŸ“‹ Notes
 
 - Semua phase di atas adalah UI ONLY
 - Tidak ada backend logic
@@ -183,7 +183,7 @@
 
 ---
 
-## 🚀 Quick Start Commands
+## ðŸš€ Quick Start Commands
 
 ```bash
 # Install dependencies

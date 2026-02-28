@@ -3,10 +3,25 @@
     {{-- Left: Mobile Menu & Breadcrumb --}}
     <div class="flex items-center gap-3">
         {{-- Mobile Menu Toggle --}}
-        <button @click="sidebarOpen = !sidebarOpen"
+        <button @click="sidebarHidden ? (showSidebar(), openSidebar()) : (sidebarOpen = !sidebarOpen)"
                 class="lg:hidden p-2.5 rounded-xl bg-surface-alt border border-border hover:bg-surface-hover transition-colors text-text-secondary">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+
+        {{-- Desktop Sidebar Hide/Show --}}
+        <button
+            type="button"
+            class="hidden lg:inline-flex items-center justify-center p-2.5 rounded-xl bg-surface-alt border border-border hover:bg-surface-hover transition-colors text-text-secondary"
+            @click="toggleSidebarHidden()"
+            :aria-label="sidebarHidden ? 'Show Sidebar' : 'Hide Sidebar'"
+        >
+            <svg x-show="!sidebarHidden" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <svg x-show="sidebarHidden" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
         </button>
 
@@ -64,7 +79,9 @@
         <div class="relative" x-data="langController()">
             <button @click="toggleLang = !toggleLang"
                     class="flex items-center gap-2 px-3 rounded-xl bg-surface-alt border border-border hover:bg-surface-hover transition-all h-9">
-                <span class="text-lg leading-none" x-text="getLangInfo().flag"></span>
+                <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                </svg>
                 <span class="text-sm font-medium text-text-primary" x-text="getLangInfo().code.toUpperCase()"></span>
                 <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -84,7 +101,9 @@
                 <button @click="setLang('en')"
                         class="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-hover transition-colors border-l-4"
                         :class="currentLang === 'en' ? 'bg-surface-alt border-primary' : 'border-transparent'">
-                    <span class="text-xl">🇺🇸</span>
+                    <svg class="w-5 h-5 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                    </svg>
                     <div class="text-left">
                         <p class="text-sm font-medium text-text-primary" data-translate="english">{{ __('messages.english') }}</p>
                         <p class="text-xs text-text-secondary" data-translate="united_states">{{ __('messages.united_states') }}</p>
@@ -93,7 +112,9 @@
                 <button @click="setLang('id')"
                         class="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-hover transition-colors border-l-4"
                         :class="currentLang === 'id' ? 'bg-surface-alt border-primary' : 'border-transparent'">
-                    <span class="text-xl">🇮🇩</span>
+                    <svg class="w-5 h-5 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                    </svg>
                     <div class="text-left">
                         <p class="text-sm font-medium text-text-primary" data-translate="indonesian">{{ __('messages.indonesian') }}</p>
                         <p class="text-xs text-text-secondary" data-translate="indonesia">{{ __('messages.indonesia') }}</p>
@@ -125,8 +146,15 @@
         <div class="relative" x-data="{ open: false }">
             <button @click="open = !open"
                     class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-surface-hover transition-colors h-9">
-                <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-xs font-semibold shadow-md">
-                    A
+                @php $ui = $authUserUi ?? null; @endphp
+                <div class="w-7 h-7 rounded-lg overflow-hidden shadow border border-border bg-surface shrink-0">
+                    @if(!empty($ui['photo_url']))
+                        <img src="{{ $ui['photo_url'] }}" alt="Profile" class="w-full h-full object-cover" loading="lazy">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary to-primary-dark text-white text-xs font-semibold">
+                            {{ $ui['initial'] ?? 'A' }}
+                        </div>
+                    @endif
                 </div>
                 <svg class="w-4 h-4 text-text-secondary hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>

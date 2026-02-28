@@ -14,9 +14,19 @@ export default function themeController() {
         isDark: false,
         isStylis: false,
         sidebarOpen: window.innerWidth >= 1024,
+        sidebarHidden: false,
         mobileMenuOpen: false,
 
         init() {
+            const storedSidebarHidden = localStorage.getItem('roxwood-sidebar-hidden');
+            if (storedSidebarHidden !== null) {
+                this.sidebarHidden = storedSidebarHidden === '1';
+            }
+
+            if (this.sidebarHidden) {
+                this.sidebarOpen = false;
+            }
+
             // Load theme dari localStorage atau deteksi sistem
             const savedTheme = localStorage.getItem('roxwood-theme');
             const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -40,7 +50,7 @@ export default function themeController() {
             // Handle window resize untuk sidebar
             window.addEventListener('resize', () => {
                 if (window.innerWidth >= 1024) {
-                    this.sidebarOpen = true;
+                    this.sidebarOpen = !this.sidebarHidden;
                     this.mobileMenuOpen = false;
                 } else {
                     this.sidebarOpen = false;
@@ -49,6 +59,14 @@ export default function themeController() {
 
             // Watch perubahan theme
             this.$watch('theme', () => this.applyTheme());
+            this.$watch('sidebarHidden', () => {
+                localStorage.setItem('roxwood-sidebar-hidden', this.sidebarHidden ? '1' : '0');
+                if (this.sidebarHidden) {
+                    this.sidebarOpen = false;
+                } else if (window.innerWidth >= 1024) {
+                    this.sidebarOpen = true;
+                }
+            });
         },
 
         applyTheme() {
@@ -111,6 +129,18 @@ export default function themeController() {
 
         openSidebar() {
             this.sidebarOpen = true;
+        },
+
+        hideSidebar() {
+            this.sidebarHidden = true;
+        },
+
+        showSidebar() {
+            this.sidebarHidden = false;
+        },
+
+        toggleSidebarHidden() {
+            this.sidebarHidden = !this.sidebarHidden;
         },
 
         toggleMobileMenu() {

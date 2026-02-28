@@ -1,10 +1,10 @@
-# Crash Recovery Protocol
+﻿# Crash Recovery Protocol
 
-## 🚨 What to Do When Something Goes Wrong
+## ðŸš¨ What to Do When Something Goes Wrong
 
 ---
 
-## 📋 Recovery Steps
+## ðŸ“‹ Recovery Steps
 
 ### Step 1: Identify the Issue
 
@@ -151,16 +151,16 @@ ls -la docs/
 **Required Structure:**
 ```
 resources/
-├── css/app.css
-├── js/
-│   ├── app.js
-│   ├── theme.js
-│   ├── lang.js
-│   └── clock.js
-└── views/
-    ├── components/
-    ├── layouts/
-    └── pages/
+â”œâ”€â”€ css/app.css
+â”œâ”€â”€ js/
+â”‚   â”œâ”€â”€ app.js
+â”‚   â”œâ”€â”€ theme.js
+â”‚   â”œâ”€â”€ lang.js
+â”‚   â””â”€â”€ clock.js
+â””â”€â”€ views/
+    â”œâ”€â”€ components/
+    â”œâ”€â”€ layouts/
+    â””â”€â”€ pages/
 ```
 
 ---
@@ -187,7 +187,7 @@ php artisan optimize:clear
 
 ---
 
-## 🔄 Resuming Work
+## ðŸ”„ Resuming Work
 
 ### After Crash
 
@@ -199,15 +199,15 @@ php artisan optimize:clear
 ### Example
 
 ```
-Last completed: ✅ PHASE 4: Layout System
-Next task:     ⬜ PHASE 5: Component Library
+Last completed: âœ… PHASE 4: Layout System
+Next task:     â¬œ PHASE 5: Component Library
 
 Action: Continue with component creation
 ```
 
 ---
 
-## 📞 Getting Help
+## ðŸ“ž Getting Help
 
 1. **Check docs/** - Architecture, Theme System, Component Library
 2. **Review error messages** - They often point to the exact issue
@@ -216,7 +216,7 @@ Action: Continue with component creation
 
 ---
 
-## ⚠️ Prevention
+## âš ï¸ Prevention
 
 ### Before Making Changes
 
@@ -227,23 +227,23 @@ Action: Continue with component creation
 
 ### Best Practices
 
-- ✅ Make small, testable changes
-- ✅ Commit working code frequently
-- ✅ Follow file structure strictly
-- ✅ Use Blade Components, not raw HTML
-- ✅ Use CSS Variables, not hardcoded colors
+- âœ… Make small, testable changes
+- âœ… Commit working code frequently
+- âœ… Follow file structure strictly
+- âœ… Use Blade Components, not raw HTML
+- âœ… Use CSS Variables, not hardcoded colors
 
 ### Avoid
 
-- ❌ Large changes without testing
-- ❌ Modifying file structure
-- ❌ Skipping documentation
-- ❌ Hardcoding colors/values
-- ❌ Mixing languages in docs
+- âŒ Large changes without testing
+- âŒ Modifying file structure
+- âŒ Skipping documentation
+- âŒ Hardcoding colors/values
+- âŒ Mixing languages in docs
 
 ---
 
-## 📋 Recovery Checklist
+## ðŸ“‹ Recovery Checklist
 
 - [ ] Identified the issue
 - [ ] Checked TODO.md for progress

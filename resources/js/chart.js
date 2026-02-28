@@ -93,7 +93,7 @@ export default function chartController() {
         init() {
             // Initialize chart when element is ready
             this.$nextTick(() => {
-                if (this.$el.canvas) {
+                if (this.$el && typeof this.$el.getContext === 'function' && this.data) {
                     this.createChart();
                 }
             });
@@ -104,6 +104,7 @@ export default function chartController() {
                     this.chart.destroy();
                     this.chart = null;
                 }
+                chartInstances.delete(this.$el);
             };
         },
 
@@ -112,20 +113,27 @@ export default function chartController() {
                 this.chart.destroy();
                 this.chart = null;
             }
+            chartInstances.delete(this.$el);
         },
 
         createChart() {
             if (this.chart) {
                 this.chart.destroy();
+                this.chart = null;
             }
 
             const colors = getChartColors();
-            const ctx = this.$el.getContext('2d');
+            const canvas = this.$el;
+            if (!canvas || typeof canvas.getContext !== 'function') return;
 
-            this.chart = new Chart(ctx, {
+            const raw = (value) => (window.Alpine && typeof window.Alpine.raw === 'function')
+                ? window.Alpine.raw(value)
+                : value;
+
+            this.chart = new Chart(canvas, {
                 type: this.type,
-                data: this.data,
-                options: this.getOptions(colors)
+                data: raw(this.data),
+                options: raw(this.getOptions(colors))
             });
 
             // Store instance for cleanup
@@ -133,9 +141,14 @@ export default function chartController() {
         },
 
         getOptions(colors) {
+            const raw = (value) => (window.Alpine && typeof window.Alpine.raw === 'function')
+                ? window.Alpine.raw(value)
+                : value;
+
             const baseOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: false,
                 plugins: {
                     legend: {
                         labels: {
@@ -194,13 +207,16 @@ export default function chartController() {
                 };
             }
 
-            return { ...baseOptions, ...this.options };
+            return { ...baseOptions, ...(raw(this.options) || {}) };
         },
 
         update() {
             if (this.chart) {
                 const colors = getChartColors();
-                this.chart.options = this.getOptions(colors);
+                const raw = (value) => (window.Alpine && typeof window.Alpine.raw === 'function')
+                    ? window.Alpine.raw(value)
+                    : value;
+                this.chart.options = raw(this.getOptions(colors));
                 this.chart.update();
             }
         }
@@ -209,7 +225,12 @@ export default function chartController() {
 
 // Global function untuk theme change
 export function updateAllCharts() {
-    chartInstances.forEach((chart) => {
+    chartInstances.forEach((chart, el) => {
+        if (!chart || !chart.ctx || !chart.canvas) {
+            chartInstances.delete(el);
+            return;
+        }
+
         const colors = getChartColors();
         chart.options = {
             ...chart.options,
@@ -243,7 +264,11 @@ export function updateAllCharts() {
             }
         }
 
-        chart.update('none');
+        try {
+            chart.update('none');
+        } catch (e) {
+            chartInstances.delete(el);
+        }
     });
 }
 

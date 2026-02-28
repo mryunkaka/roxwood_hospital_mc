@@ -1,6 +1,6 @@
-# PDF & Signature Guide - Roxwood Health Medical Center
+﻿# PDF & Signature Guide - Roxwood Health Medical Center
 
-## 📄 PDF Agreement Letter System
+## ðŸ“„ PDF Agreement Letter System
 
 ---
 
@@ -10,29 +10,29 @@ Sistem pembuatan surat perjanjian kerja (Agreement Letter) dalam format PDF deng
 
 ---
 
-## 🗂️ File Structure
+## ðŸ—‚ï¸ File Structure
 
 ```
 resources/views/pdf/
-├── agreement.blade.php              # PDF main template with styles
-└── agreement-content.blade.php      # Shared content (PDF + Preview)
+â”œâ”€â”€ agreement.blade.php              # PDF main template with styles
+â””â”€â”€ agreement-content.blade.php      # Shared content (PDF + Preview)
 
 resources/views/components/
-└── signature-input.blade.php         # Signature input component
+â””â”€â”€ signature-input.blade.php         # Signature input component
 
 resources/views/pages/
-└── preview-pdf.blade.php             # Preview PDF form page
+â””â”€â”€ preview-pdf.blade.php             # Preview PDF form page
 
 app/Http/Controllers/
-└── AuthController.php                # PDF generation methods
+â””â”€â”€ AuthController.php                # PDF generation methods
 
 database/migrations/
-└── 2026_02_27_021837_add_ttd_to_user_rh_table.php  # TTD column migration
+â””â”€â”€ 2026_02_27_021837_add_ttd_to_user_rh_table.php  # TTD column migration
 ```
 
 ---
 
-## 🎨 PDF Styling
+## ðŸŽ¨ PDF Styling
 
 ### Page Layout
 - **Size**: A4 portrait
@@ -67,7 +67,7 @@ database/migrations/
 
 ---
 
-## ✍️ Signature Input Component
+## âœï¸ Signature Input Component
 
 ### Usage
 
@@ -128,7 +128,7 @@ if ($r > 245 && $g > 245 && $b > 245) {
 
 ---
 
-## 🌐 Preview PDF Routes
+## ðŸŒ Preview PDF Routes
 
 ### Indonesian
 - **Route**: `/preview-pdf/id`
@@ -153,7 +153,7 @@ if ($r > 245 && $g > 245 && $b > 245) {
 
 ---
 
-## 🔧 AuthController Methods
+## ðŸ”§ AuthController Methods
 
 ### generateAgreementPDF()
 
@@ -201,7 +201,7 @@ public function previewPdfEnglish(Request $request)
 
 ---
 
-## 📝 Translation Keys
+## ðŸ“ Translation Keys
 
 ### English (`lang/en/messages.php`)
 
@@ -233,7 +233,7 @@ public function previewPdfEnglish(Request $request)
 
 ---
 
-## 🗄️ Database Schema
+## ðŸ—„ï¸ Database Schema
 
 ### user_rh Table
 
@@ -246,18 +246,18 @@ public function previewPdfEnglish(Request $request)
 
 ```
 public/storage/user_docs/
-└── user_{id}-{sanitized_name}-{citizen_id}/
-    ├── signature.png          # Signature with transparency
-    ├── file_ktp.jpg           # KTP (compressed)
-    ├── file_skb.jpg           # SKB (compressed)
-    ├── file_sim.jpg           # SIM (compressed, optional)
-    ├── profile_photo.jpg      # Profile photo (optional)
-    └── agreement_letter.pdf   # Generated agreement PDF
+â””â”€â”€ user_{id}-{sanitized_name}-{citizen_id}/
+    â”œâ”€â”€ signature.png          # Signature with transparency
+    â”œâ”€â”€ file_ktp.jpg           # KTP (compressed)
+    â”œâ”€â”€ file_skb.jpg           # SKB (compressed)
+    â”œâ”€â”€ file_sim.jpg           # SIM (compressed, optional)
+    â”œâ”€â”€ profile_photo.jpg      # Profile photo (optional)
+    â””â”€â”€ agreement_letter.pdf   # Generated agreement PDF
 ```
 
 ---
 
-## 🐛 Known Issues & Solutions
+## ðŸ› Known Issues & Solutions
 
 ### Issue 1: Signature Appears Red/Black
 **Cause**: Pen color not set correctly or background removal too aggressive
@@ -293,31 +293,31 @@ if ($r > 245 && $g > 245 && $b > 245) {
 
 ---
 
-## 📊 PDF Generation Flow
+## ðŸ“Š PDF Generation Flow
 
 ```
 User Submits Form
-        ↓
+        â†“
 Validate Input (name, batch, citizen_id, signature)
-        ↓
+        â†“
 Format Data (Title Case, UPPERCASE)
-        ↓
-Process Signature (base64 → PNG with transparency)
-        ↓
+        â†“
+Process Signature (base64 â†’ PNG with transparency)
+        â†“
 Load PDF Template (agreement.blade.php)
-        ↓
+        â†“
 Include Shared Content (agreement-content.blade.php)
-        ↓
+        â†“
 Convert Images to Base64 (logo, signature)
-        ↓
+        â†“
 Generate PDF with domPDF
-        ↓
+        â†“
 Stream to Browser (inline preview)
 ```
 
 ---
 
-## 🔍 Testing Checklist
+## ðŸ” Testing Checklist
 
 - [ ] Digital signature drawing works
 - [ ] Signature upload works
@@ -333,7 +333,7 @@ Stream to Browser (inline preview)
 
 ---
 
-## 🚀 Quick Test
+## ðŸš€ Quick Test
 
 ```bash
 # Test Indonesian Preview

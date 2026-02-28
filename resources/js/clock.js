@@ -113,6 +113,18 @@ export default function clockController() {
 
                 const store = window.Alpine?.store?.('sessionGuard');
                 if (store?.show) {
+                    // Hindari modal "forced logout" muncul lagi saat refresh.
+                    // Jika sudah pernah ditampilkan di tab ini, langsung arahkan ke login.
+                    if (reason === 'force_offline') {
+                        try {
+                            if (sessionStorage.getItem('forcedLogoutShown') === '1') {
+                                window.location.href = '/login';
+                                return;
+                            }
+                            sessionStorage.setItem('forcedLogoutShown', '1');
+                        } catch { /* ignore */ }
+                    }
+
                     store.show({
                         reason,
                         forcedByDevice: payload?.forced_by_device || null,

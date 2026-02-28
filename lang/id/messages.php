@@ -74,6 +74,8 @@ return [
     'gender_male' => 'Laki-laki',
     'gender_female' => 'Perempuan',
     'join_date' => 'Tanggal Bergabung',
+    'position' => 'Jabatan',
+    'duration' => 'Durasi',
     'ktp_file' => 'KTP',
     'skb_file' => 'SKB',
     'sim_file' => 'SIM',
@@ -108,10 +110,43 @@ return [
 
     // Dashboard
     'dashboard' => 'Dashboard',
+    'dashboard_subtitle' => 'Ringkasan farmasi & medis',
     'overview' => 'Ringkasan',
     'statistics' => 'Statistik',
     'recent_activity' => 'Aktivitas Terbaru',
     'quick_actions' => 'Aksi Cepat',
+
+    // Dashboard Farmasi
+    'dashboard_farmasi_summary' => 'Rekap Farmasi',
+    'dashboard_total_medic_serving' => 'Total Medis Melayani',
+    'dashboard_total_consumer_farmasi' => 'Total Konsumen Farmasi',
+    'dashboard_paket_a_sold' => 'Paket A Terjual',
+    'dashboard_paket_b_sold' => 'Paket B Terjual',
+    'dashboard_bandage_sold' => 'Bandage Terjual',
+    'dashboard_painkiller_sold' => 'Painkiller Terjual',
+    'dashboard_ifaks_sold' => 'IFAKS Terjual',
+    'dashboard_total_transactions' => 'Total Transaksi',
+    'dashboard_total_items_sold' => 'Total Item Terjual',
+    'dashboard_total_income' => 'Total Pemasukan',
+    'dashboard_medic_bonus_40' => 'Bonus Medis (40%)',
+    'dashboard_company_profit_60' => 'Keuntungan Perusahaan (60%)',
+
+    // Dashboard Medis
+    'dashboard_medis_summary' => 'Rekap Medis',
+    'dashboard_total_p3k' => 'Total P3K',
+    'dashboard_total_bandage' => 'Total Bandage',
+    'dashboard_total_gauze' => 'Total Gauze',
+    'dashboard_total_iodine' => 'Total Iodine',
+    'dashboard_total_syringe' => 'Total Syringe',
+    'dashboard_operasi_plastik' => 'Operasi Plastik',
+    'dashboard_operasi_ringan' => 'Operasi Ringan',
+    'dashboard_operasi_berat' => 'Operasi Berat',
+
+    // Mingguan
+    'dashboard_weekly_sales_company' => 'Penjualan Mingguan (Perusahaan)',
+    'dashboard_weekly_profit_100' => 'Total Keuntungan (100%)',
+    'dashboard_weekly_winner_medic' => 'Juara Mingguan (Medis)',
+    'dashboard_bonus_prefix' => 'Bonus:',
 
     // Dashboard Stats
     'total_patients' => 'Total Pasien',

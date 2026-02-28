@@ -74,6 +74,8 @@ return [
     'gender_male' => 'Male',
     'gender_female' => 'Female',
     'join_date' => 'Join Date',
+    'position' => 'Position',
+    'duration' => 'Duration',
     'ktp_file' => 'KTP (Identity Card)',
     'skb_file' => 'SKB',
     'sim_file' => 'SIM (Driver\'s License)',
@@ -108,10 +110,43 @@ return [
 
     // Dashboard
     'dashboard' => 'Dashboard',
+    'dashboard_subtitle' => 'Pharmacy & medical summary',
     'overview' => 'Overview',
     'statistics' => 'Statistics',
     'recent_activity' => 'Recent Activity',
     'quick_actions' => 'Quick Actions',
+
+    // Farmasi Dashboard
+    'dashboard_farmasi_summary' => 'Pharmacy Summary',
+    'dashboard_total_medic_serving' => 'Total Medics Serving',
+    'dashboard_total_consumer_farmasi' => 'Total Pharmacy Consumers',
+    'dashboard_paket_a_sold' => 'Paket A Sold',
+    'dashboard_paket_b_sold' => 'Paket B Sold',
+    'dashboard_bandage_sold' => 'Bandage Sold',
+    'dashboard_painkiller_sold' => 'Painkiller Sold',
+    'dashboard_ifaks_sold' => 'IFAKS Sold',
+    'dashboard_total_transactions' => 'Total Transactions',
+    'dashboard_total_items_sold' => 'Total Items Sold',
+    'dashboard_total_income' => 'Total Income',
+    'dashboard_medic_bonus_40' => 'Medic Bonus (40%)',
+    'dashboard_company_profit_60' => 'Company Profit (60%)',
+
+    // Medis Dashboard
+    'dashboard_medis_summary' => 'Medical Summary',
+    'dashboard_total_p3k' => 'Total P3K',
+    'dashboard_total_bandage' => 'Total Bandage',
+    'dashboard_total_gauze' => 'Total Gauze',
+    'dashboard_total_iodine' => 'Total Iodine',
+    'dashboard_total_syringe' => 'Total Syringe',
+    'dashboard_operasi_plastik' => 'Plastic Surgery',
+    'dashboard_operasi_ringan' => 'Minor Surgery',
+    'dashboard_operasi_berat' => 'Major Surgery',
+
+    // Weekly
+    'dashboard_weekly_sales_company' => 'Weekly Sales (Company)',
+    'dashboard_weekly_profit_100' => 'Total Profit (100%)',
+    'dashboard_weekly_winner_medic' => 'Weekly Winner (Medic)',
+    'dashboard_bonus_prefix' => 'Bonus:',
 
     // Dashboard Stats
     'total_patients' => 'Total Patients',
