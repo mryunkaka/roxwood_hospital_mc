@@ -7,6 +7,7 @@ use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\RekapFarmasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Rekap Farmasi
+    Route::get('/rekap-farmasi', [RekapFarmasiController::class, 'index'])->name('farmasi.rekap');
+    Route::post('/rekap-farmasi', [RekapFarmasiController::class, 'store'])->name('farmasi.rekap.store');
+    Route::get('/api/farmasi/consumer/today', [RekapFarmasiController::class, 'checkConsumerToday'])->name('api.farmasi.consumer.today');
+    Route::post('/api/farmasi/consumer/merge', [RekapFarmasiController::class, 'mergeSimilar'])->name('api.farmasi.consumer.merge');
+    Route::get('/api/farmasi/consumers/search', [RekapFarmasiController::class, 'searchConsumers'])->name('api.farmasi.consumers.search');
 
     // Components
     Route::get('/components', [ComponentController::class, 'index'])->name('components');

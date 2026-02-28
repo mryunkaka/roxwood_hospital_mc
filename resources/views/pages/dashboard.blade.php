@@ -99,7 +99,6 @@
                         }
                     }
                 }
-                createChart()
             })()"
         ></canvas>
     </div>

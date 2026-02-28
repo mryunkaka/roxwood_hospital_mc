@@ -16,19 +16,27 @@ class LanguageController extends Controller
         // Validate language code
         $availableLangs = ['en', 'id'];
 
-        if (!in_array($code, $availableLangs)) {
+        if (!in_array($code, $availableLangs, true)) {
             $code = 'en';
         }
 
-        // Load translations
-        $translations = [];
-        $langFile = base_path("lang/{$code}/messages.php");
+        try {
+            $translations = [];
+            $langFile = lang_path("{$code}/messages.php");
 
-        if (file_exists($langFile)) {
-            $translations = include $langFile;
+            if (is_file($langFile)) {
+                $translations = require $langFile;
+            }
+
+            if (!is_array($translations)) {
+                $translations = [];
+            }
+
+            return response()->json($translations);
+        } catch (\Throwable $e) {
+            report($e);
+            return response()->json([]);
         }
-
-        return response()->json($translations);
     }
 
     /**
