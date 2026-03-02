@@ -1128,19 +1128,29 @@ class AuthController extends Controller
      */
     public function checkSession()
     {
-        $userId = Session::get('user.id');
+        $user = Session::get('user');
+        $userId = is_array($user) ? ($user['id'] ?? null) : Session::get('user.id');
         $sessionId = Session::get('farmasi_session_id');
         $expiresAt = Session::get('expires_at');
 
-        // Base rule: user + expires_at must exist (align with SimpleAuth middleware)
-        if (!$userId || !$expiresAt) {
+        // If user exists but expires_at is missing/invalid, recover (avoid sudden logout while working).
+        if ($userId && !$expiresAt) {
+            Session::put('logged_in_at', Session::get('logged_in_at') ?: now()->toIso8601String());
+            Session::put('expires_at', now()->addYear()->toIso8601String());
+            $expiresAt = Session::get('expires_at');
+        }
+
+        // Base rule: user must exist.
+        if (!$userId) {
             return response()->json(['valid' => false, 'reason' => 'missing'], 401);
         }
 
         try {
             $expiryDate = \Carbon\Carbon::parse($expiresAt);
         } catch (\Throwable $e) {
-            return response()->json(['valid' => false, 'reason' => 'expired'], 401);
+            // Recover invalid expires_at instead of treating it as expired.
+            Session::put('expires_at', now()->addYear()->toIso8601String());
+            $expiryDate = \Carbon\Carbon::parse((string) Session::get('expires_at'));
         }
 
         if ($expiryDate->isPast()) {

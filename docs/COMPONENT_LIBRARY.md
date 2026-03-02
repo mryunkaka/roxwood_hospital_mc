@@ -1149,6 +1149,7 @@ Modal dialog dengan backdrop, theme-aware untuk light, dark, dan stylis themes.
 - Backdrop blur untuk focus
 - Close button dengan hover scale effect
 - Responsive sizing dengan max-width variants
+- Konten panjang otomatis bisa di-scroll (body `overflow-y-auto`) dengan header/footer tetap terlihat
 
 ---
 

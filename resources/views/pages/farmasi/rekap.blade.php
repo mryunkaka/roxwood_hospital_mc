@@ -415,9 +415,9 @@
                 x-show="mergeModalOpen"
                 x-transition
                 x-cloak
-                class="fixed inset-0 z-[9997] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-                @keydown.escape.window="closeMergeModal()"
-            >
+	                class="fixed inset-0 z-9997 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+	                @keydown.escape.window="closeMergeModal()"
+	            >
                 <div class="w-full max-w-xl rounded-2xl bg-surface border border-border shadow-xl">
                     <div class="flex items-center justify-between px-6 py-4 border-b border-border">
                         <h3 class="text-lg font-semibold text-text-primary" data-translate="farmasi_merge_modal_title">

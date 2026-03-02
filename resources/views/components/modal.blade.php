@@ -33,12 +33,15 @@
                      'theme-stylis:border-teal-200/50 ' .
                      'theme-stylis.theme-dark:border-teal-700/30';
 
-    $closeButtonClasses = 'p-2 rounded-xl hover:bg-surface-hover transition-all duration-200 ' .
-                          'hover:scale-110 active:scale-95 ' .
-                          'theme-stylis:hover:bg-black/5 ' .
-                          'theme-dark:hover:bg-white/10';
+	    $closeButtonClasses = 'p-2 rounded-xl hover:bg-surface-hover transition-all duration-200 ' .
+	                          'hover:scale-110 active:scale-95 ' .
+	                          'theme-stylis:hover:bg-black/5 ' .
+	                          'theme-dark:hover:bg-white/10';
 
-    $isControlled = $attributes->has('x-model') || $attributes->has('x-model:open') || $attributes->has('x-modelable');
+	    $isControlled = $attributes->has('x-model') || $attributes->has('x-model:open') || $attributes->has('x-modelable');
+
+	    // Max height for viewport; keeps header/footer visible while body scrolls.
+	    $maxHeight = 'max-h-[calc(100svh-2rem)] sm:max-h-[calc(100svh-4rem)]';
 @endphp
 
 <div x-data="{
@@ -63,35 +66,35 @@
         </button>
     @endif
 
-    {{-- Modal Overlay --}}
-    <div x-show="open"
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         style="display: none;"
-         class="fixed inset-0 z-50 {{ $backdrop ? 'bg-black/50 backdrop-blur-sm theme-stylis:bg-teal-900/20' : '' }}">
+	    {{-- Modal Overlay --}}
+	    <div x-show="open"
+	         x-transition:enter="transition ease-out duration-300"
+	         x-transition:enter-start="opacity-0"
+	         x-transition:enter-end="opacity-100"
+	         x-transition:leave="transition ease-in duration-200"
+	         x-transition:leave-start="opacity-100"
+	         x-transition:leave-end="opacity-0"
+	         style="display: none;"
+	         class="fixed inset-0 z-50 overflow-y-auto {{ $backdrop ? 'bg-black/50 backdrop-blur-sm theme-stylis:bg-teal-900/20' : '' }}">
 
-        {{-- Modal Container --}}
-        <div class="flex items-center justify-center min-h-screen p-4 {{ $centered ? '' : 'items-start pt-20' }}"
-             @click.self="close()">
+	        {{-- Modal Container --}}
+	        <div class="flex items-start justify-center min-h-full p-4 {{ $centered ? 'sm:items-center' : 'pt-20' }}"
+	             @click.self="close()">
 
-            {{-- Modal Content --}}
-            <div x-show="open"
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-                 class="{{ $modalClasses }}"
-                 @keydown.escape.window="close()">
+	            {{-- Modal Content --}}
+	            <div x-show="open"
+	                 x-transition:enter="transition ease-out duration-300"
+	                 x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+	                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+	                 x-transition:leave="transition ease-in duration-200"
+	                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+	                 x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+	                 class="{{ $modalClasses }} {{ $maxHeight }} flex flex-col"
+	                 @keydown.escape.window="close()">
 
-                {{-- Header --}}
-                @if($title)
-                    <div class="{{ $headerClasses }}">
+	                {{-- Header --}}
+	                @if($title)
+	                    <div class="{{ $headerClasses }}">
                         <h3 class="text-lg font-semibold text-text-primary">{{ $title }}</h3>
                         <button @click="close()" class="{{ $closeButtonClasses }}" aria-label="Close modal">
                             <svg class="w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,16 +102,16 @@
                             </svg>
                         </button>
                     </div>
-                @endif
+	                @endif
 
-                {{-- Body --}}
-                <div class="px-6 py-4 {{ $title ? '' : 'pt-6' }}">
-                    {{ $slot }}
-                </div>
+	                {{-- Body --}}
+	                <div class="px-6 py-4 {{ $title ? '' : 'pt-6' }} flex-1 min-h-0 overflow-y-auto">
+	                    {{ $slot }}
+	                </div>
 
-                {{-- Footer --}}
-                @if(isset($footer) && $footer)
-                    <div class="{{ $footerClasses }}">
+	                {{-- Footer --}}
+	                @if(isset($footer) && $footer)
+	                    <div class="{{ $footerClasses }}">
                         {{-- Add close functionality to buttons with data-dismiss="modal" attribute --}}
                         {!! preg_replace('/(<button[^>]*)(data-dismiss="modal")/', '$1@click="close()" $2', $footer) !!}
                     </div>

@@ -11,6 +11,7 @@ use App\Http\Controllers\RekapFarmasiController;
 use App\Http\Controllers\EmsServicesController;
 use App\Http\Controllers\KonsumenController;
 use App\Http\Controllers\GajiController;
+use App\Http\Controllers\RegulasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,15 +77,21 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/gaji/generate-manual', [GajiController::class, 'generateManual'])->name('farmasi.gaji.generate_manual');
         Route::post('/api/gaji/pay', [GajiController::class, 'pay'])->name('api.gaji.pay');
 
-        // Layanan Medis (EMS)
-        Route::get('/layanan-medis', [EmsServicesController::class, 'index'])->name('medis.ems');
-        Route::post('/layanan-medis', [EmsServicesController::class, 'store'])->name('medis.ems.store');
-        Route::delete('/layanan-medis/sales', [EmsServicesController::class, 'bulkDestroy'])->name('medis.ems.sales.bulk_destroy');
-        Route::delete('/layanan-medis/sales/{sale}', [EmsServicesController::class, 'destroy'])->name('medis.ems.sales.destroy');
-        Route::post('/api/medis/preview-price', [EmsServicesController::class, 'previewPrice'])->name('api.medis.preview_price');
+	    // Layanan Medis (EMS)
+	    Route::get('/layanan-medis', [EmsServicesController::class, 'index'])->name('medis.ems');
+	    Route::post('/layanan-medis', [EmsServicesController::class, 'store'])->name('medis.ems.store');
+	    Route::delete('/layanan-medis/sales', [EmsServicesController::class, 'bulkDestroy'])->name('medis.ems.sales.bulk_destroy');
+	    Route::delete('/layanan-medis/sales/{sale}', [EmsServicesController::class, 'destroy'])->name('medis.ems.sales.destroy');
+	    Route::post('/api/medis/preview-price', [EmsServicesController::class, 'previewPrice'])->name('api.medis.preview_price');
 
-    // Components
-    Route::get('/components', [ComponentController::class, 'index'])->name('components');
+	// Regulasi EMS (Non-staff)
+	Route::get('/regulasi', [RegulasiController::class, 'medis'])->name('medis.regulasi');
+	Route::get('/regulasi-farmasi', [RegulasiController::class, 'farmasi'])->name('farmasi.regulasi');
+	Route::patch('/regulasi/packages/{package}', [RegulasiController::class, 'updatePackage'])->name('medis.regulasi.packages.update');
+	Route::patch('/regulasi/medical-regulations/{medicalRegulation}', [RegulasiController::class, 'updateRegulation'])->name('medis.regulasi.regulations.update');
+
+	// Components
+	Route::get('/components', [ComponentController::class, 'index'])->name('components');
 
     // Patients
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
