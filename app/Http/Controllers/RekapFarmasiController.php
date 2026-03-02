@@ -602,6 +602,66 @@ class RekapFarmasiController extends Controller
             ->with('success', __('messages.farmasi_transaction_saved'));
     }
 
+    public function destroy(Request $request, Sale $sale)
+    {
+        $locale = session('locale', 'id');
+        app()->setLocale($locale);
+
+        $user = session('user');
+        if (empty($user['id'])) {
+            abort(401);
+        }
+
+        $userId = (int) $user['id'];
+        if ((int) ($sale->medic_user_id ?? 0) !== $userId) {
+            abort(403);
+        }
+
+        Sale::query()->where('id', (int) $sale->id)->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with('success', __('messages.deleted'));
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $locale = session('locale', 'id');
+        app()->setLocale($locale);
+
+        $user = session('user');
+        if (empty($user['id'])) {
+            abort(401);
+        }
+
+        $userId = (int) $user['id'];
+        $ids = $request->input('ids', []);
+        if (!is_array($ids)) {
+            abort(422);
+        }
+
+        $ids = array_values(array_unique(array_filter(array_map(static fn ($v) => (int) $v, $ids), static fn ($v) => $v > 0)));
+        if (count($ids) === 0) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => true, 'deleted' => 0]);
+            }
+            return back();
+        }
+
+        $deleted = Sale::query()
+            ->whereIn('id', $ids)
+            ->where('medic_user_id', $userId)
+            ->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'deleted' => (int) $deleted]);
+        }
+
+        return back()->with('success', __('messages.deleted'));
+    }
+
     public function checkConsumerToday(Request $request)
     {
         $user = session('user');

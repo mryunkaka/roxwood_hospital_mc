@@ -41,7 +41,13 @@
             <p class="text-sm font-medium text-text-secondary mb-1"
                @if($dataTranslateTitle) data-translate="{{ $dataTranslateTitle }}" @endif
             >{{ $title }}</p>
-            <p class="text-3xl font-bold text-text-primary">{{ $value }}</p>
+            <p class="text-3xl font-bold text-text-primary">
+                @if(trim((string) $slot) !== '')
+                    {{ $slot }}
+                @else
+                    {{ $value }}
+                @endif
+            </p>
 
             @if($change !== null)
                 <p class="mt-2 flex items-center gap-1 text-sm font-medium {{ $changeColors[$changeType] }}">
