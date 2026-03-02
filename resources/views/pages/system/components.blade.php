@@ -1,3 +1,4 @@
+{{-- System: Components --}}
 @extends('layouts.app')
 
 @section('title', __('messages.components') . ' - ' . __('messages.app_name'))

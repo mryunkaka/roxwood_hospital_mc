@@ -1,3 +1,4 @@
+{{-- Farmasi: Rekap --}}
 @extends('layouts.app')
 
 @section('title', __('messages.farmasi_rekap_title') . ' - ' . __('messages.app_name'))

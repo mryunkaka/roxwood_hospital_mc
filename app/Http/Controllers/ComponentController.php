@@ -9,6 +9,6 @@ class ComponentController extends Controller
      */
     public function index()
     {
-        return view('pages.components');
+        return view('pages.system.components');
     }
 }

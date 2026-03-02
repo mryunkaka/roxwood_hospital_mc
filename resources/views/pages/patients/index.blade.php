@@ -1,3 +1,4 @@
+{{-- Patients --}}
 @extends('layouts.app')
 
 @section('title', __('messages.patients') . ' - ' . __('messages.app_name'))

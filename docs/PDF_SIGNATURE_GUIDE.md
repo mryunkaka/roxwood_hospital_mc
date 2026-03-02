@@ -185,7 +185,7 @@ Handle preview PDF untuk bahasa Indonesia.
 public function previewPdfIndonesian(Request $request)
 ```
 
-**GET**: Return form view (`pages.preview-pdf`)
+**GET**: Return form view (`pages.auth.preview-pdf`)
 **POST**: Validate, generate PDF, stream to browser
 
 ### previewPdfEnglish()
@@ -196,7 +196,7 @@ Handle preview PDF untuk bahasa Inggris.
 public function previewPdfEnglish(Request $request)
 ```
 
-**GET**: Return form view (`pages.preview-pdf`)
+**GET**: Return form view (`pages.auth.preview-pdf`)
 **POST**: Validate, generate PDF, stream to browser
 
 ---

@@ -1,3 +1,4 @@
+{{-- Medis: EMS Services --}}
 @extends('layouts.app')
 
 @section('title', __('messages.medis_services_title') . ' - ' . __('messages.app_name'))

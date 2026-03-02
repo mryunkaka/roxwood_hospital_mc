@@ -1,3 +1,4 @@
+{{-- Auth: Preview PDF --}}
 @extends('layouts.guest')
 
 @section('title', 'Preview PDF - ' . __('messages.app_name'))

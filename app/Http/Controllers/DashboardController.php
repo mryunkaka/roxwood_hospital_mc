@@ -179,7 +179,7 @@ class DashboardController extends Controller
             $dashboard['chart_weekly']['values'][] = (int) $weeklyIncome;
         }
 
-        return view('pages.dashboard', [
+        return view('pages.dashboard.index', [
             'dashboard' => $dashboard,
             'rangeLabel' => $rangeLabel,
         ]);

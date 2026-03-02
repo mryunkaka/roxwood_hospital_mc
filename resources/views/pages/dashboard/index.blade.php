@@ -1,3 +1,4 @@
+{{-- Dashboard --}}
 @extends('layouts.app')
 
 @section('title', __('messages.dashboard') . ' - ' . __('messages.app_name'))

@@ -509,7 +509,7 @@ class EmsServicesController extends Controller
             $priceBleedingPeluru = 0;
         }
 
-        return view('pages.layanan-medis', [
+        return view('pages.medis.ems-services', [
             'range' => $range,
             'rangeLabel' => $rangeLabel,
             'weeks' => $weeks,

@@ -1,3 +1,4 @@
+{{-- Auth: Login --}}
 @extends('layouts.guest')
 
 @section('title', __('messages.login'))

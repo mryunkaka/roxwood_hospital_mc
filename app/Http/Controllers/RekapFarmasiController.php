@@ -408,7 +408,7 @@ class RekapFarmasiController extends Controller
         // Preserve package IDs as keys (avoid numeric reindexing).
         $customPackageMap = $bandageMap + $ifaksMap + $painkillerMap;
 
-        return view('pages.rekap-farmasi', [
+        return view('pages.farmasi.rekap', [
             'range' => $range,
             'rangeLabel' => $rangeLabel,
             'weeks' => $weeks,

@@ -151,7 +151,7 @@ class AuthController extends Controller
         }
 
         return response()
-            ->view('pages.login', [
+            ->view('pages.auth.login', [
             'savedFullName' => $savedFullName,
             'savedPin' => $savedPin,
             ])
@@ -252,7 +252,7 @@ class AuthController extends Controller
         }
 
         return response()
-            ->view('pages.register')
+            ->view('pages.auth.register')
             ->cookie('rh_device_id', $deviceId, 60 * 24 * 365 * 5);
     }
 
@@ -1173,7 +1173,7 @@ class AuthController extends Controller
     {
         // GET: Show the form
         if ($request->isMethod('get')) {
-            return view('pages.preview-pdf');
+            return view('pages.auth.preview-pdf');
         }
 
         // POST: Process form and generate PDF
@@ -1236,7 +1236,7 @@ class AuthController extends Controller
     {
         // GET: Show the form (same as Indonesian)
         if ($request->isMethod('get')) {
-            return view('pages.preview-pdf');
+            return view('pages.auth.preview-pdf');
         }
 
         // POST: Process form and generate PDF

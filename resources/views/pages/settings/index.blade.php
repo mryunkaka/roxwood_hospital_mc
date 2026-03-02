@@ -1,3 +1,4 @@
+{{-- Settings --}}
 @extends('layouts.app')
 
 @section('title', __('messages.settings') . ' - ' . __('messages.app_name'))
