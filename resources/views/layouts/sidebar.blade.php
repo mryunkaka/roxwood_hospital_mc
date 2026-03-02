@@ -177,6 +177,19 @@
             </p>
         </div>
 
+        @if(!$isStaffRole)
+            {{-- Validasi Akun Link --}}
+            <a href="{{ route('validasi.index') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+                      {{ request()->routeIs('validasi.*') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="validation_menu">{{ __('messages.validation_menu') }}</span>
+            </a>
+        @endif
+
         {{-- Settings Link --}}
         <a href="{{ route('settings') }}"
            @click="window.innerWidth < 1024 && closeSidebar()"

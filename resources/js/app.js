@@ -20,6 +20,7 @@ import './pages/konsumen.js';
 import './pages/ems-services.js';
 import './pages/regulasi.js';
 import './pages/gaji.js';
+import './pages/validasi.js';
 
 // Setup Alpine
 window.Alpine = Alpine;

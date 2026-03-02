@@ -12,6 +12,7 @@ use App\Http\Controllers\EmsServicesController;
 use App\Http\Controllers\KonsumenController;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\RegulasiController;
+use App\Http\Controllers\ValidasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +90,10 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('/regulasi-farmasi', [RegulasiController::class, 'farmasi'])->name('farmasi.regulasi');
 	Route::patch('/regulasi/packages/{package}', [RegulasiController::class, 'updatePackage'])->name('medis.regulasi.packages.update');
 	Route::patch('/regulasi/medical-regulations/{medicalRegulation}', [RegulasiController::class, 'updateRegulation'])->name('medis.regulasi.regulations.update');
+
+    // Validasi Akun (Non-staff)
+    Route::get('/validasi', [ValidasiController::class, 'index'])->name('validasi.index');
+    Route::patch('/validasi/users/{userRh}', [ValidasiController::class, 'update'])->name('validasi.users.update');
 
 	// Components
 	Route::get('/components', [ComponentController::class, 'index'])->name('components');
