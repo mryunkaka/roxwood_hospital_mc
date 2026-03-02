@@ -9,6 +9,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RekapFarmasiController;
 use App\Http\Controllers\EmsServicesController;
+use App\Http\Controllers\KonsumenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,8 @@ Route::middleware(['auth'])->group(function () {
 	    Route::get('/api/farmasi/consumer/today', [RekapFarmasiController::class, 'checkConsumerToday'])->name('api.farmasi.consumer.today');
 	    Route::post('/api/farmasi/consumer/merge', [RekapFarmasiController::class, 'mergeSimilar'])->name('api.farmasi.consumer.merge');
 	    Route::get('/api/farmasi/consumers/search', [RekapFarmasiController::class, 'searchConsumers'])->name('api.farmasi.consumers.search');
+        Route::get('/konsumen', [KonsumenController::class, 'index'])->name('farmasi.konsumen');
+        Route::get('/api/identity/{identity}', [KonsumenController::class, 'identityJson'])->name('api.identity.show');
 
         // Layanan Medis (EMS)
         Route::get('/layanan-medis', [EmsServicesController::class, 'index'])->name('medis.ems');

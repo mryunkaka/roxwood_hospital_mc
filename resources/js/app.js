@@ -15,6 +15,9 @@ import clockController from './clock.js';
 import accessibilityController from './accessibility.js';
 import './toast.js'; // Import toast.js to register its alpine:init handler
 import chartController, { ChartData, updateAllCharts } from './chart.js';
+import './pages/rekap-farmasi.js';
+import './pages/konsumen.js';
+import './pages/ems-services.js';
 
 // Setup Alpine
 window.Alpine = Alpine;

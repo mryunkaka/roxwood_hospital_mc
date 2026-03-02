@@ -120,20 +120,25 @@ class AuthController extends Controller
      */
     public function showLogin()
     {
-        // Jika sudah login dan session masih valid, langsung ke dashboard
+        // Jika sudah login dan session masih valid, langsung ke farmasi (same device)
         $userId = Session::get('user.id');
         $sessionId = Session::get('farmasi_session_id');
         $expiresAt = Session::get('expires_at');
-        if ($userId && $sessionId && $expiresAt) {
+        if ($userId && $expiresAt) {
             try {
                 $expiryDate = \Carbon\Carbon::parse($expiresAt);
                 if ($expiryDate->isFuture()) {
-                    $exists = UserFarmasiSession::where('id', $sessionId)
-                        ->where('user_id', $userId)
-                        ->whereNull('session_end')
-                        ->exists();
-                    if ($exists) {
-                        return redirect()->route('dashboard');
+                    if ($sessionId) {
+                        $exists = UserFarmasiSession::where('id', $sessionId)
+                            ->where('user_id', $userId)
+                            ->whereNull('session_end')
+                            ->exists();
+                        if ($exists) {
+                            return redirect()->route('farmasi.rekap');
+                        }
+                    } else {
+                        // Fallback: allow UI session without DB session row (avoid showing login to active user)
+                        return redirect()->route('farmasi.rekap');
                     }
                 }
             } catch (\Throwable $e) {
@@ -450,7 +455,7 @@ class AuthController extends Controller
 
         // Redirect to intended page or dashboard
         return redirect()
-            ->intended(route('dashboard'))
+            ->intended(route('farmasi.rekap'))
             ->cookie('rh_device_id', $deviceId, 60 * 24 * 365 * 5);
     }
 
@@ -1127,11 +1132,16 @@ class AuthController extends Controller
         $sessionId = Session::get('farmasi_session_id');
         $expiresAt = Session::get('expires_at');
 
-        if (!$userId || !$sessionId || !$expiresAt) {
+        // Base rule: user + expires_at must exist (align with SimpleAuth middleware)
+        if (!$userId || !$expiresAt) {
             return response()->json(['valid' => false, 'reason' => 'missing'], 401);
         }
 
-        $expiryDate = \Carbon\Carbon::parse($expiresAt);
+        try {
+            $expiryDate = \Carbon\Carbon::parse($expiresAt);
+        } catch (\Throwable $e) {
+            return response()->json(['valid' => false, 'reason' => 'expired'], 401);
+        }
 
         if ($expiryDate->isPast()) {
             Session::forget('user');
@@ -1141,26 +1151,55 @@ class AuthController extends Controller
             return response()->json(['valid' => false, 'reason' => 'expired'], 401);
         }
 
+        // If DB session ID is missing, keep UI session valid (do not show "Sesi Berakhir" due to missing meta).
+        if (!$sessionId) {
+            return response()->json(['valid' => true, 'db' => false]);
+        }
+
         $exists = UserFarmasiSession::where('id', $sessionId)
             ->where('user_id', $userId)
             ->whereNull('session_end')
             ->exists();
 
         if (!$exists) {
-            // Session sudah dihapus/diakhiri karena login dari device lain
-            $forced = Cache::pull('forced_logout:' . $sessionId);
-            $reason = $forced ? 'force_offline' : 'superseded';
+            /**
+             * UX rule (project): jangan memaksa logout hanya karena DB session row hilang.
+             * Ini bisa terjadi karena crash, clear cache, atau data cleanup.
+             * Kita auto-recover agar refresh tidak memunculkan modal "Sesi Berakhir".
+             */
+            try {
+                $deviceId = request()->cookie('rh_device_id') ?: (string) Str::uuid();
+                $medicName = (string) (Session::get('user.name') ?: '');
+                if ($medicName === '') {
+                    $medicName = (string) (UserRh::where('id', $userId)->value('full_name') ?: '');
+                }
 
-            Session::forget('user');
-            Session::forget('logged_in_at');
-            Session::forget('expires_at');
-            Session::forget('farmasi_session_id');
-            Cache::forget('farmasi_session_device:' . $sessionId);
-            return response()->json([
-                'valid' => false,
-                'reason' => $reason,
-                'forced_by_device' => $forced['forced_by_device'] ?? null,
-            ], 401);
+                $newSession = UserFarmasiSession::create([
+                    'user_id' => $userId,
+                    'medic_name' => $medicName !== '' ? $medicName : null,
+                    'medic_jabatan' => $this->getDeviceInfoForSession($deviceId),
+                    'session_start' => now(),
+                ]);
+
+                Session::put('farmasi_session_id', $newSession->id);
+                Cache::put('farmasi_session_device:' . $newSession->id, $deviceId, now()->addDays(7));
+
+                // Clean legacy keys (best effort)
+                Cache::forget('farmasi_session_device:' . $sessionId);
+                Cache::forget('forced_logout:' . $sessionId);
+
+                return response()->json([
+                    'valid' => true,
+                    'recovered' => true,
+                ]);
+            } catch (\Throwable $e) {
+                // Fallback: keep UI session valid, skip DB enforcement
+                return response()->json([
+                    'valid' => true,
+                    'db' => false,
+                    'recovered' => false,
+                ]);
+            }
         }
 
         return response()->json(['valid' => true]);

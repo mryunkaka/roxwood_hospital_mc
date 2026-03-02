@@ -7,6 +7,11 @@
 
 @import "tailwindcss";
 
+/* Hide Alpine cloaked elements until Alpine is ready */
+[x-cloak] {
+    display: none !important;
+}
+
 /* ============================================
  * DESIGN TOKENS - CSS VARIABLES
  * ============================================

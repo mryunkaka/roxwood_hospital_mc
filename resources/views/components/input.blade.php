@@ -17,11 +17,13 @@
 
 @php
     $inputId = $id ?? $name ?: 'input-' . uniqid();
-    $hasError = $error !== null;
+    $hasError = filled($error);
     $isPassword = $type === 'password';
 
     // Border color berdasarkan state
-    $borderColor = $hasError ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500/20' : 'border-border focus:border-primary-500 focus:ring-primary-500/20';
+    $borderColor = $hasError
+        ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500/20'
+        : 'border-border hover:border-border-medium focus:border-primary-500 focus:ring-primary-500/20';
 
     // Background dan text color
     $bgClass = 'bg-surface';
@@ -75,7 +77,7 @@
 
 <div class="w-full {{ $class }}" @if($isPassword) x-data="{ showPassword: false }" @endif>
     @if($label)
-        <label for="{{ $inputId }}" class="block text-sm font-medium text-text-primary mb-2" @if($dataTranslateLabel) data-translate="{{ $dataTranslateLabel }}" @endif>
+        <label for="{{ $inputId }}" class="block text-sm font-medium text-text-primary mb-1.5" @if($dataTranslateLabel) data-translate="{{ $dataTranslateLabel }}" @endif>
             @if($dataTranslateLabel)
                 <span class="label-text">{{ $finalLabel }}</span>
             @else
@@ -118,11 +120,6 @@
     @endif
 
     @if($hasError)
-        <p class="mt-1.5 text-xs text-danger-500 flex items-center gap-1">
-            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-            </svg>
-            {{ $error }}
-        </p>
+        <p class="mt-1.5 text-xs text-danger-500">{{ $error }}</p>
     @endif
 </div>
