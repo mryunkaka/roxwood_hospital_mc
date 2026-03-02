@@ -25,7 +25,15 @@
     ];
 @endphp
 
-<div class="rounded-2xl bg-surface {{ $border ? 'border border-border' : '' }} {{ $paddingClasses[$padding] }} {{ $shadowClasses[$shadow] }} {{ $hoverable ? 'card-elevated cursor-pointer' : '' }} transition-all duration-300 {{ $class }}">
+<div {{ $attributes->merge([
+    'class' => 'rounded-2xl bg-surface ' .
+        ($border ? 'border border-border ' : '') .
+        $paddingClasses[$padding] . ' ' .
+        $shadowClasses[$shadow] . ' ' .
+        ($hoverable ? 'card-elevated cursor-pointer ' : '') .
+        'transition-all duration-300 ' .
+        $class
+]) }}>
     @if($title || $subtitle)
         <div class="mb-4">
             @if($title)

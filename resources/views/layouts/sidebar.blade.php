@@ -3,7 +3,7 @@
        x-show="!sidebarHidden"
        x-transition.opacity.duration.150ms
        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:w-20'"
-       class="fixed lg:relative z-50 h-full w-64 bg-surface/80 backdrop-blur-md border-r border-border transition-transform duration-300 ease-in-out"
+       class="fixed lg:relative z-50 h-[100svh] w-64 bg-surface/80 backdrop-blur-md border-r border-border transition-transform duration-300 ease-in-out flex flex-col"
        x-cloak>
 
     {{-- Sidebar Header --}}
@@ -34,10 +34,18 @@
     </div>
 
     {{-- Sidebar Navigation --}}
-    <nav class="flex-1 overflow-y-auto p-3 space-y-1 scrollbar-thin">
+    <nav class="flex-1 min-h-0 overflow-y-auto p-3 space-y-1 scrollbar-thin">
+
+        {{-- Group: Main --}}
+        <div :class="sidebarOpen ? 'block' : 'hidden'">
+            <p class="px-3 pb-1 text-[11px] font-semibold text-text-tertiary uppercase tracking-wider" data-translate="sidebar_group_main">
+                {{ __('messages.sidebar_group_main') }}
+            </p>
+        </div>
 
         {{-- Dashboard Link --}}
         <a href="{{ route('dashboard') }}"
+           @click="window.innerWidth < 1024 && closeSidebar()"
            class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                   {{ request()->routeIs('dashboard') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +60,15 @@
             $isTrainee = \Illuminate\Support\Str::of($userPosition)->lower()->contains('trainee');
         @endphp
         @if(!$isTrainee)
+            {{-- Group: Farmasi --}}
+            <div class="pt-2" :class="sidebarOpen ? 'block' : 'hidden'">
+                <p class="px-3 pb-1 text-[11px] font-semibold text-text-tertiary uppercase tracking-wider" data-translate="sidebar_group_farmasi">
+                    {{ __('messages.sidebar_group_farmasi') }}
+                </p>
+            </div>
+
             <a href="{{ route('farmasi.rekap') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                       {{ request()->routeIs('farmasi.rekap') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -62,6 +78,7 @@
             </a>
 
             <a href="{{ route('farmasi.konsumen') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                       {{ request()->routeIs('farmasi.konsumen') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -70,7 +87,25 @@
                 <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="farmasi_konsumen_menu">{{ __('messages.farmasi_konsumen_menu') }}</span>
             </a>
 
+            <a href="{{ route('farmasi.gaji') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+                      {{ request()->routeIs('farmasi.gaji') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-10V6m0 12v-2m9-4a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="farmasi_gaji_menu">{{ __('messages.farmasi_gaji_menu') }}</span>
+            </a>
+
+            {{-- Group: Medis --}}
+            <div class="pt-2" :class="sidebarOpen ? 'block' : 'hidden'">
+                <p class="px-3 pb-1 text-[11px] font-semibold text-text-tertiary uppercase tracking-wider" data-translate="sidebar_group_medis">
+                    {{ __('messages.sidebar_group_medis') }}
+                </p>
+            </div>
+
             <a href="{{ route('medis.ems') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                       {{ request()->routeIs('medis.ems') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -80,8 +115,16 @@
             </a>
         @endif
 
+        {{-- Group: Tools --}}
+        <div class="pt-2" :class="sidebarOpen ? 'block' : 'hidden'">
+            <p class="px-3 pb-1 text-[11px] font-semibold text-text-tertiary uppercase tracking-wider" data-translate="sidebar_group_tools">
+                {{ __('messages.sidebar_group_tools') }}
+            </p>
+        </div>
+
         {{-- Components Link --}}
         <a href="{{ route('components') }}"
+           @click="window.innerWidth < 1024 && closeSidebar()"
            class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                   {{ request()->routeIs('components') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,6 +135,7 @@
 
         {{-- Patients Link --}}
         <a href="{{ route('patients') }}"
+           @click="window.innerWidth < 1024 && closeSidebar()"
            class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                   {{ request()->routeIs('patients') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,8 +144,16 @@
             <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="patients_menu">{{ __('messages.patients') }}</span>
         </a>
 
+        {{-- Settings Group Label --}}
+        <div class="pt-2" :class="sidebarOpen ? 'block' : 'hidden'">
+            <p class="px-3 pb-1 text-[11px] font-semibold text-text-tertiary uppercase tracking-wider" data-translate="sidebar_group_settings">
+                {{ __('messages.sidebar_group_settings') }}
+            </p>
+        </div>
+
         {{-- Settings Link --}}
         <a href="{{ route('settings') }}"
+           @click="window.innerWidth < 1024 && closeSidebar()"
            class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                   {{ request()->routeIs('settings') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

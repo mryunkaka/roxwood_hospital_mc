@@ -37,11 +37,11 @@
 
 <div class="rounded-2xl bg-surface p-5 sm:p-6 border border-border shadow-sm hover:shadow-md transition-all duration-300 {{ $class }}">
     <div class="flex items-start justify-between">
-        <div class="flex-1">
-            <p class="text-sm font-medium text-text-secondary mb-1"
+        <div class="flex-1 min-w-0">
+            <p class="text-xs sm:text-sm font-medium text-text-secondary mb-1 whitespace-nowrap truncate"
                @if($dataTranslateTitle) data-translate="{{ $dataTranslateTitle }}" @endif
             >{{ $title }}</p>
-            <p class="text-3xl font-bold text-text-primary">
+            <p class="text-2xl lg:text-3xl font-bold text-text-primary whitespace-nowrap tabular-nums tracking-tight leading-tight">
                 @if(trim((string) $slot) !== '')
                     {{ $slot }}
                 @else

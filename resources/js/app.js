@@ -18,6 +18,7 @@ import chartController, { ChartData, updateAllCharts } from './chart.js';
 import './pages/rekap-farmasi.js';
 import './pages/konsumen.js';
 import './pages/ems-services.js';
+import './pages/gaji.js';
 
 // Setup Alpine
 window.Alpine = Alpine;

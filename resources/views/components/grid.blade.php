@@ -1,6 +1,6 @@
 {{-- Grid Component --}}
 @props([
-    'cols' => 1, // 1-4
+    'cols' => 1, // 1-5
     'gap' => 'default', // 'none', 'sm', 'default', 'lg'
     'class' => ''
 ])
@@ -11,6 +11,7 @@
         2 => 'grid-cols-1 sm:grid-cols-2',
         3 => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
         4 => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+        5 => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
     ];
     $gapClasses = [
         'none' => 'gap-0',
@@ -20,6 +21,6 @@
     ];
 @endphp
 
-<div class="grid {{ $colClasses[$cols] }} {{ $gapClasses[$gap] }} {{ $class }}">
+<div class="grid {{ $colClasses[$cols] ?? $colClasses[1] }} {{ $gapClasses[$gap] }} {{ $class }}">
     {{ $slot }}
 </div>

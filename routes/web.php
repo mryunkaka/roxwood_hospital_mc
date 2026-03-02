@@ -10,6 +10,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RekapFarmasiController;
 use App\Http\Controllers\EmsServicesController;
 use App\Http\Controllers\KonsumenController;
+use App\Http\Controllers\GajiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
 	    Route::get('/api/farmasi/consumers/search', [RekapFarmasiController::class, 'searchConsumers'])->name('api.farmasi.consumers.search');
         Route::get('/konsumen', [KonsumenController::class, 'index'])->name('farmasi.konsumen');
         Route::get('/api/identity/{identity}', [KonsumenController::class, 'identityJson'])->name('api.identity.show');
+        Route::get('/gaji', [GajiController::class, 'index'])->name('farmasi.gaji');
+        Route::post('/gaji/generate-manual', [GajiController::class, 'generateManual'])->name('farmasi.gaji.generate_manual');
+        Route::post('/api/gaji/pay', [GajiController::class, 'pay'])->name('api.gaji.pay');
 
         // Layanan Medis (EMS)
         Route::get('/layanan-medis', [EmsServicesController::class, 'index'])->name('medis.ems');

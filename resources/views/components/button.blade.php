@@ -1,7 +1,7 @@
 {{-- Button Component --}}
 @props([
     'variant' => 'primary', // 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'ghost', 'link'
-    'size' => 'default', // 'sm', 'default', 'lg'
+    'size' => 'default', // 'xs', 'sm', 'default', 'lg'
     'type' => 'button', // 'button', 'submit', 'reset'
     'disabled' => false,
     'fullWidth' => false,
@@ -22,11 +22,13 @@
         'link' => 'bg-transparent text-primary hover:text-primary-dark hover:underline p-0',
     ];
     $sizeClasses = [
+        'xs' => 'px-3 py-1.5 text-xs',
         'sm' => 'px-4 py-2 text-sm',
         'default' => 'px-5 py-2.5 text-sm',
         'lg' => 'px-6 py-3 text-base',
     ];
     $iconSizes = [
+        'xs' => 'w-3.5 h-3.5',
         'sm' => 'w-4 h-4',
         'default' => 'w-5 h-5',
         'lg' => 'w-6 h-6',

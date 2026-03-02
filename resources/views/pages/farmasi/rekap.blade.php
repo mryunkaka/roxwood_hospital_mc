@@ -679,7 +679,7 @@
 
 	                <button
 	                    type="button"
-	                    class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-danger-500 text-white border border-danger-500 hover:bg-danger-600 px-4 py-2 text-sm rounded-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+	                    class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-danger-500 text-white border border-danger-500 hover:bg-danger-600 px-4 py-2 text-sm rounded-xl active:scale-[0.98] disabled:opacity-80 disabled:cursor-not-allowed"
 	                    :disabled="selectedIds.length === 0"
 	                    @click="deleteSelected()"
 	                >
@@ -763,15 +763,16 @@
 	                            <td class="px-4 py-2 text-sm text-text-primary whitespace-nowrap text-right" x-text="row.priceText"></td>
 	                            <td class="px-4 py-2 text-sm text-text-primary whitespace-nowrap text-right" x-text="row.bonusText"></td>
 	                            <td class="px-4 py-2 text-sm text-right">
-	                                <button
+	                                <x-button
 	                                    type="button"
-		                                    class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg border border-border hover:bg-surface-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-		                                    :disabled="row.medicUserId !== currentUserId"
-		                                    @click="deleteOne(row.id)"
-		                                    :title="row.medicUserId !== currentUserId ? t('farmasi_cannot_delete_other', 'Cannot delete other user transactions') : ''"
-		                                >
-		                                    <span data-translate="delete">{{ __('messages.delete') }}</span>
-		                                </button>
+	                                    size="xs"
+	                                    variant="danger"
+	                                    x-bind:disabled="row.medicUserId !== currentUserId"
+	                                    @click="deleteOne(row.id)"
+	                                    x-bind:title="row.medicUserId !== currentUserId ? t('farmasi_cannot_delete_other', 'Cannot delete other user transactions') : ''"
+	                                >
+	                                    <span data-translate="delete">{{ __('messages.delete') }}</span>
+	                                </x-button>
 	                            </td>
 	                        </tr>
 	                    </template>
