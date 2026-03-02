@@ -21,6 +21,7 @@ import './pages/ems-services.js';
 import './pages/regulasi.js';
 import './pages/gaji.js';
 import './pages/validasi.js';
+import './pages/manage-users.js';
 
 // Setup Alpine
 window.Alpine = Alpine;

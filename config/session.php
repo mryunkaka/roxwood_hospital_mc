@@ -18,7 +18,28 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    /*
+     * NOTE:
+     * Defaulting to "file" avoids hard failures on environments where the
+     * database driver (e.g. SQLite PDO) isn't available. You can still opt-in
+     * to "database"/"redis" by setting SESSION_DRIVER explicitly.
+     */
+    'driver' => (static function (): string {
+        $driver = (string) env('SESSION_DRIVER', 'file');
+
+        // Fallback: if someone configures database sessions on SQLite but the
+        // SQLite PDO extension is missing, silently fall back to file sessions
+        // so the app can boot and show a readable page instead of 500'ing.
+        if (
+            $driver === 'database' &&
+            (string) env('DB_CONNECTION', 'sqlite') === 'sqlite' &&
+            !extension_loaded('pdo_sqlite')
+        ) {
+            return 'file';
+        }
+
+        return $driver;
+    })(),
 
     /*
     |--------------------------------------------------------------------------

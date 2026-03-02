@@ -13,6 +13,7 @@ use App\Http\Controllers\KonsumenController;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\ValidasiController;
+use App\Http\Controllers\ManageUsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +95,15 @@ Route::middleware(['auth'])->group(function () {
     // Validasi Akun (Non-staff)
     Route::get('/validasi', [ValidasiController::class, 'index'])->name('validasi.index');
     Route::patch('/validasi/users/{userRh}', [ValidasiController::class, 'update'])->name('validasi.users.update');
+
+    // Manajemen User (Non-staff)
+    Route::get('/manage-users', [ManageUsersController::class, 'index'])->name('users.manage');
+    Route::post('/manage-users/users', [ManageUsersController::class, 'store'])->name('users.manage.users.store');
+    Route::patch('/manage-users/users/{userRh}', [ManageUsersController::class, 'update'])->name('users.manage.users.update');
+    Route::post('/manage-users/users/{userRh}/resign', [ManageUsersController::class, 'resign'])->name('users.manage.users.resign');
+    Route::post('/manage-users/users/{userRh}/reactivate', [ManageUsersController::class, 'reactivate'])->name('users.manage.users.reactivate');
+    Route::post('/manage-users/users/{userRh}/delete-kode-medis', [ManageUsersController::class, 'deleteKodeMedis'])->name('users.manage.users.delete_kode_medis');
+    Route::delete('/manage-users/users/{userRh}', [ManageUsersController::class, 'destroy'])->name('users.manage.users.destroy');
 
 	// Components
 	Route::get('/components', [ComponentController::class, 'index'])->name('components');

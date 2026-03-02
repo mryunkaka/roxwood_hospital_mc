@@ -188,6 +188,17 @@
                 </svg>
                 <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="validation_menu">{{ __('messages.validation_menu') }}</span>
             </a>
+
+            {{-- Manajemen User Link --}}
+            <a href="{{ route('users.manage') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+                      {{ request()->routeIs('users.manage') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="manage_users_menu">{{ __('messages.manage_users_menu') }}</span>
+            </a>
         @endif
 
         {{-- Settings Link --}}
