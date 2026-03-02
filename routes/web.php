@@ -8,6 +8,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RekapFarmasiController;
+use App\Http\Controllers\EmsServicesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,13 @@ Route::middleware(['auth'])->group(function () {
 	    Route::get('/api/farmasi/consumer/today', [RekapFarmasiController::class, 'checkConsumerToday'])->name('api.farmasi.consumer.today');
 	    Route::post('/api/farmasi/consumer/merge', [RekapFarmasiController::class, 'mergeSimilar'])->name('api.farmasi.consumer.merge');
 	    Route::get('/api/farmasi/consumers/search', [RekapFarmasiController::class, 'searchConsumers'])->name('api.farmasi.consumers.search');
+
+        // Layanan Medis (EMS)
+        Route::get('/layanan-medis', [EmsServicesController::class, 'index'])->name('medis.ems');
+        Route::post('/layanan-medis', [EmsServicesController::class, 'store'])->name('medis.ems.store');
+        Route::delete('/layanan-medis/sales', [EmsServicesController::class, 'bulkDestroy'])->name('medis.ems.sales.bulk_destroy');
+        Route::delete('/layanan-medis/sales/{sale}', [EmsServicesController::class, 'destroy'])->name('medis.ems.sales.destroy');
+        Route::post('/api/medis/preview-price', [EmsServicesController::class, 'previewPrice'])->name('api.medis.preview_price');
 
     // Components
     Route::get('/components', [ComponentController::class, 'index'])->name('components');

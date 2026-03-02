@@ -30,6 +30,7 @@
                 @if($checked) checked @endif
                 @if($required) required @endif
                 @if($disabled) disabled @endif
+                {{ $attributes->except(['type', 'id', 'name', 'value', 'checked', 'required', 'disabled', 'class']) }}
                 class="custom-checkbox w-4 h-4 mt-1 rounded border
                        {{ $errorClass }}
                        text-primary-500 dark:text-primary-400
