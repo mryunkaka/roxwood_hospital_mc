@@ -15,6 +15,8 @@ use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\ValidasiController;
 use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\ReimbursementController;
+use App\Http\Controllers\RestaurantConsumptionController;
+use App\Http\Controllers\RestaurantSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,6 +125,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reimbursement/pay', [ReimbursementController::class, 'pay'])->name('reimbursement.pay');
     Route::post('/reimbursement/delete', [ReimbursementController::class, 'destroy'])->name('reimbursement.delete');
     Route::get('/reimbursement/receipt/{code}', [ReimbursementController::class, 'receipt'])->name('reimbursement.receipt');
+
+    // Restaurant Consumption (UI session-backed)
+    Route::get('/restaurant-consumption', [RestaurantConsumptionController::class, 'index'])->name('restaurant.consumption.index');
+    Route::post('/restaurant-consumption', [RestaurantConsumptionController::class, 'store'])->name('restaurant.consumption.store');
+    Route::post('/restaurant-consumption/{id}/approve', [RestaurantConsumptionController::class, 'approve'])->name('restaurant.consumption.approve');
+    Route::post('/restaurant-consumption/{id}/paid', [RestaurantConsumptionController::class, 'paid'])->name('restaurant.consumption.paid');
+    Route::post('/restaurant-consumption/{id}/delete', [RestaurantConsumptionController::class, 'destroy'])->name('restaurant.consumption.delete');
+
+    // Restaurant Settings (page, session-backed)
+    Route::get('/restaurant-settings', [RestaurantSettingsController::class, 'index'])->name('restaurant.settings.index');
+    Route::post('/restaurant-settings/create', [RestaurantSettingsController::class, 'store'])->name('restaurant.settings.store');
+    Route::post('/restaurant-settings/update', [RestaurantSettingsController::class, 'update'])->name('restaurant.settings.update');
+    Route::post('/restaurant-settings/toggle', [RestaurantSettingsController::class, 'toggle'])->name('restaurant.settings.toggle');
+    Route::post('/restaurant-settings/delete', [RestaurantSettingsController::class, 'destroy'])->name('restaurant.settings.delete');
 
 });
 

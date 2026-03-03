@@ -47,6 +47,9 @@ return [
     'active' => 'Active',
     'inactive' => 'Inactive',
     'pending' => 'Pending',
+    'approve' => 'Approve',
+    'paid' => 'Paid',
+    'notes' => 'Notes',
     'clear' => 'Clear',
     'apply_filter' => 'Apply Filter',
     'deleted' => 'Deleted successfully.',
@@ -63,12 +66,14 @@ return [
     'range_last_week' => 'Last Week',
     'range_2_weeks_ago' => '2 Weeks Ago',
     'range_3_weeks_ago' => '3 Weeks Ago',
+    'range_this_month' => 'This Month',
 
     // Farmasi Recap
     'farmasi_rekap_menu' => 'Pharmacy Recap',
     'farmasi_konsumen_menu' => 'Consumers',
     'farmasi_gaji_menu' => 'Salary',
     'reimbursement_menu' => 'Reimbursement',
+    'restaurant_consumption_menu' => 'Restaurant Consumption',
     'farmasi_rekap_title' => 'Pharmacy Recap',
     'farmasi_rekap_subtitle' => 'New transactions and recap',
     'farmasi_konsumen_title' => 'Consumers Data',
@@ -178,6 +183,78 @@ return [
     'farmasi_regulasi_title' => 'Pharmacy Regulations',
     'farmasi_regulasi_subtitle' => 'Manage pharmacy packages.',
     'farmasi_regulasi_menu' => 'Pharmacy Regulations',
+
+    // Restaurant Consumption
+    'restaurant_consumption_title' => 'Restaurant Consumption',
+    'restaurant_consumption_subtitle' => 'Restaurant consumption log with approval and payment status',
+    'restaurant_consumption_filter_title' => 'Date Range Filter',
+    'restaurant_consumption_list_title' => 'Restaurant Consumption List',
+    'restaurant_consumption_add_button' => 'Add Consumption',
+    'restaurant_consumption_add_title' => 'Add Restaurant Consumption',
+    'restaurant_consumption_settings' => 'Restaurant Settings',
+    'restaurant_consumption_settings_coming_soon' => 'Restaurant settings page is not available yet.',
+
+    'restaurant_consumption_stat_packets' => 'Total Packets',
+    'restaurant_consumption_stat_subtotal' => 'Subtotal',
+    'restaurant_consumption_stat_tax' => 'Tax',
+    'restaurant_consumption_stat_total' => 'Grand Total',
+
+    'restaurant_consumption_code' => 'Code',
+    'restaurant_consumption_restaurant' => 'Restaurant',
+    'restaurant_consumption_restaurant_placeholder' => '-- Select Restaurant --',
+    'restaurant_consumption_recipient' => 'Recipient',
+    'restaurant_consumption_packets' => 'Packets',
+    'restaurant_consumption_price_per_packet' => 'Price/Packet',
+    'restaurant_consumption_subtotal' => 'Subtotal',
+    'restaurant_consumption_tax' => 'Tax',
+    'restaurant_consumption_total' => 'Total',
+    'restaurant_consumption_ktp' => 'ID Card',
+    'restaurant_consumption_ktp_upload' => 'Restaurant Staff ID Card Photo',
+    'restaurant_consumption_ktp_title' => 'ID Card - :code',
+    'restaurant_consumption_notes_placeholder' => 'Additional notes...',
+
+    'restaurant_consumption_submitted_by' => 'Submitted by',
+    'restaurant_consumption_approved_by' => 'Approved by',
+    'restaurant_consumption_paid_by' => 'Paid by',
+
+    'restaurant_consumption_confirm_approve' => 'Approve this consumption?',
+    'restaurant_consumption_confirm_paid' => 'Mark as PAID?',
+    'restaurant_consumption_confirm_delete' => 'Delete this consumption record? This cannot be undone!',
+
+    'restaurant_consumption_saved' => 'Consumption recorded successfully.',
+    'restaurant_consumption_approved' => 'Consumption approved successfully.',
+    'restaurant_consumption_paid' => 'Consumption marked as paid.',
+    'restaurant_consumption_not_found' => 'Consumption record not found.',
+    'restaurant_consumption_restaurant_inactive' => 'Restaurant is inactive or not found.',
+
+    // Restaurant Settings
+    'restaurant_settings_title' => 'Restaurant Settings',
+    'restaurant_settings_subtitle' => 'Manage restaurant list and price per packet',
+    'restaurant_settings_hint' => 'Only non staff/manager roles can manage restaurant settings.',
+    'restaurant_settings_back' => 'Back to Consumption',
+
+    'restaurant_settings_add_title' => 'Add New Restaurant',
+    'restaurant_settings_add_subtitle' => 'Add restaurants for consumption entries',
+    'restaurant_settings_add_button' => 'Add Restaurant',
+
+    'restaurant_settings_list_title' => 'Restaurants List',
+    'restaurant_settings_restaurant_name' => 'Restaurant Name',
+    'restaurant_settings_restaurant_name_placeholder' => 'Example: Up And Atom',
+    'restaurant_settings_price_per_packet' => 'Price per Packet',
+    'restaurant_settings_tax_percentage' => 'Tax (%)',
+    'restaurant_settings_created_at' => 'Created',
+    'restaurant_settings_edit_title' => 'Edit Restaurant',
+
+    'restaurant_settings_activate' => 'Activate',
+    'restaurant_settings_deactivate' => 'Deactivate',
+    'restaurant_settings_toggle_confirm' => 'Change this restaurant status?',
+    'restaurant_settings_delete_confirm' => 'Delete this restaurant? This cannot be undone!',
+
+    'restaurant_settings_created' => 'Restaurant added successfully.',
+    'restaurant_settings_updated' => 'Restaurant updated successfully.',
+    'restaurant_settings_toggled' => 'Restaurant status updated.',
+    'restaurant_settings_deleted' => 'Restaurant deleted successfully.',
+    'restaurant_settings_not_found' => 'Restaurant not found.',
 
     // Medical Services (EMS)
     'medis_services_menu' => 'Medical Services',

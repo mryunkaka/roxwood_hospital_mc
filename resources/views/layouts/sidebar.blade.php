@@ -129,6 +129,17 @@
                 <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="reimbursement_menu">{{ __('messages.reimbursement_menu') }}</span>
             </a>
 
+            {{-- Restaurant Consumption Link --}}
+            <a href="{{ route('restaurant.consumption.index') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+                      {{ request()->routeIs('restaurant.consumption.*') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
+                </svg>
+                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="restaurant_consumption_menu">{{ __('messages.restaurant_consumption_menu') }}</span>
+            </a>
+
             {{-- Group: Medis --}}
             <div class="pt-2" :class="sidebarOpen ? 'block' : 'hidden'">
                 <p class="px-3 pb-1 text-[11px] font-semibold text-text-tertiary uppercase tracking-wider" data-translate="sidebar_group_medis">

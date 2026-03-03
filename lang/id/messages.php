@@ -47,6 +47,9 @@ return [
     'active' => 'Aktif',
     'inactive' => 'Tidak Aktif',
     'pending' => 'Menunggu',
+    'approve' => 'Setujui',
+    'paid' => 'Dibayar',
+    'notes' => 'Catatan',
     'clear' => 'Bersihkan',
     'apply_filter' => 'Terapkan Filter',
     'deleted' => 'Berhasil dihapus.',
@@ -63,12 +66,14 @@ return [
     'range_last_week' => 'Minggu Lalu',
     'range_2_weeks_ago' => '2 Minggu Lalu',
     'range_3_weeks_ago' => '3 Minggu Lalu',
+    'range_this_month' => 'Bulan Ini',
 
     // Rekap Farmasi
     'farmasi_rekap_menu' => 'Rekap Farmasi',
     'farmasi_konsumen_menu' => 'Konsumen',
     'farmasi_gaji_menu' => 'Gaji',
     'reimbursement_menu' => 'Reimbursement',
+    'restaurant_consumption_menu' => 'Konsumsi Restoran',
     'farmasi_rekap_title' => 'Rekap Farmasi',
     'farmasi_rekap_subtitle' => 'Input transaksi dan rekap',
     'farmasi_konsumen_title' => 'Data Konsumen',
@@ -178,6 +183,78 @@ return [
     'farmasi_regulasi_title' => 'Regulasi Farmasi',
     'farmasi_regulasi_subtitle' => 'Manajemen paket farmasi.',
     'farmasi_regulasi_menu' => 'Regulasi Farmasi',
+
+    // Restaurant Consumption
+    'restaurant_consumption_title' => 'Konsumsi Restoran',
+    'restaurant_consumption_subtitle' => 'Pencatatan konsumsi restoran dan status approval/pembayaran',
+    'restaurant_consumption_filter_title' => 'Filter Rentang Tanggal',
+    'restaurant_consumption_list_title' => 'Daftar Konsumsi Restoran',
+    'restaurant_consumption_add_button' => 'Input Konsumsi',
+    'restaurant_consumption_add_title' => 'Input Konsumsi Restoran',
+    'restaurant_consumption_settings' => 'Setting Restoran',
+    'restaurant_consumption_settings_coming_soon' => 'Halaman setting restoran belum tersedia.',
+
+    'restaurant_consumption_stat_packets' => 'Total Paket',
+    'restaurant_consumption_stat_subtotal' => 'Subtotal',
+    'restaurant_consumption_stat_tax' => 'Pajak',
+    'restaurant_consumption_stat_total' => 'Grand Total',
+
+    'restaurant_consumption_code' => 'Kode',
+    'restaurant_consumption_restaurant' => 'Restoran',
+    'restaurant_consumption_restaurant_placeholder' => '-- Pilih Restoran --',
+    'restaurant_consumption_recipient' => 'Penerima',
+    'restaurant_consumption_packets' => 'Jumlah Paket',
+    'restaurant_consumption_price_per_packet' => 'Harga/Paket',
+    'restaurant_consumption_subtotal' => 'Subtotal',
+    'restaurant_consumption_tax' => 'Pajak',
+    'restaurant_consumption_total' => 'Total',
+    'restaurant_consumption_ktp' => 'KTP',
+    'restaurant_consumption_ktp_upload' => 'Foto KTP Karyawan Restoran',
+    'restaurant_consumption_ktp_title' => 'KTP - :code',
+    'restaurant_consumption_notes_placeholder' => 'Catatan tambahan...',
+
+    'restaurant_consumption_submitted_by' => 'Diajukan oleh',
+    'restaurant_consumption_approved_by' => 'Approved by',
+    'restaurant_consumption_paid_by' => 'Paid by',
+
+    'restaurant_consumption_confirm_approve' => 'Setujui konsumsi ini?',
+    'restaurant_consumption_confirm_paid' => 'Tandai sebagai DIBAYAR?',
+    'restaurant_consumption_confirm_delete' => 'Yakin hapus data konsumsi ini? Data akan hilang permanen!',
+
+    'restaurant_consumption_saved' => 'Konsumsi berhasil dicatat.',
+    'restaurant_consumption_approved' => 'Konsumsi berhasil disetujui.',
+    'restaurant_consumption_paid' => 'Konsumsi berhasil ditandai LUNAS.',
+    'restaurant_consumption_not_found' => 'Data konsumsi tidak ditemukan.',
+    'restaurant_consumption_restaurant_inactive' => 'Restoran tidak aktif atau tidak ditemukan.',
+
+    // Restaurant Settings
+    'restaurant_settings_title' => 'Restaurant Settings',
+    'restaurant_settings_subtitle' => 'Kelola daftar restoran dan harga per paket',
+    'restaurant_settings_hint' => 'Hanya selain staff/manager yang dapat mengelola setting restoran.',
+    'restaurant_settings_back' => 'Kembali ke Konsumsi',
+
+    'restaurant_settings_add_title' => 'Tambah Restoran Baru',
+    'restaurant_settings_add_subtitle' => 'Tambahkan restoran untuk kebutuhan konsumsi',
+    'restaurant_settings_add_button' => 'Tambah Restoran',
+
+    'restaurant_settings_list_title' => 'Daftar Restoran',
+    'restaurant_settings_restaurant_name' => 'Nama Restoran',
+    'restaurant_settings_restaurant_name_placeholder' => 'Contoh: Up And Atom',
+    'restaurant_settings_price_per_packet' => 'Harga per Paket',
+    'restaurant_settings_tax_percentage' => 'Pajak (%)',
+    'restaurant_settings_created_at' => 'Dibuat',
+    'restaurant_settings_edit_title' => 'Edit Restoran',
+
+    'restaurant_settings_activate' => 'Aktifkan',
+    'restaurant_settings_deactivate' => 'Nonaktifkan',
+    'restaurant_settings_toggle_confirm' => 'Yakin ingin mengubah status restoran ini?',
+    'restaurant_settings_delete_confirm' => 'Yakin ingin menghapus restoran ini? Data tidak bisa dikembalikan!',
+
+    'restaurant_settings_created' => 'Restoran berhasil ditambahkan.',
+    'restaurant_settings_updated' => 'Restoran berhasil diperbarui.',
+    'restaurant_settings_toggled' => 'Status restoran berhasil diperbarui.',
+    'restaurant_settings_deleted' => 'Restoran berhasil dihapus.',
+    'restaurant_settings_not_found' => 'Restoran tidak ditemukan.',
 
     // Layanan Medis (EMS)
     'medis_services_menu' => 'Layanan Medis',
