@@ -130,7 +130,7 @@
         </div>
 
         @if(!$canInput && $nextEligible)
-            <p class="text-xs text-text-secondary" data-translate="operasi_plastik_next_date">
+            <p class="text-xs text-text-secondary">
                 {{ __('messages.operasi_plastik_next_date', ['date' => $nextEligible->locale(app()->getLocale())->translatedFormat('d M Y')]) }}
             </p>
         @endif
