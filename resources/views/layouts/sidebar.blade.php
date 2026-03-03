@@ -147,20 +147,30 @@
                 </p>
             </div>
 
-            <a href="{{ route('medis.ems') }}"
-               @click="window.innerWidth < 1024 && closeSidebar()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
-                      {{ request()->routeIs('medis.ems') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12.75l6 6 9-13.5"/>
-                </svg>
-                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="medis_services_menu">{{ __('messages.medis_services_menu') }}</span>
-            </a>
+	            <a href="{{ route('medis.ems') }}"
+	               @click="window.innerWidth < 1024 && closeSidebar()"
+	               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+	                      {{ request()->routeIs('medis.ems') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+	                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+	                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12.75l6 6 9-13.5"/>
+	                </svg>
+	                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="medis_services_menu">{{ __('messages.medis_services_menu') }}</span>
+	            </a>
 
-            @if(!$isStaffRole)
-                <a href="{{ route('medis.regulasi') }}"
+                <a href="{{ route('medis.operasi_plastik.index') }}"
                    @click="window.innerWidth < 1024 && closeSidebar()"
                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+                          {{ request()->routeIs('medis.operasi_plastik.*') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.656 0 3-1.567 3-3.5S13.656 4 12 4s-3 1.567-3 3.5S10.344 11 12 11zm7 9a7 7 0 00-14 0"/>
+                    </svg>
+                    <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="operasi_plastik_menu">{{ __('messages.operasi_plastik_menu') }}</span>
+                </a>
+
+	            @if(!$isStaffRole)
+	                <a href="{{ route('medis.regulasi') }}"
+	                   @click="window.innerWidth < 1024 && closeSidebar()"
+	                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
                           {{ request()->routeIs('medis.regulasi') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z"/>

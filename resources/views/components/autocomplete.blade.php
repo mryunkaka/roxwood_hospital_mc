@@ -1,6 +1,7 @@
 {{-- Autocomplete/Select Component --}}
 @props([
     'name' => null,
+    'displayName' => null,
     'label' => null,
     'placeholder' => 'Select an option',
     'options' => [],
@@ -9,6 +10,8 @@
     'disabled' => false,
     'searchable' => true,
     'clearable' => true,
+    'dropdownButton' => true,
+    'minChars' => 0,
     'error' => null,
     'class' => ''
 ])
@@ -40,21 +43,24 @@
     }
 @endphp
 
-<div class="w-full {{ $class }}" x-cloak x-data="{
+<div class="w-full {{ $class }}" x-cloak @click.outside="open = false" x-data="{
     open: false,
     search: '',
     selected: {{ $value ? json_encode($value) : 'null' }},
-    displayValue: {{ $initialLabel ? json_encode($initialLabel) : "''" }},
-    options: {{ $optionsJson }},
-    searchable: {{ $searchable ? 'true' : 'false' }},
-    disabled: {{ $disabled ? 'true' : 'false' }},
+	displayValue: {{ $initialLabel ? json_encode($initialLabel) : "''" }},
+	options: {{ $optionsJson }},
+	searchable: {{ $searchable ? 'true' : 'false' }},
+	disabled: {{ $disabled ? 'true' : 'false' }},
+    minChars: {{ (int) $minChars }},
 
-    get visibleOptions() {
-        if (!this.searchable || !this.search) return this.options;
-        return this.options.filter(o =>
-            o.label.toLowerCase().includes(this.search.toLowerCase())
-        );
-    },
+	get visibleOptions() {
+	    if (!this.searchable) return this.options;
+        if (this.minChars > 0 && (!this.search || String(this.search).length < this.minChars)) return [];
+        if (!this.search) return this.options;
+	    return this.options.filter(o =>
+	        o.label.toLowerCase().includes(this.search.toLowerCase())
+	    );
+	},
 
     get selectedLabel() {
         if (!this.selected) return '';
@@ -67,7 +73,7 @@
         this.displayValue = label;
         this.open = false;
         this.search = '';
-        this.$refs.input.dispatchEvent(new Event('change'));
+        (this.$refs.hidden || this.$refs.input).dispatchEvent(new Event('change'));
     },
 
     clear() {
@@ -91,19 +97,20 @@
     @endif
 
     <div class="relative">
-        {{-- Input Field --}}
-        <div class="relative">
-            <input
-                id="{{ $componentId }}"
-                @if($name) name="{{ $name }}" @endif
-                type="text"
-                x-model="displayValue"
-                @focus="open = true"
-                @input="search = $event.target.value"
+	        {{-- Input Field --}}
+	        <div class="relative">
+	            <input
+	                id="{{ $componentId }}"
+                    @if($displayName) name="{{ $displayName }}" @endif
+	                type="text"
+	                x-model="displayValue"
+	                @focus="open = true"
+	                @click="open = true"
+	                @input="open = true; search = $event.target.value"
                 placeholder="{{ $placeholder }}"
                 @if($required) required @endif
                 @if($disabled) disabled @endif
-                readonly="{{ !$searchable ? 'true' : 'false' }}"
+                x-bind:readonly="!searchable"
                 x-ref="input"
                 class="w-full appearance-none rounded-xl border px-4 pr-10 py-3 text-sm outline-none transition-all duration-200
                        bg-surface border-border text-text-primary placeholder:text-text-hint
@@ -116,7 +123,7 @@
             />
 
             {{-- Dropdown Arrow --}}
-            @if(!$disabled)
+            @if(!$disabled && $dropdownButton)
                 <button
                     @click="toggle()"
                     type="button"
@@ -151,16 +158,15 @@
         @endif
 
         {{-- Dropdown List --}}
-        <div x-show="open"
+        <div x-show="open && (!searchable || minChars <= 0 || (search && String(search).length >= minChars))"
              x-transition:enter="transition ease-out duration-200"
              x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
              x-transition:enter-end="opacity-100 scale-100 translate-y-0"
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100 scale-100 translate-y-0"
              x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
-             @click.away="open = false"
              class="absolute z-50 w-full mt-1 max-h-60 overflow-auto rounded-xl shadow-xl
-                    bg-surface border-border
+                    bg-surface border border-border
                     theme-dark:bg-slate-700 theme-dark:border-slate-600
                     theme-stylis:bg-white/95 theme-stylis:border-teal-200 theme-stylis:backdrop-blur-xl
                     py-1"
@@ -182,16 +188,20 @@
                             </svg>
                     </div>
                 </template>
+
+                <div x-show="visibleOptions.length === 0" class="px-4 py-3 text-sm text-text-secondary text-center">
+                    {{ __('messages.no_results') }}
+                </div>
             @else
                 <div class="px-4 py-3 text-sm text-text-secondary text-center">
-                    No options available
+                    {{ __('messages.no_data') }}
                 </div>
             @endif
         </div>
 
         {{-- Hidden Input for Form Submission --}}
         @if($name)
-            <input type="hidden" name="{{ $name }}" x-model="selected">
+            <input type="hidden" name="{{ $name }}" x-model="selected" x-ref="hidden">
         @endif
     </div>
 </div>

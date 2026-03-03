@@ -12,6 +12,9 @@ class MedicOperasiPlastik extends Model
 
     protected $table = 'medic_operasi_plastik';
 
+    // Table uses only `created_at` (no `updated_at`).
+    public const UPDATED_AT = null;
+
     protected $fillable = [
         'id_user',
         'tanggal',

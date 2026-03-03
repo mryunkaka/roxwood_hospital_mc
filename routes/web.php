@@ -17,6 +17,7 @@ use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\ReimbursementController;
 use App\Http\Controllers\RestaurantConsumptionController;
 use App\Http\Controllers\RestaurantSettingsController;
+use App\Http\Controllers\OperasiPlastikController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,12 @@ Route::middleware(['auth'])->group(function () {
 	    Route::delete('/layanan-medis/sales', [EmsServicesController::class, 'bulkDestroy'])->name('medis.ems.sales.bulk_destroy');
 	    Route::delete('/layanan-medis/sales/{sale}', [EmsServicesController::class, 'destroy'])->name('medis.ems.sales.destroy');
 	    Route::post('/api/medis/preview-price', [EmsServicesController::class, 'previewPrice'])->name('api.medis.preview_price');
+
+        // Operasi Plastik (Medis)
+        Route::get('/operasi-plastik', [OperasiPlastikController::class, 'index'])->name('medis.operasi_plastik.index');
+        Route::post('/operasi-plastik', [OperasiPlastikController::class, 'store'])->name('medis.operasi_plastik.store');
+        Route::post('/operasi-plastik/{operasi}/approve', [OperasiPlastikController::class, 'approve'])->name('medis.operasi_plastik.approve');
+        Route::post('/operasi-plastik/{operasi}/reject', [OperasiPlastikController::class, 'reject'])->name('medis.operasi_plastik.reject');
 
 	// Regulasi EMS (Non-staff)
 	Route::get('/regulasi', [RegulasiController::class, 'medis'])->name('medis.regulasi');

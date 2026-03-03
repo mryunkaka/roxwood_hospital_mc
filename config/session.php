@@ -81,7 +81,28 @@ return [
     |
     */
 
-    'files' => storage_path('framework/sessions'),
+    'files' => (static function (): string {
+        $preferred = (string) env('SESSION_FILES', '');
+        $default = storage_path('framework/sessions');
+        $fallback = storage_path('framework/sessions_runtime');
+
+        $candidates = array_values(array_filter([
+            $preferred !== '' ? $preferred : null,
+            $default,
+            $fallback,
+        ]));
+
+        foreach ($candidates as $path) {
+            if (!is_dir($path)) {
+                @mkdir($path, 0775, true);
+            }
+            if (is_dir($path) && is_readable($path) && is_writable($path)) {
+                return $path;
+            }
+        }
+
+        return $default;
+    })(),
 
     /*
     |--------------------------------------------------------------------------
