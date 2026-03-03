@@ -34,7 +34,7 @@
             type="button"
             x-data="{ signatureType: 'digital' }"
             @click="signatureType = 'digital'; $dispatch('signature-type-changed', { type: 'digital' })"
-            class="signature-type-btn flex-1 px-4 py-2 text-sm font-medium transition-colors border-b-2"
+            class="signature-type-btn flex-1 px-4 py-2 text-sm font-medium cursor-pointer transition-colors border-b-2 bg-surface hover:bg-surface-hover"
             :class="signatureType === 'digital' ? 'border-primary-500 text-primary-500 bg-primary-50' : 'border-transparent text-text-secondary hover:text-text-primary'"
             data-type="digital"
         >
@@ -47,7 +47,7 @@
             type="button"
             x-data="{ signatureType: 'upload' }"
             @click="signatureType = 'upload'; $dispatch('signature-type-changed', { type: 'upload' })"
-            class="signature-type-btn flex-1 px-4 py-2 text-sm font-medium transition-colors border-b-2"
+            class="signature-type-btn flex-1 px-4 py-2 text-sm font-medium cursor-pointer transition-colors border-b-2 bg-surface hover:bg-surface-hover"
             :class="signatureType === 'upload' ? 'border-primary-500 text-primary-500 bg-primary-50' : 'border-transparent text-text-secondary hover:text-text-primary'"
             data-type="upload"
         >
@@ -69,16 +69,12 @@
             height="200"
         ></canvas>
         <input type="hidden" name="{{ $name }}_data" id="{{ $name }}_data" {{ $isRequired }}>
-        <button
-            type="button"
-            id="{{ $name }}_clear"
-            class="mt-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
-        >
+        <x-button type="button" variant="secondary" size="sm" id="{{ $name }}_clear" class="mt-2">
             <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
             <span data-translate="signature_clear">{{ __('messages.signature_clear') }}</span>
-        </button>
+        </x-button>
     </div>
 
     {{-- Upload File Option --}}

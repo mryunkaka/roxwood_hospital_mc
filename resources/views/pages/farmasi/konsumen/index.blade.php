@@ -23,15 +23,133 @@
         </h3>
     </div>
 
-    <form method="get" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end" x-data="{ range: @js($range) }">
-        <div class="md:col-span-3">
-            <x-input
-                name="q"
-                :label="__('messages.search')"
-                dataTranslateLabel="search"
-                :placeholder="__('messages.farmasi_konsumen_search_placeholder')"
-                :value="$q"
-            />
+    <form
+        method="get"
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
+        x-data="(() => ({
+            range: @js($range),
+            ...konsumenSearch({
+                consumerUrl: @js(route('api.farmasi.consumers.search')),
+                medicUrl: @js(route('api.users.search')),
+                old: {
+                    consumer: @js($consumer ?? ''),
+                    medic: @js($medic ?? ''),
+                },
+            })
+        }))()"
+    >
+        {{-- Legacy query param (optional) --}}
+        <input type="hidden" name="q" value="{{ $q ?? '' }}">
+
+        <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="relative" @click.outside="consumerOpen = false">
+                <label class="block text-sm font-medium text-text-primary mb-1.5" data-translate="konsumen_search_consumer">
+                    {{ __('messages.konsumen_search_consumer') }}
+                </label>
+
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input
+                        type="text"
+                        name="consumer"
+                        class="w-full pl-9 pr-4 py-3 rounded-xl bg-surface border border-border focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all text-sm placeholder:text-text-hint"
+                        :placeholder="t('konsumen_search_consumer_placeholder', '{{ __('messages.konsumen_search_consumer_placeholder') }}')"
+                        data-translate-placeholder="konsumen_search_consumer_placeholder"
+                        x-model.trim="consumerQuery"
+                        @input.debounce.200ms="searchConsumer()"
+                        @focus="consumerOpen = consumerResults.length > 0"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div
+                    x-show="consumerOpen"
+                    x-transition
+                    x-cloak
+                    class="absolute z-50 w-full mt-2 max-h-72 overflow-auto rounded-xl border border-border bg-surface shadow-lg"
+                >
+                    <template x-if="consumerLoading">
+                        <div class="px-4 py-3 text-sm text-text-secondary" data-translate="loading">
+                            {{ __('messages.loading') }}
+                        </div>
+                    </template>
+
+                    <template x-if="!consumerLoading && consumerResults.length === 0">
+                        <div class="px-4 py-3 text-sm text-text-secondary" data-translate="no_data">
+                            {{ __('messages.no_data') }}
+                        </div>
+                    </template>
+
+                    <template x-for="item in consumerResults" :key="item.name">
+                        <button
+                            type="button"
+                            class="w-full text-left px-4 py-3 border-b border-border last:border-b-0 hover:bg-surface-hover transition-colors"
+                            @click="selectConsumer(item.name)"
+                        >
+                            <div class="font-semibold text-text-primary" x-text="item.name"></div>
+                            <div class="text-xs text-text-secondary">
+                                <span x-text="item.total_transactions"></span>
+                                <span data-translate="farmasi_total_transactions">{{ __('messages.farmasi_total_transactions') }}</span>
+                            </div>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <div class="relative" @click.outside="medicOpen = false">
+                <label class="block text-sm font-medium text-text-primary mb-1.5" data-translate="konsumen_search_medic">
+                    {{ __('messages.konsumen_search_medic') }}
+                </label>
+
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <input
+                        type="text"
+                        name="medic"
+                        class="w-full pl-9 pr-4 py-3 rounded-xl bg-surface border border-border focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all text-sm placeholder:text-text-hint"
+                        :placeholder="t('konsumen_search_medic_placeholder', '{{ __('messages.konsumen_search_medic_placeholder') }}')"
+                        data-translate-placeholder="konsumen_search_medic_placeholder"
+                        x-model.trim="medicQuery"
+                        @input.debounce.200ms="searchMedic()"
+                        @focus="medicOpen = medicResults.length > 0"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div
+                    x-show="medicOpen"
+                    x-transition
+                    x-cloak
+                    class="absolute z-50 w-full mt-2 max-h-72 overflow-auto rounded-xl border border-border bg-surface shadow-lg"
+                >
+                    <template x-if="medicLoading">
+                        <div class="px-4 py-3 text-sm text-text-secondary" data-translate="loading">
+                            {{ __('messages.loading') }}
+                        </div>
+                    </template>
+
+                    <template x-if="!medicLoading && medicResults.length === 0">
+                        <div class="px-4 py-3 text-sm text-text-secondary" data-translate="no_data">
+                            {{ __('messages.no_data') }}
+                        </div>
+                    </template>
+
+                    <template x-for="u in medicResults" :key="u.id">
+                        <button
+                            type="button"
+                            class="w-full text-left px-4 py-3 border-b border-border last:border-b-0 hover:bg-surface-hover transition-colors"
+                            @click="selectMedic(u.full_name)"
+                        >
+                            <div class="font-semibold text-text-primary" x-text="u.full_name"></div>
+                            <div class="text-xs text-text-secondary" x-text="u.position"></div>
+                        </button>
+                    </template>
+                </div>
+            </div>
         </div>
 
         <div>
@@ -62,31 +180,25 @@
             <x-input type="date" name="to" :label="__('messages.range_to')" dataTranslateLabel="range_to" :value="$toInput" />
         </div>
 
-        <div class="md:col-span-3 flex items-center gap-2">
-            @if($showAll)
-                <input type="hidden" name="show_all" value="1">
-            @endif
-            <x-button type="submit" variant="secondary">
-                <span data-translate="apply_filter">{{ __('messages.apply_filter') }}</span>
-            </x-button>
+        <div class="md:col-span-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <x-button type="submit" variant="primary">
+                    <span data-translate="search">{{ __('messages.search') }}</span>
+                </x-button>
+                <p class="text-sm text-text-secondary" data-translate="konsumen_search_hint">
+                    {{ __('messages.konsumen_search_hint') }}
+                </p>
+            </div>
 
-            @if($canShowAll)
-                <a href="{{ route('farmasi.konsumen', array_merge(request()->except('show_all'), ['show_all' => $showAll ? null : 1])) }}"
-                   class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-semibold border border-border bg-surface hover:bg-surface-hover transition-colors">
-                    <span data-translate="{{ $showAll ? 'farmasi_show_mine' : 'farmasi_show_all' }}">
-                        {{ $showAll ? __('messages.farmasi_show_mine') : __('messages.farmasi_show_all') }}
-                    </span>
-                </a>
-            @endif
+            <p class="text-sm text-text-secondary">
+                <span data-translate="farmasi_active_range">{{ __('messages.farmasi_active_range') }}</span>:
+                <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
+            </p>
         </div>
     </form>
-
-    <p class="text-sm text-text-secondary mt-4">
-        <span data-translate="farmasi_active_range">{{ __('messages.farmasi_active_range') }}</span>:
-        <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
-    </p>
 </x-card>
 
+@if(!empty($hasSearch))
 <x-card>
     <div class="flex items-center gap-2 mb-4">
         <svg class="w-5 h-5 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -347,5 +459,6 @@
         </x-modal>
     </div>
 </x-card>
+@endif
 
 @endsection

@@ -21,7 +21,7 @@
     $alertClass = 'alert-' . $type;
 
     // Close button styles
-    $closeButtonClass = 'flex-shrink-0 p-1.5 rounded-md transition-all duration-200 hover:bg-black/10 active:bg-black/15 ' .
+    $closeButtonClass = 'flex-shrink-0 p-1.5 rounded-md bg-surface-alt border border-border cursor-pointer transition-all duration-200 hover:bg-black/10 active:bg-black/15 ' .
                         'theme-dark:hover:bg-white/10 theme-dark:active:bg-white/15';
 @endphp
 

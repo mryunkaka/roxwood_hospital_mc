@@ -13,15 +13,15 @@
 @php
 	    $variantClasses = [
 	        'primary' => 'bg-primary text-white hover:bg-primary-dark focus:ring-primary/50 active:bg-primary-dark',
-	        'secondary' => 'bg-surface text-text-primary border border-border hover:bg-surface-hover hover:border-border-medium ' .
+	        'secondary' => 'bg-surface-alt text-text-primary border border-border hover:bg-surface-hover hover:border-border-medium shadow-xs ' .
 	                       'theme-stylis:bg-white/95 theme-stylis:hover:bg-white theme-stylis:border-teal-300/70 theme-stylis:hover:border-teal-400/80 ' .
 	                       'theme-stylis.theme-dark:bg-slate-800/95 theme-stylis.theme-dark:hover:bg-slate-800 theme-stylis.theme-dark:border-teal-700/40 theme-stylis.theme-dark:hover:border-teal-600/50',
 	        'success' => 'bg-success text-white hover:bg-success-600 focus:ring-success/50',
 	        'danger' => 'bg-danger text-white hover:bg-danger-600 focus:ring-danger/50',
 	        'warning' => 'bg-warning text-white hover:bg-warning-600 focus:ring-warning/50',
 	        'info' => 'bg-info text-white hover:bg-info-600 focus:ring-info/50',
-        'ghost' => 'bg-transparent text-text-primary hover:bg-surface-hover',
-        'link' => 'bg-transparent text-primary hover:text-primary-dark hover:underline p-0',
+        'ghost' => 'bg-surface-alt text-text-primary border border-border hover:bg-surface-hover',
+        'link' => 'bg-surface-alt text-primary border border-border hover:bg-surface-hover hover:text-primary-dark',
     ];
     $sizeClasses = [
         'xs' => 'px-3 py-1.5 text-xs',
@@ -38,15 +38,12 @@
 
     // Rounded class - more rounded untuk modern look
     $roundedClass = 'rounded-xl';
-    if ($variant === 'link') {
-        $roundedClass = '';
-    }
 @endphp
 
 <button {{ $attributes->merge([
     'type' => $type,
     'disabled' => $disabled,
-    'class' => 'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-50 disabled:pointer-events-none ' .
+    'class' => 'inline-flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none ' .
                  $variantClasses[$variant] . ' ' .
                  $sizeClasses[$size] . ' ' .
                  $roundedClass . ' ' .

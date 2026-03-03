@@ -33,7 +33,7 @@
 
         {{-- Close Button (Mobile Only) --}}
         <button @click="closeSidebar()"
-                class="lg:hidden p-2 rounded-xl hover:bg-surface-hover transition-colors text-text-secondary">
+                class="lg:hidden p-2 rounded-xl bg-surface-alt border border-border cursor-pointer hover:bg-surface-hover transition-colors text-text-secondary">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
@@ -116,6 +116,17 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-10V6m0 12v-2m9-4a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="farmasi_gaji_menu">{{ __('messages.farmasi_gaji_menu') }}</span>
+            </a>
+
+            {{-- Reimbursement Link --}}
+            <a href="{{ route('reimbursement.index') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+                      {{ request()->routeIs('reimbursement.*') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l2-2 4 4m0 0l2-2m-2 2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-1"/>
+                </svg>
+                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="reimbursement_menu">{{ __('messages.reimbursement_menu') }}</span>
             </a>
 
             {{-- Group: Medis --}}

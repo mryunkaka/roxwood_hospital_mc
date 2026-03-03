@@ -403,7 +403,7 @@
                         <h3 class="text-lg font-semibold text-text-primary" data-translate="farmasi_merge_modal_title">
                             {{ __('messages.farmasi_merge_modal_title') }}
                         </h3>
-                        <button type="button" class="p-2 rounded-xl hover:bg-surface-hover transition-colors" @click="closeMergeModal()" aria-label="Close">
+                        <button type="button" class="p-2 rounded-xl bg-surface-alt border border-border cursor-pointer hover:bg-surface-hover transition-colors" @click="closeMergeModal()" aria-label="Close">
                             <svg class="w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
@@ -429,7 +429,7 @@
                                         <p class="text-sm font-medium text-text-primary truncate" x-text="m.name"></p>
                                         <p class="text-xs text-text-tertiary" x-text="m.score + '%'"></p>
                                     </div>
-                                    <button type="button" class="p-2 rounded-lg hover:bg-surface-hover transition-colors" @click="removeMergeTarget(m.name)" aria-label="Remove">
+                                    <button type="button" class="p-2 rounded-lg bg-surface-alt border border-border cursor-pointer hover:bg-surface-hover transition-colors" @click="removeMergeTarget(m.name)" aria-label="Remove">
                                         <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                         </svg>
@@ -536,27 +536,29 @@
             <x-input type="date" name="to" :label="__('messages.range_to')" dataTranslateLabel="range_to" :value="$toInput" />
         </div>
 
-        <div class="md:col-span-3 flex items-center gap-2">
-            @if($showAll)
-                <input type="hidden" name="show_all" value="1">
-            @endif
-            <x-button type="submit" variant="secondary">
-                <span data-translate="apply_filter">{{ __('messages.apply_filter') }}</span>
-            </x-button>
+        <div class="md:col-span-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-2">
+                @if($showAll)
+                    <input type="hidden" name="show_all" value="1">
+                @endif
+                <x-button type="submit" variant="secondary">
+                    <span data-translate="apply_filter">{{ __('messages.apply_filter') }}</span>
+                </x-button>
 
             <a href="{{ route('farmasi.rekap', array_merge(request()->except('show_all'), ['show_all' => $showAll ? null : 1])) }}"
-               class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-semibold border border-border bg-surface hover:bg-surface-hover transition-colors">
+               class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-semibold border border-border bg-surface-alt hover:bg-surface-hover transition-colors shadow-xs">
                 <span data-translate="{{ $showAll ? 'farmasi_show_mine' : 'farmasi_show_all' }}">
                     {{ $showAll ? __('messages.farmasi_show_mine') : __('messages.farmasi_show_all') }}
                 </span>
             </a>
+            </div>
+
+            <p class="text-sm text-text-secondary">
+                <span data-translate="farmasi_active_range">{{ __('messages.farmasi_active_range') }}</span>:
+                <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
+            </p>
         </div>
     </form>
-
-    <p class="text-sm text-text-secondary mt-4">
-        <span data-translate="farmasi_active_range">{{ __('messages.farmasi_active_range') }}</span>:
-        <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
-    </p>
 </x-card>
 
 <x-card>

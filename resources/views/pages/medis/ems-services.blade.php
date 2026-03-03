@@ -283,29 +283,31 @@
             <x-input type="date" name="to" :label="__('messages.range_to')" dataTranslateLabel="range_to" :value="$toInput" />
         </div>
 
-        <div class="md:col-span-3 flex items-center gap-2">
-            @if($showAll)
-                <input type="hidden" name="show_all" value="1">
-            @endif
-            <x-button type="submit" variant="secondary">
-                <span data-translate="apply_filter">{{ __('messages.apply_filter') }}</span>
-            </x-button>
+        <div class="md:col-span-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-2">
+                @if($showAll)
+                    <input type="hidden" name="show_all" value="1">
+                @endif
+                <x-button type="submit" variant="secondary">
+                    <span data-translate="apply_filter">{{ __('messages.apply_filter') }}</span>
+                </x-button>
 
-            @if($canShowAll)
+                @if($canShowAll)
                 <a href="{{ route('medis.ems', array_merge(request()->except('show_all'), ['show_all' => $showAll ? null : 1])) }}"
-                   class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-semibold border border-border bg-surface hover:bg-surface-hover transition-colors">
+                   class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-semibold border border-border bg-surface-alt hover:bg-surface-hover transition-colors shadow-xs">
                     <span data-translate="{{ $showAll ? 'medis_show_mine' : 'medis_show_all' }}">
                         {{ $showAll ? __('messages.medis_show_mine') : __('messages.medis_show_all') }}
                     </span>
                 </a>
-            @endif
+                @endif
+            </div>
+
+            <p class="text-sm text-text-secondary">
+                <span data-translate="medis_active_range">{{ __('messages.medis_active_range') }}</span>:
+                <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
+            </p>
         </div>
     </form>
-
-    <p class="text-sm text-text-secondary mt-4">
-        <span data-translate="medis_active_range">{{ __('messages.medis_active_range') }}</span>:
-        <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
-    </p>
 </x-card>
 
 <x-card class="mb-6">

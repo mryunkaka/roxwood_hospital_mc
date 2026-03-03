@@ -189,5 +189,137 @@ window.konsumenTable = function konsumenTable(config) {
         };
     }
 
+  window.konsumenSearch = function konsumenSearch(config) {
+    const toInt = (v) => {
+      const n = Number.parseInt(v ?? 0, 10);
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    const consumerUrl = String(config?.consumerUrl || "");
+    const medicUrl = String(config?.medicUrl || "");
+
+    const t = (key, fallback) => {
+      const table = window.globalLangState?.translations || {};
+      return table?.[key] || fallback || "";
+    };
+
+    const norm = (v) => String(v ?? "").trim();
+
+    return {
+      consumerUrl,
+      medicUrl,
+
+      consumerQuery: norm(config?.old?.consumer || ""),
+      medicQuery: norm(config?.old?.medic || ""),
+
+      consumerResults: [],
+      medicResults: [],
+
+      consumerOpen: false,
+      medicOpen: false,
+
+      consumerLoading: false,
+      medicLoading: false,
+
+      _consumerAbort: null,
+      _medicAbort: null,
+
+      t,
+
+      init() {
+        const sync = () => {
+          /* no-op: kept for future language-specific formatting */
+        };
+        sync();
+        window.addEventListener("language-changed", () => sync());
+      },
+
+      async searchConsumer() {
+        const q = norm(this.consumerQuery);
+        if (q.length < 2 || !this.consumerUrl) {
+          this.consumerResults = [];
+          this.consumerOpen = false;
+          this.consumerLoading = false;
+          return;
+        }
+
+        if (this._consumerAbort) this._consumerAbort.abort();
+        this._consumerAbort = new AbortController();
+
+        this.consumerLoading = true;
+        this.consumerOpen = true;
+
+        try {
+          const res = await fetch(this.consumerUrl + "?q=" + encodeURIComponent(q), {
+            method: "GET",
+            headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" },
+            cache: "no-store",
+            signal: this._consumerAbort.signal,
+          });
+          const json = await res.json().catch(() => null);
+          const list = Array.isArray(json?.results) ? json.results : [];
+          this.consumerResults = list
+            .map((r) => ({
+              name: String(r?.name || ""),
+              total_transactions: toInt(r?.total_transactions),
+            }))
+            .filter((r) => r.name);
+        } catch {
+          this.consumerResults = [];
+        } finally {
+          this.consumerLoading = false;
+        }
+      },
+
+      selectConsumer(name) {
+        this.consumerQuery = String(name || "");
+        this.consumerOpen = false;
+      },
+
+      async searchMedic() {
+        const q = norm(this.medicQuery);
+        if (q.length < 2 || !this.medicUrl) {
+          this.medicResults = [];
+          this.medicOpen = false;
+          this.medicLoading = false;
+          return;
+        }
+
+        if (this._medicAbort) this._medicAbort.abort();
+        this._medicAbort = new AbortController();
+
+        this.medicLoading = true;
+        this.medicOpen = true;
+
+        try {
+          const res = await fetch(this.medicUrl + "?q=" + encodeURIComponent(q), {
+            method: "GET",
+            headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" },
+            cache: "no-store",
+            signal: this._medicAbort.signal,
+          });
+          const json = await res.json().catch(() => null);
+          const list = Array.isArray(json?.results) ? json.results : [];
+          this.medicResults = list
+            .map((u) => ({
+              id: toInt(u?.id),
+              full_name: String(u?.full_name || ""),
+              position: String(u?.position || ""),
+            }))
+            .filter((u) => u.id > 0 && u.full_name);
+        } catch {
+          this.medicResults = [];
+        } finally {
+          this.medicLoading = false;
+        }
+      },
+
+      selectMedic(name) {
+        this.medicQuery = String(name || "");
+        this.medicOpen = false;
+      },
+    };
+  };
+
 }
 

@@ -33,7 +33,7 @@
                      'theme-stylis:border-teal-200/50 ' .
                      'theme-stylis.theme-dark:border-teal-700/30';
 
-	    $closeButtonClasses = 'p-2 rounded-xl hover:bg-surface-hover transition-all duration-200 ' .
+	    $closeButtonClasses = 'p-2 rounded-xl bg-surface-alt border border-border cursor-pointer hover:bg-surface-hover transition-all duration-200 ' .
 	                          'hover:scale-110 active:scale-95 ' .
 	                          'theme-stylis:hover:bg-black/5 ' .
 	                          'theme-dark:hover:bg-white/10';

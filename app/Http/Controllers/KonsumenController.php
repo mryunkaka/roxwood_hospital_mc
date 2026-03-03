@@ -103,45 +103,50 @@ class KonsumenController extends Controller
         [$range, $start, $end, $rangeLabel, $weeks, $fromInput, $toInput] = $this->resolveRange($request);
 
         $q = trim((string) $request->query('q', ''));
+        $consumer = trim((string) $request->query('consumer', ''));
+        $medic = trim((string) $request->query('medic', ''));
 
-        $roleNorm = Str::of((string) ($user['role'] ?? ''))->lower();
-        $canShowAll = $roleNorm->contains('manager') || $roleNorm->contains('director');
-        $showAll = $canShowAll && $request->boolean('show_all');
+        $hasSearch = (mb_strlen($consumer) >= 2) || (mb_strlen($medic) >= 2) || (mb_strlen($q) >= 2);
 
-        $query = DB::table('sales as s')
-            ->leftJoin('identity_master as im', 'im.id', '=', 's.identity_id')
-            ->whereBetween('s.created_at', [$start, $end]);
+        $rows = collect();
+        if ($hasSearch) {
+            $query = DB::table('sales as s')
+                ->leftJoin('identity_master as im', 'im.id', '=', 's.identity_id')
+                ->whereBetween('s.created_at', [$start, $end]);
 
-        if (!$showAll) {
-            $query->where('s.medic_user_id', (int) ($user['id'] ?? 0));
+            if ($consumer !== '') {
+                $query->where('s.consumer_name', 'like', '%' . $consumer . '%');
+            }
+            if ($medic !== '') {
+                $query->where('s.medic_name', 'like', '%' . $medic . '%');
+            }
+            if ($q !== '') {
+                $query->where(function ($w) use ($q) {
+                    $like = '%' . $q . '%';
+                    $w->where('s.consumer_name', 'like', $like)
+                        ->orWhere('im.citizen_id', 'like', $like)
+                        ->orWhere('s.medic_name', 'like', $like);
+                });
+            }
+
+            $rows = $query
+                ->select([
+                    's.id',
+                    's.created_at',
+                    's.consumer_name',
+                    's.medic_name',
+                    's.medic_jabatan',
+                    's.qty_bandage',
+                    's.qty_ifaks',
+                    's.qty_painkiller',
+                    's.price',
+                    's.identity_id',
+                    'im.citizen_id',
+                ])
+                ->orderByDesc('s.created_at')
+                ->limit(250)
+                ->get();
         }
-
-        if ($q !== '') {
-            $query->where(function ($w) use ($q) {
-                $like = '%' . $q . '%';
-                $w->where('s.consumer_name', 'like', $like)
-                    ->orWhere('im.citizen_id', 'like', $like)
-                    ->orWhere('s.medic_name', 'like', $like);
-            });
-        }
-
-        $rows = $query
-            ->select([
-                's.id',
-                's.created_at',
-                's.consumer_name',
-                's.medic_name',
-                's.medic_jabatan',
-                's.qty_bandage',
-                's.qty_ifaks',
-                's.qty_painkiller',
-                's.price',
-                's.identity_id',
-                'im.citizen_id',
-            ])
-            ->orderByDesc('s.created_at')
-            ->limit(200)
-            ->get();
 
         $totals = [
             'bandage' => 0,
@@ -169,8 +174,9 @@ class KonsumenController extends Controller
             'fromInput' => $fromInput,
             'toInput' => $toInput,
             'q' => $q,
-            'showAll' => $showAll,
-            'canShowAll' => $canShowAll,
+            'consumer' => $consumer,
+            'medic' => $medic,
+            'hasSearch' => $hasSearch,
             'rows' => $rows,
             'totals' => $totals,
         ]);
@@ -211,4 +217,3 @@ class KonsumenController extends Controller
         ]);
     }
 }
-

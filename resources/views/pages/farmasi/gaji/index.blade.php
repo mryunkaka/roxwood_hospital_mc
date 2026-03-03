@@ -98,17 +98,19 @@
                 <x-input type="date" name="to" :label="__('messages.range_to')" dataTranslateLabel="range_to" :value="$toInput" />
             </div>
 
-            <div class="md:col-span-3 flex items-center gap-2">
-                <x-button type="submit" variant="secondary">
-                    <span data-translate="apply_filter">{{ __('messages.apply_filter') }}</span>
-                </x-button>
+            <div class="md:col-span-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <x-button type="submit" variant="secondary">
+                        <span data-translate="apply_filter">{{ __('messages.apply_filter') }}</span>
+                    </x-button>
+                </div>
+
+                <p class="text-sm text-text-secondary">
+                    <span data-translate="farmasi_active_range">{{ __('messages.farmasi_active_range') }}</span>:
+                    <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
+                </p>
             </div>
         </form>
-
-        <p class="text-sm text-text-secondary mt-4">
-            <span data-translate="farmasi_active_range">{{ __('messages.farmasi_active_range') }}</span>:
-            <span class="font-semibold text-text-primary">{{ $rangeLabel }}</span>
-        </p>
     </x-card>
 
     <x-card class="mb-6" title="{{ __('messages.salary_summary_title') }}" subtitle="{{ __('messages.salary_summary_subtitle') }}">

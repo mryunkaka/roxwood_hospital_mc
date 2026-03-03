@@ -14,6 +14,7 @@ use App\Http\Controllers\GajiController;
 use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\ValidasiController;
 use App\Http\Controllers\ManageUsersController;
+use App\Http\Controllers\ReimbursementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +116,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::patch('/settings/account', [SettingsController::class, 'updateAccount'])->name('settings.account.update');
     Route::patch('/settings/web', [SettingsController::class, 'updateWeb'])->name('settings.web.update');
+
+    // Reimbursement
+    Route::get('/reimbursement', [ReimbursementController::class, 'index'])->name('reimbursement.index');
+    Route::post('/reimbursement', [ReimbursementController::class, 'store'])->name('reimbursement.store');
+    Route::post('/reimbursement/pay', [ReimbursementController::class, 'pay'])->name('reimbursement.pay');
+    Route::post('/reimbursement/delete', [ReimbursementController::class, 'destroy'])->name('reimbursement.delete');
+    Route::get('/reimbursement/receipt/{code}', [ReimbursementController::class, 'receipt'])->name('reimbursement.receipt');
 
 });
 
