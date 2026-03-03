@@ -1112,6 +1112,7 @@ class AuthController extends Controller
                 ->where('user_id', $userId)
                 ->delete();
             Cache::forget('farmasi_session_device:' . $sessionId);
+            Cache::forget('forced_logout:' . $sessionId);
         }
 
         // Clear session
@@ -1145,6 +1146,26 @@ class AuthController extends Controller
             return response()->json(['valid' => false, 'reason' => 'missing'], 401);
         }
 
+        // If this session has been explicitly invalidated due to force login on another device, logout immediately.
+        // IMPORTANT: do this before DB auto-recovery to avoid old devices "reviving" the session.
+        if ($sessionId) {
+            $forcedLogout = Cache::get('forced_logout:' . $sessionId);
+            if (is_array($forcedLogout) && !empty($forcedLogout)) {
+                Session::forget('user');
+                Session::forget('logged_in_at');
+                Session::forget('expires_at');
+                Session::forget('farmasi_session_id');
+                Cache::forget('forced_logout:' . $sessionId);
+
+                return response()->json([
+                    'valid' => false,
+                    'reason' => 'force_offline',
+                    'forced_by_device' => $forcedLogout['forced_by_device'] ?? null,
+                    'ended_at' => $forcedLogout['ended_at'] ?? null,
+                ], 401);
+            }
+        }
+
         try {
             $expiryDate = \Carbon\Carbon::parse($expiresAt);
         } catch (\Throwable $e) {
@@ -1166,10 +1187,15 @@ class AuthController extends Controller
             return response()->json(['valid' => true, 'db' => false]);
         }
 
-        $exists = UserFarmasiSession::where('id', $sessionId)
-            ->where('user_id', $userId)
-            ->whereNull('session_end')
-            ->exists();
+        try {
+            $exists = UserFarmasiSession::where('id', $sessionId)
+                ->where('user_id', $userId)
+                ->whereNull('session_end')
+                ->exists();
+        } catch (\Throwable $e) {
+            // Do not force logout on transient DB issues.
+            return response()->json(['valid' => true, 'db' => false]);
+        }
 
         if (!$exists) {
             /**
