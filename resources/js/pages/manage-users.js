@@ -17,10 +17,8 @@ window.manageUsersPage = function manageUsersPage(config) {
 
     const urlWithId = (template, id) => {
         const t = String(template || '');
-        if (t.match(/\/0(\?|$)/)) {
-            return t.replace(/\/0(\?|$)/, '/' + String(id) + '$1');
-        }
-        return t;
+        // Replace placeholder `0` whether it's the last segment (`/0`) or in the middle (`/0/resign`).
+        return t.replace(/\/0(?=\/|\?|$)/, '/' + String(id));
     };
 
     const pickFirstValidationError = (json) => {
@@ -799,4 +797,3 @@ window.manageUsersPage = function manageUsersPage(config) {
         },
     };
 };
-
