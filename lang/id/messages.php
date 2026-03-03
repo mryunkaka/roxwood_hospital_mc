@@ -1026,6 +1026,7 @@ return [
     'manage_users_zoom_hint' => 'Gunakan scroll untuk zoom. Drag untuk geser.',
     'manage_users_doc_heli' => 'Sertifikat Heli',
     'manage_users_doc_operasi' => 'Sertifikat Operasi',
+    'manage_users_doc_academy_prefix' => 'Sertifikat Academy',
     'manage_users_doc_other' => 'Dokumen Lainnya',
     'manage_users_doc_other_prefix' => 'Dokumen',
     'manage_users_no_batch' => 'Tanpa Batch',

@@ -1029,6 +1029,7 @@ return [
     'manage_users_zoom_hint' => 'Use scroll to zoom. Drag to pan.',
     'manage_users_doc_heli' => 'Helicopter Certificate',
     'manage_users_doc_operasi' => 'Operation Certificate',
+    'manage_users_doc_academy_prefix' => 'Academy Certificate',
     'manage_users_doc_other' => 'Other Document',
     'manage_users_doc_other_prefix' => 'Document',
     'manage_users_no_batch' => 'No Batch',

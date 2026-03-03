@@ -38,6 +38,14 @@ window.manageUsersPage = function manageUsersPage(config) {
         return parts[parts.length - 1] || '';
     };
 
+    const looksLikeDocPath = (value) => {
+        const v = String(value || '').trim();
+        if (!v) return false;
+        if (v.startsWith('http://') || v.startsWith('https://')) return true;
+        if (v.startsWith('/') || v.startsWith('storage/')) return true;
+        return /\.(png|jpe?g|pdf)$/i.test(v);
+    };
+
     const mapUser = (u) => ({
         id: toInt(u?.id),
         full_name: String(u?.full_name || ''),
@@ -234,15 +242,35 @@ window.manageUsersPage = function manageUsersPage(config) {
                 if (tryJson) {
                     try {
                         const parsed = JSON.parse(other);
-                        const list = Array.isArray(parsed) ? parsed : [parsed];
+
+                        // Supported formats:
+                        // 1) Array of docs: [{name, path}, ...]
+                        // 2) Wrapped format: {academy: [{id,name,path}, ...], legacy: "..."}
+                        // 3) Single doc object: {name, path}
+                        const isObj = parsed && typeof parsed === 'object' && !Array.isArray(parsed);
+                        const academy = isObj && Array.isArray(parsed.academy) ? parsed.academy : null;
+                        const legacy = isObj && typeof parsed.legacy === 'string' ? String(parsed.legacy || '').trim() : '';
+
+                        const list = Array.isArray(parsed) ? parsed : academy ? academy : isObj ? [parsed] : [];
+                        const prefixKey = academy ? 'manage_users_doc_academy_prefix' : 'manage_users_doc_other_prefix';
+                        const prefixFallback = academy ? 'Academy' : 'Other';
                         for (const item of list) {
                             const src = String(item?.path || item?.src || '').trim();
-                            if (!src) continue;
+                            if (!src || !looksLikeDocPath(src)) continue;
                             const name = String(item?.name || item?.label || basename(src) || '').trim();
+                            const stableId = String(item?.id || '').trim();
                             out.push({
-                                key: 'other_' + String(out.length + 1),
-                                label: this.t('manage_users_doc_other_prefix', 'Other') + (name ? `: ${name}` : ''),
+                                key: (academy ? 'academy_' : 'other_') + (stableId || basename(src) || String(out.length + 1)),
+                                label: this.t(prefixKey, prefixFallback) + (name ? `: ${name}` : ''),
                                 src: this.fileUrl(src),
+                            });
+                        }
+
+                        if (legacy && !(legacy.startsWith('[') || legacy.startsWith('{')) && looksLikeDocPath(legacy)) {
+                            out.push({
+                                key: 'other_legacy_' + (basename(legacy) || String(out.length + 1)),
+                                label: this.t('manage_users_doc_other', 'Other Document'),
+                                src: this.fileUrl(legacy),
                             });
                         }
                     } catch {
