@@ -619,6 +619,7 @@ class EmsServicesController extends Controller
             'total' => $calc['total'],
             'medic_name' => (string) ($user['name'] ?? '-'),
             'medic_jabatan' => (string) ($user['position'] ?? '-'),
+            'created_at' => now(),
             'billing_amount' => $calc['billing_amount'],
             'cash_amount' => $calc['cash_amount'],
             'doctor_share' => $calc['doctor_share'],

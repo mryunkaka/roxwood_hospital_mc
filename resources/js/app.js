@@ -23,6 +23,8 @@ import './pages/gaji.js';
 import './pages/validasi.js';
 import './pages/manage-users.js';
 import './pages/restaurant-consumption.js';
+import './pages/duty-monitor.js';
+import './presence.js';
 
 // Setup Alpine
 window.Alpine = Alpine;

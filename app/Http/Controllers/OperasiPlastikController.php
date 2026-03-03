@@ -318,6 +318,7 @@ class OperasiPlastikController extends Controller
             'alasan' => (string) $validated['alasan'],
             'status' => 'pending',
             'id_penanggung_jawab' => $handlerId,
+            'created_at' => now(),
         ]);
 
         return back()->with('success', __('messages.operasi_plastik_saved'));

@@ -18,6 +18,8 @@ use App\Http\Controllers\ReimbursementController;
 use App\Http\Controllers\RestaurantConsumptionController;
 use App\Http\Controllers\RestaurantSettingsController;
 use App\Http\Controllers\OperasiPlastikController;
+use App\Http\Controllers\DutyMonitoringController;
+use App\Http\Controllers\PresenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,7 +147,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/restaurant-settings/create', [RestaurantSettingsController::class, 'store'])->name('restaurant.settings.store');
     Route::post('/restaurant-settings/update', [RestaurantSettingsController::class, 'update'])->name('restaurant.settings.update');
     Route::post('/restaurant-settings/toggle', [RestaurantSettingsController::class, 'toggle'])->name('restaurant.settings.toggle');
-    Route::post('/restaurant-settings/delete', [RestaurantSettingsController::class, 'destroy'])->name('restaurant.settings.delete');
+        Route::post('/restaurant-settings/delete', [RestaurantSettingsController::class, 'destroy'])->name('restaurant.settings.delete');
+
+        // Monitoring Jam Duty (berdasarkan transaksi/aktivitas simpan data)
+        Route::get('/monitoring-jam-duty', [DutyMonitoringController::class, 'index'])->name('duty.monitor');
+
+        // Presence (online/offline) for logout/close browser
+        Route::post('/api/presence/ping', [PresenceController::class, 'ping'])->name('api.presence.ping');
+        Route::post('/api/presence/offline', [PresenceController::class, 'offline'])->name('api.presence.offline');
 
 });
 

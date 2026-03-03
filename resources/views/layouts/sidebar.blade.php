@@ -187,6 +187,19 @@
             </p>
         </div>
 
+        @if(!$isStaffRole)
+            {{-- Monitoring Jam Duty --}}
+            <a href="{{ route('duty.monitor') }}"
+               @click="window.innerWidth < 1024 && closeSidebar()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
+                      {{ request()->routeIs('duty.monitor') ? 'bg-primary text-white shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/>
+                </svg>
+                <span :class="sidebarOpen ? 'block' : 'hidden'" class="font-medium" data-translate="duty_monitor_menu">{{ __('messages.duty_monitor_menu') }}</span>
+            </a>
+        @endif
+
         {{-- Components Link --}}
         <a href="{{ route('components') }}"
            @click="window.innerWidth < 1024 && closeSidebar()"
