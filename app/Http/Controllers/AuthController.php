@@ -10,12 +10,40 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class AuthController extends Controller
 {
+    private function cacheGet(string $key, mixed $default = null): mixed
+    {
+        try {
+            return Cache::get($key, $default);
+        } catch (\Throwable $e) {
+            return $default;
+        }
+    }
+
+    private function cachePut(string $key, mixed $value, mixed $ttl = null): void
+    {
+        try {
+            Cache::put($key, $value, $ttl);
+        } catch (\Throwable $e) {
+            // Ignore cache backend issues (e.g., missing database cache table).
+        }
+    }
+
+    private function cacheForget(string $key): void
+    {
+        try {
+            Cache::forget($key);
+        } catch (\Throwable $e) {
+            // Ignore cache backend issues (e.g., missing database cache table).
+        }
+    }
+
     private function avatarVariant(?string $position, ?string $role): string
     {
         $positionNorm = Str::of((string) $position)->lower()->replace([' ', '_'], '-')->toString();
@@ -177,9 +205,23 @@ class AuthController extends Controller
             ]);
         }
 
-        // Search users by full_name
-        $users = UserRh::where('full_name', 'like', '%' . $query . '%')
-            ->select(['id', 'full_name', 'photo_profile', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin'])
+        $columns = ['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin'];
+        static $hasPhotoProfile = null;
+        if ($hasPhotoProfile === null) {
+            $hasPhotoProfile = Schema::hasColumn('user_rh', 'photo_profile');
+        }
+        if ($hasPhotoProfile) {
+            $columns[] = 'photo_profile';
+        }
+
+        // Search users by name (and optional citizen id)
+        $users = UserRh::query()
+            ->where(function ($q) use ($query) {
+                $q->where('full_name', 'like', '%' . $query . '%')
+                    ->orWhere('citizen_id', 'like', '%' . $query . '%');
+            })
+            ->select($columns)
+            ->orderBy('full_name')
             ->limit(10)
             ->get();
 
@@ -328,7 +370,7 @@ class AuthController extends Controller
         // Karena table session bisa dihapus, kita simpan mapping session->device di cache.
         $existingSessionDeviceId = null;
         if ($existingSession) {
-            $existingSessionDeviceId = Cache::get('farmasi_session_device:' . $existingSession->id);
+            $existingSessionDeviceId = $this->cacheGet('farmasi_session_device:' . $existingSession->id);
             if (!$existingSessionDeviceId) {
                 $existingSessionDeviceId = $this->extractDeviceIdFromSessionInfo($existingSession->medic_jabatan);
             }
@@ -376,7 +418,7 @@ class AuthController extends Controller
             if ($activeSessions->isNotEmpty()) {
                 $endAt = now();
                 foreach ($activeSessions as $session) {
-                    $sessionDeviceId = Cache::get('farmasi_session_device:' . $session->id);
+                    $sessionDeviceId = $this->cacheGet('farmasi_session_device:' . $session->id);
                     if (!$sessionDeviceId) {
                         $sessionDeviceId = $this->extractDeviceIdFromSessionInfo($session->medic_jabatan);
                     }
@@ -391,7 +433,7 @@ class AuthController extends Controller
                     // Simpan info untuk notifikasi device lain (karena row akan dihapus)
                     // Jangan set forced logout jika session yang digantikan berasal dari device yang sama.
                     if (!$isSameDevice) {
-                        Cache::put(
+                        $this->cachePut(
                             'forced_logout:' . $session->id,
                             [
                                 'forced_by_device' => $deviceInfo,
@@ -410,9 +452,9 @@ class AuthController extends Controller
                     // User request: hapus session sebelumnya dari database
                     $session->delete();
 
-                    Cache::forget('farmasi_session_device:' . $session->id);
-                }
-            }
+	                    $this->cacheForget('farmasi_session_device:' . $session->id);
+	                }
+	            }
 
             // Create new session record
             $newSession = UserFarmasiSession::create([
@@ -424,8 +466,8 @@ class AuthController extends Controller
 
             Session::put('farmasi_session_id', $newSession->id);
 
-            Cache::put('farmasi_session_device:' . $newSession->id, $deviceId, now()->addDays(7));
-        });
+	            $this->cachePut('farmasi_session_device:' . $newSession->id, $deviceId, now()->addDays(7));
+	        });
 
         // Set session with 1 year expiration
         $sessionData = [
@@ -1111,8 +1153,8 @@ class AuthController extends Controller
             UserFarmasiSession::where('id', $sessionId)
                 ->where('user_id', $userId)
                 ->delete();
-            Cache::forget('farmasi_session_device:' . $sessionId);
-            Cache::forget('forced_logout:' . $sessionId);
+            $this->cacheForget('farmasi_session_device:' . $sessionId);
+            $this->cacheForget('forced_logout:' . $sessionId);
         }
 
         // Clear session
@@ -1149,13 +1191,13 @@ class AuthController extends Controller
         // If this session has been explicitly invalidated due to force login on another device, logout immediately.
         // IMPORTANT: do this before DB auto-recovery to avoid old devices "reviving" the session.
         if ($sessionId) {
-            $forcedLogout = Cache::get('forced_logout:' . $sessionId);
+            $forcedLogout = $this->cacheGet('forced_logout:' . $sessionId);
             if (is_array($forcedLogout) && !empty($forcedLogout)) {
                 Session::forget('user');
                 Session::forget('logged_in_at');
                 Session::forget('expires_at');
                 Session::forget('farmasi_session_id');
-                Cache::forget('forced_logout:' . $sessionId);
+                $this->cacheForget('forced_logout:' . $sessionId);
 
                 return response()->json([
                     'valid' => false,
@@ -1218,11 +1260,11 @@ class AuthController extends Controller
                 ]);
 
                 Session::put('farmasi_session_id', $newSession->id);
-                Cache::put('farmasi_session_device:' . $newSession->id, $deviceId, now()->addDays(7));
+                $this->cachePut('farmasi_session_device:' . $newSession->id, $deviceId, now()->addDays(7));
 
                 // Clean legacy keys (best effort)
-                Cache::forget('farmasi_session_device:' . $sessionId);
-                Cache::forget('forced_logout:' . $sessionId);
+                $this->cacheForget('farmasi_session_device:' . $sessionId);
+                $this->cacheForget('forced_logout:' . $sessionId);
 
                 return response()->json([
                     'valid' => true,

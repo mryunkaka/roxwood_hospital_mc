@@ -647,7 +647,7 @@ class RekapFarmasiController extends Controller
             if ($request->expectsJson()) {
                 return response()->json(['success' => true, 'deleted' => 0]);
             }
-            return back();
+            return back()->with('warning', __('messages.nothing_selected'));
         }
 
         $deleted = Sale::query()

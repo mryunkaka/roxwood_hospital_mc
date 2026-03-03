@@ -1,7 +1,7 @@
 {{-- Medis: Regulasi EMS --}}
 @extends('layouts.app')
 
-@section('title', __('messages.medis_regulasi_title') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.medis_regulasi_title') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.medis_regulasi_title'))
 @section('page-description', __('messages.medis_regulasi_subtitle'))

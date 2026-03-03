@@ -61,6 +61,3 @@ Alpine.start();
 
 // Import CSS
 import '../css/app.css';
-
-// Log init
-console.log('Roxwood Health Medical Center - UI System Initialized');

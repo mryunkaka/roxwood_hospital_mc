@@ -113,6 +113,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::patch('/settings/account', [SettingsController::class, 'updateAccount'])->name('settings.account.update');
+    Route::patch('/settings/web', [SettingsController::class, 'updateWeb'])->name('settings.web.update');
 
 });
 

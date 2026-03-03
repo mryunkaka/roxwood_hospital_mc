@@ -23,6 +23,7 @@ class RetryingFilesystem extends Filesystem
         clearstatcache(true, $path);
 
         $path = realpath($path) ?: $path;
+        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
         $dir = dirname($path);
         if (! is_dir($dir)) {
@@ -44,11 +45,16 @@ class RetryingFilesystem extends Filesystem
 
             file_put_contents($tempPath, $content);
 
-            $attempts = 8;
-            $delayUs = 50_000; // 50ms base
+            $attempts = 20;
+            $delayUs = 40_000; // 40ms base
             $lastError = null;
 
             for ($i = 0; $i < $attempts; $i++) {
+                // Best-effort: if target exists and is replaceable, try removing it first.
+                if (is_file($path)) {
+                    @unlink($path);
+                }
+
                 if (@rename($tempPath, $path)) {
                     return;
                 }
@@ -73,4 +79,3 @@ class RetryingFilesystem extends Filesystem
         }
     }
 }
-

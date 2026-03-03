@@ -25,6 +25,6 @@
         </svg>
     </div>
     @if($showText)
-        <span class="font-bold {{ $s['text'] }} text-text-primary {{ $textClass }}">Roxwood</span>
+        <span class="font-bold {{ $s['text'] }} text-text-primary {{ $textClass }}">{{ $appName ?? config('app.name') }}</span>
     @endif
 </div>

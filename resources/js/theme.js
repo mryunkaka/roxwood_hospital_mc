@@ -17,7 +17,7 @@ export default function themeController() {
         sidebarHidden: false,
         mobileMenuOpen: false,
 
-        init() {
+	        init() {
             const storedSidebarHidden = localStorage.getItem('roxwood-sidebar-hidden');
             if (storedSidebarHidden !== null) {
                 this.sidebarHidden = storedSidebarHidden === '1';
@@ -57,47 +57,43 @@ export default function themeController() {
                 }
             });
 
-            // Watch perubahan theme
-            this.$watch('theme', () => this.applyTheme());
-            this.$watch('sidebarHidden', () => {
-                localStorage.setItem('roxwood-sidebar-hidden', this.sidebarHidden ? '1' : '0');
-                if (this.sidebarHidden) {
-                    this.sidebarOpen = false;
-                } else if (window.innerWidth >= 1024) {
+	            // Watch perubahan theme
+	            this.$watch('theme', () => this.applyTheme());
+
+                // Allow other components/pages to request a theme change.
+                window.addEventListener('set-theme', (e) => {
+                    const next = e?.detail?.theme;
+                    if (typeof next === 'string' && next.trim() !== '') {
+                        this.setTheme(next.trim());
+                    }
+                });
+	            this.$watch('sidebarHidden', () => {
+	                localStorage.setItem('roxwood-sidebar-hidden', this.sidebarHidden ? '1' : '0');
+	                if (this.sidebarHidden) {
+	                    this.sidebarOpen = false;
+	                } else if (window.innerWidth >= 1024) {
                     this.sidebarOpen = true;
                 }
             });
         },
 
-        applyTheme() {
-            const html = document.documentElement;
+	        applyTheme() {
+	            switch (this.theme) {
+	                case 'dark':
+	                    this.isDark = true;
+	                    this.isStylis = false;
+	                    break;
+	                case 'stylis':
+	                    this.isStylis = true;
+	                    this.isDark = false;
+	                    break;
+	                default:
+	                    this.isDark = false;
+	                    this.isStylis = false;
+	            }
 
-            // Remove semua class theme
-            html.classList.remove('theme-light', 'theme-dark', 'theme-stylis');
-
-            // Apply theme
-            switch (this.theme) {
-                case 'dark':
-                    html.classList.add('theme-dark');
-                    this.isDark = true;
-                    this.isStylis = false;
-                    break;
-                case 'stylis':
-                    html.classList.add('theme-stylis');
-                    if (html.classList.contains('theme-dark')) {
-                        html.classList.add('theme-dark');
-                    }
-                    this.isStylis = true;
-                    this.isDark = false;
-                    break;
-                default:
-                    html.classList.add('theme-light');
-                    this.isDark = false;
-                    this.isStylis = false;
-            }
-
-            // Save ke localStorage
-            localStorage.setItem('roxwood-theme', this.theme);
+	            // Save ke localStorage
+	            localStorage.setItem('roxwood-theme', this.theme);
 
             // Dispatch event untuk chart updates
             window.dispatchEvent(new CustomEvent('theme-changed', {

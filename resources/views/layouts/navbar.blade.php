@@ -35,55 +35,18 @@
         </nav>
     </div>
 
-    {{-- Right: Theme, Clock, Search, Notifications, Profile --}}
-    <div class="flex items-center gap-2">
+	    {{-- Right: Clock, Search, Notifications, Profile --}}
+	    <div class="flex items-center gap-2">
 
-        {{-- Theme Switcher - 3 Icons --}}
-        <div class="flex items-center bg-surface-alt rounded-xl p-1 border border-border h-9" x-data="themeController()">
-            <button @click="setTheme('light')"
-                    class="p-1.5 rounded-lg transition-all duration-200"
-                    :class="theme === 'light' ? 'bg-primary-100 text-primary-700 shadow-md' : 'text-text-secondary hover:bg-primary-50 hover:text-primary-600'"
-                    title="{{ __('messages.theme_light') }}">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                </svg>
-            </button>
-            <button @click="setTheme('dark')"
-                    class="p-1.5 rounded-lg transition-all duration-200"
-                    :class="theme === 'dark' ? 'bg-surface-hover text-text-primary shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary'"
-                    title="{{ __('messages.theme_dark') }}">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                </svg>
-            </button>
-            <button @click="setTheme('stylis')"
-                    class="p-1.5 rounded-lg transition-all duration-200"
-                    :class="theme === 'stylis' ? 'bg-teal-100 text-teal-700 shadow-md' : 'text-text-secondary hover:bg-teal-50 hover:text-teal-600'"
-                    title="{{ __('messages.theme_stylis') }}">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-                </svg>
-            </button>
-        </div>
-
-        {{-- Clock Widget (Hidden on small mobile) --}}
-        <div x-data="clockController()" class="hidden sm:flex items-center gap-2 px-3 rounded-xl bg-surface-alt border border-border h-9">
-            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span class="text-xs font-medium text-text-primary" x-text="currentTime"></span>
-            <span class="text-xs text-text-secondary hidden md:inline" x-text="currentDate"></span>
-        </div>
-
-        {{-- Language Switcher --}}
-        <div class="relative" x-data="langController()">
+        {{-- Language Switch (temporary) --}}
+        <div class="relative hidden sm:block" x-data="langController()">
             <button @click="toggleLang = !toggleLang"
                     class="flex items-center gap-2 px-3 rounded-xl bg-surface-alt border border-border hover:bg-surface-hover transition-all h-9">
                 <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
                 </svg>
-                <span class="text-sm font-medium text-text-primary" x-text="getLangInfo().code.toUpperCase()"></span>
-                <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span class="text-sm font-medium text-text-primary" x-text="getLangInfo().code.toUpperCase()">ID</span>
+                <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
             </button>
@@ -98,23 +61,17 @@
                  @click.away="toggleLang = false"
                  class="absolute top-full right-0 mt-2 w-44 rounded-xl bg-surface border border-border shadow-xl overflow-hidden z-50"
                  x-cloak>
-                <button @click="setLang('en')"
+                <button type="button" @click="setLang('en')"
                         class="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-hover transition-colors border-l-4"
                         :class="currentLang === 'en' ? 'bg-surface-alt border-primary' : 'border-transparent'">
-                    <svg class="w-5 h-5 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-                    </svg>
                     <div class="text-left">
                         <p class="text-sm font-medium text-text-primary" data-translate="english">{{ __('messages.english') }}</p>
                         <p class="text-xs text-text-secondary" data-translate="united_states">{{ __('messages.united_states') }}</p>
                     </div>
                 </button>
-                <button @click="setLang('id')"
+                <button type="button" @click="setLang('id')"
                         class="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-hover transition-colors border-l-4"
                         :class="currentLang === 'id' ? 'bg-surface-alt border-primary' : 'border-transparent'">
-                    <svg class="w-5 h-5 text-text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-                    </svg>
                     <div class="text-left">
                         <p class="text-sm font-medium text-text-primary" data-translate="indonesian">{{ __('messages.indonesian') }}</p>
                         <p class="text-xs text-text-secondary" data-translate="indonesia">{{ __('messages.indonesia') }}</p>
@@ -122,6 +79,44 @@
                 </button>
             </div>
         </div>
+
+        {{-- Theme Switch (temporary) --}}
+        <div class="hidden sm:flex items-center bg-surface-alt rounded-xl p-1 border border-border h-9">
+            <button type="button" @click="setTheme('light')"
+                    class="p-1.5 rounded-lg transition-all duration-200"
+                    :class="theme === 'light' ? 'bg-primary-100 text-primary-700 shadow-md' : 'text-text-secondary hover:bg-primary-50 hover:text-primary-600'"
+                    title="Light">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </button>
+            <button type="button" @click="setTheme('dark')"
+                    class="p-1.5 rounded-lg transition-all duration-200"
+                    :class="theme === 'dark' ? 'bg-surface-hover text-text-primary shadow-md' : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary'"
+                    title="Dark">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+            </button>
+            <button type="button" @click="setTheme('stylis')"
+                    class="p-1.5 rounded-lg transition-all duration-200"
+                    :class="theme === 'stylis' ? 'bg-teal-100 text-teal-700 shadow-md' : 'text-text-secondary hover:bg-teal-50 hover:text-teal-600'"
+                    title="Stylis">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                </svg>
+            </button>
+        </div>
+
+        {{-- Clock Widget (Hidden on small mobile) --}}
+        <div x-data="clockController()" class="hidden sm:flex items-center gap-2 px-3 rounded-xl bg-surface-alt border border-border h-9">
+            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-xs font-medium text-text-primary" x-text="currentTime"></span>
+            <span class="text-xs text-text-secondary hidden md:inline" x-text="currentDate"></span>
+        </div>
+
 
         {{-- Search (Desktop) --}}
         <div class="hidden lg:block relative">

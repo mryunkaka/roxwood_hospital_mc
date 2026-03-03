@@ -1,7 +1,7 @@
 {{-- Dashboard --}}
 @extends('layouts.app')
 
-@section('title', __('messages.dashboard') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.dashboard') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.dashboard'))
 @section('page-description', __('messages.dashboard_subtitle'))

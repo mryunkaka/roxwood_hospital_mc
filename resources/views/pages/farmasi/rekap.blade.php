@@ -1,7 +1,7 @@
 ﻿{{-- Farmasi: Rekap --}}
 @extends('layouts.app')
 
-@section('title', __('messages.farmasi_rekap_title') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.farmasi_rekap_title') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.farmasi_rekap_title'))
 @section('page-description', __('messages.farmasi_rekap_subtitle'))
@@ -28,26 +28,6 @@
         'painkiller' => (int) $pkgB->painkiller_qty,
     ] : null;
 @endphp
-
-@if(session('success') || $errors->any())
-    <div class="space-y-4 mb-6">
-        @if(session('success'))
-            <x-alert type="success" dismissible autoHide :title="__('messages.success')">
-                {{ session('success') }}
-            </x-alert>
-        @endif
-
-        @if($errors->any())
-            <x-alert type="danger" dismissible :title="__('messages.error')">
-                <ul class="list-disc pl-5 space-y-1">
-                    @foreach($errors->all() as $msg)
-                        <li>{{ $msg }}</li>
-                    @endforeach
-                </ul>
-            </x-alert>
-        @endif
-    </div>
-@endif
 
 <x-card class="mb-6">
     <div class="flex items-center gap-2 mb-4">

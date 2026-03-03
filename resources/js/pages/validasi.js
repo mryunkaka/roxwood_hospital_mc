@@ -117,10 +117,10 @@ window.validasiAkunPage = function validasiAkunPage(config) {
             const lower = v.toLowerCase();
             if (!v) return '';
 
-            if (lower === 'dokter umum') return 'Doctor Umum';
-            if (lower === 'dokter spesialis') return 'Doctor Specialist';
-            if (lower === 'doctor umum') return 'Doctor Umum';
-            if (lower === 'doctor specialist') return 'Doctor Specialist';
+            if (lower === 'dokter umum') return 'General Doctor';
+            if (lower === 'dokter spesialis') return 'Specialist Doctor';
+            if (lower === 'doctor umum') return 'General Doctor';
+            if (lower === 'doctor specialist') return 'Specialist Doctor';
             if (lower === 'wakil direktur') return '';
             if (lower === 'direktur') return '';
 

@@ -15,8 +15,10 @@ export default function clockController() {
         isPolling: true,
         _sessionChecking: false,
         _lastSessionInvalidAt: 0,
+        appTimezone: 'Asia/Jakarta',
 
         init() {
+            this.appTimezone = document.querySelector('meta[name="app-timezone"]')?.content || 'Asia/Jakarta';
             this.updateClock();
 
             // Polling setiap detik
@@ -30,6 +32,7 @@ export default function clockController() {
 
         updateClock() {
             const now = new Date();
+            const tz = this.appTimezone || 'Asia/Jakarta';
 
             // Format time HH:MM:SS - WIB (Asia/Jakarta)
             this.currentTime = now.toLocaleTimeString('id-ID', {
@@ -37,7 +40,7 @@ export default function clockController() {
                 minute: '2-digit',
                 second: '2-digit',
                 hour12: false,
-                timeZone: 'Asia/Jakarta'
+                timeZone: tz
             });
 
             // Format date with day - WIB (Asia/Jakarta)
@@ -46,7 +49,7 @@ export default function clockController() {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric',
-                timeZone: 'Asia/Jakarta'
+                timeZone: tz
             });
         },
 

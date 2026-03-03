@@ -1,7 +1,7 @@
 {{-- Terms of Service Modal - Standalone Partial --}}
 
 @php
-    $logoPath = asset('storage/logo rh copy.png');
+    $logoPath = $appLogoUrl ?? asset('storage/logo rh copy.png');
 @endphp
 
 <style>
@@ -462,7 +462,7 @@
 
             {{-- Footer --}}
             <div class="flex items-center justify-between px-6 py-4 border-t border-border bg-surface-alt">
-                <p class="text-sm text-text-secondary"><span x-text="new Date().getFullYear()"></span> © Roxwood Health Medical Center</p>
+                <p class="text-sm text-text-secondary"><span x-text="new Date().getFullYear()"></span> © {{ $appName ?? config('app.name') }}</p>
                 <div class="flex gap-3">
                     <button
                         @click="$el.disabled = true; currentTab = 'preview'; generatePDF($event)"

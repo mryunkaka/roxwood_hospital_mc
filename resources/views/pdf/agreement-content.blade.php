@@ -3,7 +3,7 @@
 {{-- Supports dynamic language switching via JavaScript classes --}}
 
 @php
-    $logoPath = $logoPath ?? asset('storage/logo rh copy.png');
+    $logoPath = $logoPath ?? ($appLogoUrl ?? asset('storage/logo rh copy.png'));
     $signaturePath = $signaturePath ?? null; // User/Employee signature image path
 
     // For PDF: Use actual data passed from controller
@@ -33,7 +33,7 @@
     {{-- Header --}}
     <div class="header">
         <img src="{{ $logoPath }}" alt="Logo" class="header-logo">
-        <h2>Roxwood Health Medical Center</h2>
+        <h2>{{ $appName ?? config('app.name') }}</h2>
         <p class="tagline">Healthcare Excellence with Compassion</p>
     </div>
 
@@ -70,8 +70,8 @@
         </span>
         <div class="party-details">
             <p class="agreement-first-party-desc">
-                <span class="lang-id" @if($isPdf && !$showIndonesian) style="display: none;" @endif>Manajemen Rumah Sakit Roxwood Health Medical Center</span>
-                <span class="lang-en" @if($isPdf && $showIndonesian) style="display: none;" @endif>Roxwood Health Medical Center Hospital Management</span>
+                <span class="lang-id" @if($isPdf && !$showIndonesian) style="display: none;" @endif>Manajemen Rumah Sakit {{ $appName ?? config('app.name') }}</span>
+                <span class="lang-en" @if($isPdf && $showIndonesian) style="display: none;" @endif>{{ $appName ?? config('app.name') }} Hospital Management</span>
             </p>
         </div>
 
@@ -118,8 +118,8 @@
         <p>
             <span class="text-bold">1.</span>
             <span class="agreement-point-1">
-                <span class="lang-id" @if($isPdf && !$showIndonesian) style="display: none;" @endif>Pihak Pertama menetapkan dan Pihak Kedua bersedia mematuhi dan melaksanakan semua Standar Operasional Prosedur (SOP) dan peraturan yang berlaku di Roxwood Health Medical Center, dan Pihak Kedua dengan ini menyatakan sampai seterusnya.</span>
-                <span class="lang-en" @if($isPdf && $showIndonesian) style="display: none;" @endif>The First Party establishes and the Second Party is willing to comply and implement all Standard Operating Procedures (SOP) and regulations applicable at Roxwood Health Medical Center, and the Second Party hereby declares for all time.</span>
+                <span class="lang-id" @if($isPdf && !$showIndonesian) style="display: none;" @endif>Pihak Pertama menetapkan dan Pihak Kedua bersedia mematuhi dan melaksanakan semua Standar Operasional Prosedur (SOP) dan peraturan yang berlaku di {{ $appName ?? config('app.name') }}, dan Pihak Kedua dengan ini menyatakan sampai seterusnya.</span>
+                <span class="lang-en" @if($isPdf && $showIndonesian) style="display: none;" @endif>The First Party establishes and the Second Party is willing to comply and implement all Standard Operating Procedures (SOP) and regulations applicable at {{ $appName ?? config('app.name') }}, and the Second Party hereby declares for all time.</span>
             </span>
         </p>
         <p>
@@ -201,8 +201,8 @@
                 <td>
                     <hr class="signature-line">
                     <p class="signature-name agreement-management">
-                        <span class="lang-id" @if($isPdf && !$showIndonesian) style="display: none;" @endif>Manajemen Roxwood Health Medical Center</span>
-                        <span class="lang-en" @if($isPdf && $showIndonesian) style="display: none;" @endif>Roxwood Health Medical Center Management</span>
+                        <span class="lang-id" @if($isPdf && !$showIndonesian) style="display: none;" @endif>Manajemen {{ $appName ?? config('app.name') }}</span>
+                        <span class="lang-en" @if($isPdf && $showIndonesian) style="display: none;" @endif>{{ $appName ?? config('app.name') }} Management</span>
                     </p>
                 </td>
             </tr>

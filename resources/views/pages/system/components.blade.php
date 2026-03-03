@@ -1,7 +1,7 @@
 {{-- System: Components --}}
 @extends('layouts.app')
 
-@section('title', __('messages.components') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.components') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.components'))
 @section('page-description', __('messages.component_library'))

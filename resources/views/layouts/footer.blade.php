@@ -2,7 +2,7 @@
 <footer class="h-14 bg-surface border-t border-border flex items-center justify-between px-4 lg:px-6">
     {{-- Left: Copyright --}}
     <p class="text-sm text-text-secondary">
-        &copy; {{ date('Y') }} {{ __('messages.app_name') }}. {{ __('messages.all_rights_reserved') }}
+        &copy; {{ date('Y') }} {{ $appName ?? config('app.name') }}. {{ __('messages.all_rights_reserved') }}
     </p>
 
     {{-- Right: Version & Links --}}

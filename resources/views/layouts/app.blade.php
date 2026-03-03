@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" class="theme-light"
-      x-data="{
-          ...themeController(),
-          ...accessibilityController()
-      }"
+<html lang="{{ app()->getLocale() }}"
+      x-data="(() => {
+          const t = themeController();
+          const a = accessibilityController();
+          const tInit = t.init;
+          const aInit = a.init;
+          return {
+              ...t,
+              ...a,
+              init() {
+                  if (typeof tInit === 'function') tInit.call(this);
+                  if (typeof aInit === 'function') aInit.call(this);
+              },
+          };
+      })()"
       :class="{
+          'theme-light': theme === 'light',
           'theme-dark': theme === 'dark' || (theme === 'stylis' && isDark),
           'theme-stylis': theme === 'stylis',
           'high-contrast': highContrast,
@@ -15,8 +26,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="locale" content="{{ app()->getLocale() }}">
+    <meta name="app-timezone" content="{{ $appTimezone ?? config('app.timezone') }}">
 
-    <title>@yield('title', __('messages.app_name'))</title>
+    {{-- Prevent theme flash before Alpine loads --}}
+    <script>
+        (() => {
+            try {
+                const t = localStorage.getItem('roxwood-theme') || 'light';
+                const html = document.documentElement;
+                html.classList.remove('theme-light', 'theme-dark', 'theme-stylis');
+                if (t === 'dark') html.classList.add('theme-dark');
+                else if (t === 'stylis') html.classList.add('theme-stylis');
+                else html.classList.add('theme-light');
+            } catch {}
+        })();
+    </script>
+
+    <title>@yield('title', $appName ?? config('app.name'))</title>
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
@@ -198,6 +224,9 @@
 
     {{-- Toast Container --}}
     <x-toast />
+
+    {{-- Flash -> Toast --}}
+    @include('partials.flash-toasts')
 
     {{-- Forced Logout / Session Invalid Modal --}}
     <div

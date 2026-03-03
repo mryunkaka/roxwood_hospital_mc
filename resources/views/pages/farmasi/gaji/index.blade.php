@@ -1,7 +1,7 @@
 {{-- Farmasi: Gaji Mingguan --}}
 @extends('layouts.app')
 
-@section('title', __('messages.farmasi_gaji_title') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.farmasi_gaji_title') . ' - ' . ($appName ?? config('app.name')))
 @section('page-title', __('messages.farmasi_gaji_title'))
 @section('page-description', __('messages.farmasi_gaji_subtitle'))
 

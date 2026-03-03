@@ -1,7 +1,7 @@
 {{-- Auth: Preview PDF --}}
 @extends('layouts.guest')
 
-@section('title', 'Preview PDF - ' . __('messages.app_name'))
+@section('title', 'Preview PDF - ' . ($appName ?? config('app.name')))
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center px-4 py-12">

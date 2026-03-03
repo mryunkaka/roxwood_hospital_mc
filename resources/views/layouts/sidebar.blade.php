@@ -12,17 +12,24 @@
         <div class="flex items-center gap-3 overflow-hidden" :class="{ 'justify-center lg:w-full': !sidebarOpen && window.innerWidth >= 1024 }">
             <div class="w-10 h-10 rounded-xl bg-surface flex items-center justify-center shrink-0 shadow-lg border border-border overflow-hidden">
                 <img
-                    src="{{ asset('storage/logo%20rh%20copy.png') }}"
-                    alt="Roxwood"
+                    src="{{ $appLogoUrl }}"
+                    alt="{{ $appName }}"
                     class="w-full h-full object-cover"
                     loading="lazy"
                 >
-            </div>
-            <div :class="sidebarOpen ? 'block' : 'hidden'" class="transition-all">
-                <h1 class="font-bold text-lg text-text-primary">Roxwood</h1>
-                <p class="text-xs text-text-secondary">Health Medical</p>
-            </div>
-        </div>
+	            </div>
+		            <div :class="sidebarOpen ? 'block' : 'hidden'" class="transition-all flex-1 min-w-0">
+                        <h1
+                            class="w-full font-bold tracking-tight text-text-primary whitespace-nowrap overflow-hidden text-ellipsis leading-tight text-[20px]"
+                            title="{{ $appName ?? config('app.name') }}"
+                        >
+                            {{ $appName ?? config('app.name') }}
+                        </h1>
+                        <p class="text-xs text-text-secondary whitespace-nowrap overflow-hidden text-ellipsis">
+                            {{ $appTagline ?? 'Health Medical' }}
+                        </p>
+		            </div>
+	        </div>
 
         {{-- Close Button (Mobile Only) --}}
         <button @click="closeSidebar()"
@@ -34,7 +41,7 @@
     </div>
 
     {{-- Sidebar Navigation --}}
-    <nav class="flex-1 min-h-0 overflow-y-auto p-3 space-y-1 scrollbar-thin">
+	    <nav class="flex-1 min-h-0 overflow-y-scroll p-3 space-y-1 scrollbar-thin" style="scrollbar-gutter: stable;">
 
         {{-- Group: Main --}}
         <div :class="sidebarOpen ? 'block' : 'hidden'">
@@ -294,7 +301,7 @@
 
         {{-- Copyright Footer --}}
         <p class="text-xs text-center text-text-tertiary mt-3" :class="sidebarOpen ? 'block' : 'hidden'">
-            &copy; {{ date('Y') }} Roxwood
+            &copy; {{ date('Y') }} {{ $appName ?? config('app.name') }}
         </p>
     </div>
 </aside>

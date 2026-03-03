@@ -1,7 +1,7 @@
 {{-- Patients --}}
 @extends('layouts.app')
 
-@section('title', __('messages.patients') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.patients') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.patients'))
 @section('page-description', __('messages.manage_patients'))

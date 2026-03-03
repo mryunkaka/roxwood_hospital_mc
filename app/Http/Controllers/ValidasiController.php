@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserRh;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -35,31 +36,40 @@ class ValidasiController extends Controller
 
         $this->guardNonStaff();
 
+        $select = [
+            'id',
+            'full_name',
+            'citizen_id',
+            'no_hp_ic',
+            'jenis_kelamin',
+            'role',
+            'batch',
+            'kode_nomor_induk_rs',
+            'position',
+            'tanggal_masuk',
+            'file_ktp',
+            'file_sim',
+            'file_kta',
+            'file_skb',
+            'sertifikat_heli',
+            'sertifikat_operasi',
+            'dokumen_lainnya',
+            'is_verified',
+            'is_active',
+            'resigned_at',
+            'created_at',
+        ];
+
+        static $hasPhotoProfile = null;
+        if ($hasPhotoProfile === null) {
+            $hasPhotoProfile = Schema::hasColumn('user_rh', 'photo_profile');
+        }
+        if ($hasPhotoProfile) {
+            $select[] = 'photo_profile';
+        }
+
         $users = UserRh::query()
-            ->select([
-                'id',
-                'full_name',
-                'citizen_id',
-                'no_hp_ic',
-                'jenis_kelamin',
-                'role',
-                'batch',
-                'kode_nomor_induk_rs',
-                'position',
-                'tanggal_masuk',
-                'photo_profile',
-                'file_ktp',
-                'file_sim',
-                'file_kta',
-                'file_skb',
-                'sertifikat_heli',
-                'sertifikat_operasi',
-                'dokumen_lainnya',
-                'is_verified',
-                'is_active',
-                'resigned_at',
-                'created_at',
-            ])
+            ->select($select)
             ->orderByRaw('is_active ASC')
             ->orderByDesc('created_at')
             ->get();

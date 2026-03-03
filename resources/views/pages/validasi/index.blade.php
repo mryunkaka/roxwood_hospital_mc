@@ -1,7 +1,7 @@
 {{-- Validasi: Akun & Dokumen --}}
 @extends('layouts.app')
 
-@section('title', __('messages.validation_title') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.validation_title') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.validation_title'))
 @section('page-description', __('messages.validation_subtitle'))
@@ -200,8 +200,8 @@
                         'Trainee' => __('messages.position_trainee'),
                         'Paramedic' => __('messages.position_paramedic'),
                         'Co. Asst' => __('messages.position_co_asst'),
-                        'Doctor Umum' => __('messages.position_doctor_umum'),
-                        'Doctor Specialist' => __('messages.position_doctor_specialist'),
+                        'General Doctor' => __('messages.position_doctor_umum'),
+                        'Specialist Doctor' => __('messages.position_doctor_specialist'),
                     ]"
                     x-model="form.position"
                 />

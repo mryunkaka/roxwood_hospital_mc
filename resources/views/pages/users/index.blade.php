@@ -1,7 +1,7 @@
 {{-- Manajemen User --}}
 @extends('layouts.app')
 
-@section('title', __('messages.manage_users_title') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.manage_users_title') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.manage_users_title'))
 @section('page-description', __('messages.manage_users_subtitle'))
@@ -12,8 +12,8 @@
         ['value' => 'Trainee', 'label' => __('messages.position_trainee')],
         ['value' => 'Paramedic', 'label' => __('messages.position_paramedic')],
         ['value' => 'Co. Asst', 'label' => __('messages.position_co_asst')],
-        ['value' => 'Doctor Umum', 'label' => __('messages.position_doctor_umum')],
-        ['value' => 'Doctor Specialist', 'label' => __('messages.position_doctor_specialist')],
+        ['value' => 'General Doctor', 'label' => __('messages.position_doctor_umum')],
+        ['value' => 'Specialist Doctor', 'label' => __('messages.position_doctor_specialist')],
     ];
 
     $roleOptions = [

@@ -1,7 +1,7 @@
 ﻿{{-- Medis: EMS Services --}}
 @extends('layouts.app')
 
-@section('title', __('messages.medis_services_title') . ' - ' . __('messages.app_name'))
+@section('title', __('messages.medis_services_title') . ' - ' . ($appName ?? config('app.name')))
 
 @section('page-title', __('messages.medis_services_title'))
 @section('page-description', __('messages.medis_services_subtitle'))
@@ -12,26 +12,6 @@
     $decimalSep = app()->getLocale() === 'id' ? ',' : '.';
     $fmt = fn ($n) => number_format((float) $n, 0, $decimalSep, $thousandSep);
 @endphp
-
-@if(session('success') || $errors->any())
-    <div class="space-y-4 mb-6">
-        @if(session('success'))
-            <x-alert type="success" dismissible autoHide :title="__('messages.success')">
-                {{ session('success') }}
-            </x-alert>
-        @endif
-
-        @if($errors->any())
-            <x-alert type="danger" dismissible :title="__('messages.error')">
-                <ul class="list-disc pl-5 space-y-1">
-                    @foreach($errors->all() as $msg)
-                        <li>{{ $msg }}</li>
-                    @endforeach
-                </ul>
-            </x-alert>
-        @endif
-    </div>
-@endif
 
 <x-card class="mb-6">
     <div class="flex items-center gap-2 mb-4">

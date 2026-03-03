@@ -12,18 +12,7 @@
 
 @php
     $radioId = 'radio-' . ($name ?? 'radio') . '-' . ($value ?? uniqid());
-@endphp
-
-<div class="flex items-start gap-3 {{ $class }}">
-    <label for="{{ $radioId }}" class="relative flex items-start gap-3 cursor-pointer {{ $disabled ? 'opacity-50 cursor-not-allowed' : '' }}">
-        {{-- Radio Input --}}
-        <input type="radio"
-               id="{{ $radioId }}"
-               @if($name) name="{{ $name }}" @endif
-               @if($value) value="{{ $value }}" @endif
-               {{ $checked ? 'checked' : '' }}
-               {{ $disabled ? 'disabled' : '' }}
-               class="custom-radio appearance-none w-5 h-5 mt-0.5 rounded-full border-2 transition-all duration-200 ease-out
+    $inputClasses = 'custom-radio appearance-none w-5 h-5 mt-0.5 rounded-full border-2 transition-all duration-200 ease-out
                       border-gray-300 bg-white
                       hover:border-blue-400
                       focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:ring-offset-1 focus:border-blue-500
@@ -35,7 +24,21 @@
                       theme-dark:checked:border-blue-400
                       theme-stylis:border-teal-200 theme-stylis:bg-white
                       theme-stylis:hover:border-teal-400
-                      theme-stylis:checked:border-teal-500"/>
+                      theme-stylis:checked:border-teal-500';
+
+    $inputClasses = trim($inputClasses . ' ' . ($attributes->get('class') ?? ''));
+@endphp
+
+<div class="flex items-start gap-3 {{ $class }}">
+    <label for="{{ $radioId }}" class="relative flex items-start gap-3 cursor-pointer {{ $disabled ? 'opacity-50 cursor-not-allowed' : '' }}">
+        {{-- Radio Input --}}
+        <input type="radio"
+               id="{{ $radioId }}"
+               @if($name) name="{{ $name }}" @endif
+               @if($value) value="{{ $value }}" @endif
+               {{ $checked ? 'checked' : '' }}
+               {{ $disabled ? 'disabled' : '' }}
+               {{ $attributes->except('class')->merge(['class' => $inputClasses]) }}/>
 
         {{-- Label Content --}}
         @if($label || $description)

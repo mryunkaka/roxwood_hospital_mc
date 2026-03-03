@@ -52,30 +52,37 @@ window.emsServicesForm = function emsServicesForm(config) {
             paymentHint: '',
             detailHint: '',
 
-            totalHtml: '$ 0',
-            totalHint: '',
-            _restoring: false,
-            _saveTimer: null,
+	            totalHtml: '$ 0',
+	            totalHint: '',
+                _initializing: true,
+	            _restoring: false,
+	            _saveTimer: null,
 
-            init() {
-                if (config?.saved) {
-                    this.clearDraft();
-                } else {
-                    this.restoreDraft();
-                }
+	            init() {
+                    this._initializing = true;
+	                if (config?.saved) {
+	                    this.clearDraft();
+	                } else {
+	                    this.restoreDraft();
+	                }
 
                 this.applyUiRules();
                 this.refreshDetailOptions(true);
 
                 const form = this.$refs.form;
-                if (form) {
-                    const handler = () => this.saveDraft();
-                    form.addEventListener('input', handler);
-                    form.addEventListener('change', handler);
-                }
+	                if (form) {
+	                    const handler = () => this.saveDraft();
+	                    form.addEventListener('input', handler);
+	                    form.addEventListener('change', handler);
+	                }
 
-                this.preview();
-            },
+	                this.preview();
+
+                    // Prevent any init-triggered change/input events from re-saving draft right after successful submit.
+                    setTimeout(() => {
+                        this._initializing = false;
+                    }, 0);
+	            },
 
             t(key, fallback) {
                 const table = window.globalLangState?.translations || {};
@@ -191,8 +198,8 @@ window.emsServicesForm = function emsServicesForm(config) {
                 try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
             },
 
-            saveDraft() {
-                if (this._restoring) return;
+	            saveDraft() {
+	                if (this._restoring || this._initializing) return;
 
                 if (this._saveTimer) {
                     clearTimeout(this._saveTimer);
@@ -329,7 +336,7 @@ window.emsServicesForm = function emsServicesForm(config) {
 
                     let html = '$ ' + total.toLocaleString(this.locale === 'id' ? 'id-ID' : 'en-US');
                     if (medCount > 0) {
-                        html += `<div class="mt-1 text-xs text-text-secondary">${this.t('medis_medicine_breakdown', 'Medicine')}: ${medCount} Ã— $ ${perItem.toLocaleString()} = $ ${sub.toLocaleString()}</div>`;
+                        html += `<div class="mt-1 text-xs text-text-secondary">${this.t('medis_medicine_breakdown', 'Medicine')}: ${medCount} &times; $ ${perItem.toLocaleString()} = $ ${sub.toLocaleString()}</div>`;
                     }
                     if (String(json.payment_type || '') === 'mixed') {
                         html += `<div class="mt-1 text-xs text-text-secondary">${this.t('medis_payment_mixed_note', 'Includes cash + billing')}</div>`;
