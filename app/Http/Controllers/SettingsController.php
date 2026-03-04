@@ -139,9 +139,18 @@ class SettingsController extends Controller
             $newPin = (string) $validated['new_pin'];
 
             $pinValid = false;
-            if (Hash::check($oldPin, (string) $user->getRawOriginal('pin'))) {
-                $pinValid = true;
-            } elseif ((string) $user->getRawOriginal('pin') === $oldPin) {
+            $storedPin = (string) $user->getRawOriginal('pin');
+
+            try {
+                if ($storedPin !== '' && Hash::check($oldPin, $storedPin)) {
+                    $pinValid = true;
+                }
+            } catch (\RuntimeException $e) {
+                // Stored PIN may be plaintext or use a different hashing algorithm.
+                // Fall back to the plaintext compatibility check below.
+            }
+
+            if (!$pinValid && hash_equals($storedPin, $oldPin)) {
                 $pinValid = true;
             }
 

@@ -336,9 +336,18 @@ class AuthController extends Controller
 
         // Verify PIN (check hashed first, then plain text for backward compatibility)
         $pinValid = false;
-        if (Hash::check($validated['pin'], $user->pin)) {
-            $pinValid = true;
-        } elseif ($user->pin === $validated['pin']) {
+        $storedPin = (string) $user->getRawOriginal('pin');
+
+        try {
+            if ($storedPin !== '' && Hash::check($validated['pin'], $storedPin)) {
+                $pinValid = true;
+            }
+        } catch (\RuntimeException $e) {
+            // Stored PIN may be plaintext or use a different hashing algorithm.
+            // Fall back to the plaintext compatibility check below.
+        }
+
+        if (!$pinValid && hash_equals($storedPin, (string) $validated['pin'])) {
             // For backward compatibility with plain text PINs
             $pinValid = true;
         }
