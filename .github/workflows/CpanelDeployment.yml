@@ -33,7 +33,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
           local-dir: ./
-          server-dir: ems2/
+          server-dir: ./
 
           exclude: |
             **/.git*
