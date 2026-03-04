@@ -136,7 +136,11 @@ class AuthController extends Controller
         $prefix ??= 'Trainee';
 
         $candidate = "logo_profile/{$prefix}-{$genderKey}.png";
-        if (!Storage::disk('public')->exists($candidate)) {
+        try {
+            if (!Storage::disk('public')->exists($candidate)) {
+                $candidate = "logo_profile/Trainee-{$genderKey}.png";
+            }
+        } catch (\Throwable $e) {
             $candidate = "logo_profile/Trainee-{$genderKey}.png";
         }
 
@@ -196,7 +200,7 @@ class AuthController extends Controller
      */
     public function searchUsers(Request $request)
     {
-        $query = $request->get('q', '');
+        $query = trim((string) $request->get('q', ''));
 
         // Validate minimum 2 characters
         if (strlen($query) < 2) {
@@ -205,60 +209,78 @@ class AuthController extends Controller
             ]);
         }
 
-        $columns = ['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin'];
-        static $hasPhotoProfile = null;
-        if ($hasPhotoProfile === null) {
-            $hasPhotoProfile = Schema::hasColumn('user_rh', 'photo_profile');
-        }
-        if ($hasPhotoProfile) {
-            $columns[] = 'photo_profile';
-        }
-
-        // Search users by name (and optional citizen id)
-        $users = UserRh::query()
-            ->where(function ($q) use ($query) {
-                $q->where('full_name', 'like', '%' . $query . '%')
-                    ->orWhere('citizen_id', 'like', '%' . $query . '%');
-            })
-            ->select($columns)
-            ->orderBy('full_name')
-            ->limit(10)
-            ->get();
-
-        // Check active sessions for each user
-        $results = $users->map(function ($user) {
-            // Check if user has active session (session_end is null and within last hour)
-            $activeSession = UserFarmasiSession::where('user_id', $user->id)
-                ->whereNull('session_end')
-                ->where('session_start', '>=', now()->subHours(24))
-                ->first();
-
-            // Get photo URL
-            $photoUrl = null;
-            if (!empty($user->photo_profile)) {
-                $photoUrl = Str::startsWith($user->photo_profile, ['http://', 'https://'])
-                    ? $user->photo_profile
-                    : asset($user->photo_profile);
-            } else {
-                $photoUrl = $this->defaultProfilePhotoUrl($user->position, $user->role, $user->jenis_kelamin);
+        try {
+            $columns = ['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin'];
+            static $hasPhotoProfile = null;
+            if ($hasPhotoProfile === null) {
+                try {
+                    $hasPhotoProfile = Schema::hasColumn('user_rh', 'photo_profile');
+                } catch (\Throwable $e) {
+                    // Some shared host DB users cannot query information_schema reliably.
+                    $hasPhotoProfile = false;
+                }
+            }
+            if ($hasPhotoProfile) {
+                $columns[] = 'photo_profile';
             }
 
-            return [
-                'id' => $user->id,
-                'full_name' => $user->full_name,
-                'photo' => $photoUrl,
-                'avatar_variant' => $this->avatarVariant($user->position, $user->role),
-                'position' => $user->position ?? 'Trainee',
-                'role' => $user->role,
-                'batch' => $user->batch,
-                'is_active' => $user->is_active,
-                'is_online' => $activeSession !== null,
-            ];
-        });
+            // Search users by name (and optional citizen id)
+            $users = UserRh::query()
+                ->where(function ($q) use ($query) {
+                    $q->where('full_name', 'like', '%' . $query . '%')
+                        ->orWhere('citizen_id', 'like', '%' . $query . '%');
+                })
+                ->select($columns)
+                ->orderBy('full_name')
+                ->limit(10)
+                ->get();
 
-        return response()->json([
-            'results' => $results
-        ]);
+            // Best-effort online status. On shared hosting, this table may not exist yet.
+            $onlineUserIds = [];
+            try {
+                $onlineUserIds = UserFarmasiSession::query()
+                    ->whereIn('user_id', $users->pluck('id'))
+                    ->whereNull('session_end')
+                    ->where('session_start', '>=', now()->subHours(24))
+                    ->pluck('user_id')
+                    ->all();
+            } catch (\Throwable $e) {
+                $onlineUserIds = [];
+            }
+
+            $results = $users->map(function ($user) use ($onlineUserIds) {
+                // Get photo URL
+                $photoUrl = null;
+                if (!empty($user->photo_profile)) {
+                    $photoUrl = Str::startsWith($user->photo_profile, ['http://', 'https://'])
+                        ? $user->photo_profile
+                        : asset($user->photo_profile);
+                } else {
+                    $photoUrl = $this->defaultProfilePhotoUrl($user->position, $user->role, $user->jenis_kelamin);
+                }
+
+                return [
+                    'id' => $user->id,
+                    'full_name' => $user->full_name,
+                    'photo' => $photoUrl,
+                    'avatar_variant' => $this->avatarVariant($user->position, $user->role),
+                    'position' => $user->position ?? 'Trainee',
+                    'role' => $user->role,
+                    'batch' => $user->batch,
+                    'is_active' => $user->is_active,
+                    'is_online' => in_array($user->id, $onlineUserIds, true),
+                ];
+            });
+
+            return response()->json([
+                'results' => $results
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
+            return response()->json([
+                'results' => []
+            ]);
+        }
     }
 
     /**
