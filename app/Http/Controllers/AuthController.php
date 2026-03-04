@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Illuminate\Database\QueryException;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -135,16 +136,47 @@ class AuthController extends Controller
 
         $prefix ??= 'Trainee';
 
-        $candidate = "logo_profile/{$prefix}-{$genderKey}.png";
-        try {
-            if (!Storage::disk('public')->exists($candidate)) {
-                $candidate = "logo_profile/Trainee-{$genderKey}.png";
-            }
-        } catch (\Throwable $e) {
-            $candidate = "logo_profile/Trainee-{$genderKey}.png";
+        return route('api.assets.logo_profile', [
+            'filename' => "{$prefix}-{$genderKey}.png",
+        ]);
+    }
+
+    public function logoProfile(string $filename)
+    {
+        $safe = basename($filename);
+        if (!preg_match('/\A[A-Za-z0-9_.-]+\.png\z/', $safe)) {
+            abort(404);
         }
 
-        return asset('storage/' . $candidate);
+        $diskPath = null;
+        try {
+            $diskPath = Storage::disk('public')->path('logo_profile/' . $safe);
+        } catch (\Throwable $e) {
+            $diskPath = null;
+        }
+
+        $candidates = array_values(array_filter([
+            public_path('storage/logo_profile/' . $safe),
+            public_path('logo_profile/' . $safe),
+            $diskPath,
+        ]));
+
+        foreach ($candidates as $path) {
+            if (is_string($path) && is_file($path)) {
+                return response()->file($path, [
+                    'Content-Type' => 'image/png',
+                    'Cache-Control' => 'public, max-age=604800, immutable',
+                ]);
+            }
+        }
+
+        $genderKey = str_ends_with($safe, '-Female.png') ? 'Female' : 'Male';
+        $fallback = "Trainee-{$genderKey}.png";
+        if ($fallback !== $safe) {
+            return $this->logoProfile($fallback);
+        }
+
+        abort(404);
     }
 
     /**
@@ -210,30 +242,46 @@ class AuthController extends Controller
         }
 
         try {
-            $columns = ['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin'];
-            static $hasPhotoProfile = null;
-            if ($hasPhotoProfile === null) {
+            $baseQuery = UserRh::query()->orderBy('full_name')->limit(10);
+
+            // Search users by name (and optional citizen id if column exists).
+            $baseQuery = $baseQuery->where(function ($q) use ($query) {
+                $q->where('full_name', 'like', '%' . $query . '%')
+                    ->orWhere('citizen_id', 'like', '%' . $query . '%');
+            });
+
+            // Prefer rich columns, but be tolerant on shared hosting where schema may differ.
+            try {
+                $users = (clone $baseQuery)
+                    ->select(['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin', 'photo_profile'])
+                    ->get();
+            } catch (QueryException $e) {
                 try {
-                    $hasPhotoProfile = Schema::hasColumn('user_rh', 'photo_profile');
-                } catch (\Throwable $e) {
-                    // Some shared host DB users cannot query information_schema reliably.
-                    $hasPhotoProfile = false;
+                    // Fallback: citizen_id/extra columns missing - retry with full_name only.
+                    $fallbackQuery = UserRh::query()
+                        ->where('full_name', 'like', '%' . $query . '%')
+                        ->orderBy('full_name')
+                        ->limit(10);
+
+                    try {
+                        $users = (clone $fallbackQuery)
+                            ->select(['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin', 'photo_profile'])
+                            ->get();
+                    } catch (QueryException $e) {
+                        try {
+                            $users = (clone $fallbackQuery)
+                                ->select(['id', 'full_name', 'is_active'])
+                                ->get();
+                        } catch (QueryException $e) {
+                            $users = (clone $fallbackQuery)
+                                ->select(['id', 'full_name'])
+                                ->get();
+                        }
+                    }
+                } catch (QueryException $e) {
+                    $users = collect();
                 }
             }
-            if ($hasPhotoProfile) {
-                $columns[] = 'photo_profile';
-            }
-
-            // Search users by name (and optional citizen id)
-            $users = UserRh::query()
-                ->where(function ($q) use ($query) {
-                    $q->where('full_name', 'like', '%' . $query . '%')
-                        ->orWhere('citizen_id', 'like', '%' . $query . '%');
-                })
-                ->select($columns)
-                ->orderBy('full_name')
-                ->limit(10)
-                ->get();
 
             // Best-effort online status. On shared hosting, this table may not exist yet.
             $onlineUserIds = [];
@@ -259,15 +307,20 @@ class AuthController extends Controller
                     $photoUrl = $this->defaultProfilePhotoUrl($user->position, $user->role, $user->jenis_kelamin);
                 }
 
+                $isActive = $user->is_active;
+                if ($isActive === null) {
+                    $isActive = true;
+                }
+
                 return [
                     'id' => $user->id,
                     'full_name' => $user->full_name,
                     'photo' => $photoUrl,
                     'avatar_variant' => $this->avatarVariant($user->position, $user->role),
                     'position' => $user->position ?? 'Trainee',
-                    'role' => $user->role,
-                    'batch' => $user->batch,
-                    'is_active' => $user->is_active,
+                    'role' => $user->role ?? 'Staff',
+                    'batch' => $user->batch ?? '',
+                    'is_active' => (bool) $isActive,
                     'is_online' => in_array($user->id, $onlineUserIds, true),
                 ];
             });
@@ -277,9 +330,14 @@ class AuthController extends Controller
             ]);
         } catch (\Throwable $e) {
             report($e);
-            return response()->json([
-                'results' => []
-            ]);
+            $payload = ['results' => []];
+            if (config('app.debug')) {
+                $payload['error'] = [
+                    'type' => get_class($e),
+                    'message' => $e->getMessage(),
+                ];
+            }
+            return response()->json($payload);
         }
     }
 

@@ -56,6 +56,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // API endpoints for login (no auth required)
 Route::get('/api/users/search', [AuthController::class, 'searchUsers'])->name('api.users.search');
+Route::get('/api/assets/logo-profile/{filename}', [AuthController::class, 'logoProfile'])
+    ->where('filename', '.*')
+    ->name('api.assets.logo_profile');
 Route::get('/api/users/session/check', [AuthController::class, 'getActiveSession'])->name('api.users.session.check');
 Route::get('/api/session/valid', [AuthController::class, 'checkSession'])->name('api.session.check');
 

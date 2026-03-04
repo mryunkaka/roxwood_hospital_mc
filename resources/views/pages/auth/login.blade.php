@@ -332,7 +332,7 @@
                         <div
                             x-show="results.length > 0"
                             class="autocomplete-item"
-                            :class="{ 'selected': highlightedIndex === index, 'disabled': !user.is_active }"
+                            :class="{ 'selected': highlightedIndex === index, 'disabled': user.is_active === false }"
                             @click="selectUser(user)"
                             @mouseenter="highlightedIndex = index">
                             <div class="autocomplete-avatar" :class="'autocomplete-avatar--' + (user.avatar_variant || 'trainee')">
@@ -344,10 +344,10 @@
                                 <div class="autocomplete-item-name" x-text="user.full_name"></div>
                                 <div class="autocomplete-item-details">
                                     <span class="autocomplete-item-badge role" x-text="user.role"></span>
-                                    <span class="autocomplete-item-badge batch" x-text="'Batch ' + user.batch"></span>
+                                    <span class="autocomplete-item-badge batch" x-show="user.batch" x-text="'Batch ' + user.batch"></span>
                                     <span x-text="user.position"></span>
                                 </div>
-                                <div x-show="!user.is_active" class="autocomplete-item-inactive">{{ __('messages.account_not_validated') }}</div>
+                                <div x-show="user.is_active === false" class="autocomplete-item-inactive">{{ __('messages.account_not_validated') }}</div>
                             </div>
                             <div
                                 class="autocomplete-item-status"
@@ -473,15 +473,15 @@
     }
 
     function autocomplete() {
-        return {
-            query: @json($savedFullName ?? ''),
-            results: [],
-            showDropdown: false,
-            highlightedIndex: -1,
-            searching: false,
-            searchTimeout: null,
-            activeTitle: @json(__('messages.currently_active')),
-            inactiveTitle: @json(__('messages.currently_inactive')),
+         return {
+             query: @json($savedFullName ?? ''),
+             results: [],
+             showDropdown: false,
+             highlightedIndex: -1,
+             searching: false,
+             requestController: null,
+             activeTitle: @json(__('messages.currently_active')),
+             inactiveTitle: @json(__('messages.currently_inactive')),
 
             init() {
                 // Initialize input with saved value
@@ -490,43 +490,53 @@
                 }
             },
 
-            search(query) {
-                this.query = query;
-                this.highlightedIndex = -1;
+             search(query) {
+                 this.query = query;
+                 this.highlightedIndex = -1;
 
-                if (query.length < 2) {
-                    this.results = [];
-                    this.showDropdown = false;
-                    this.searching = false;
-                    return;
-                }
+                 if (query.length < 2) {
+                     this.results = [];
+                     this.showDropdown = false;
+                     this.searching = false;
+                     if (this.requestController) {
+                         try { this.requestController.abort(); } catch (e) {}
+                         this.requestController = null;
+                     }
+                     return;
+                 }
 
-                this.showDropdown = true;
-                this.searching = true;
+                 this.showDropdown = true;
+                 this.searching = true;
 
-                clearTimeout(this.searchTimeout);
-                this.searchTimeout = setTimeout(() => {
-                    fetch(`{{ route('api.users.search') }}?q=${encodeURIComponent(query)}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            this.results = data.results || [];
-                        })
-                        .catch(() => {
-                            this.results = [];
-                        })
-                        .finally(() => {
-                            this.searching = false;
-                        });
-                }, 300);
-            },
+                 if (this.requestController) {
+                     try { this.requestController.abort(); } catch (e) {}
+                 }
 
-            selectUser(user) {
-                if (!user.is_active) return;
+                 const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+                 this.requestController = controller;
 
-                this.$refs.input.value = user.full_name;
-                this.results = [];
-                this.showDropdown = false;
-                this.query = user.full_name;
+                 fetch(`{{ route('api.users.search') }}?q=${encodeURIComponent(query)}`, controller ? { signal: controller.signal } : undefined)
+                     .then(response => response.json())
+                     .then(data => {
+                         if (controller && controller.signal.aborted) return;
+                         this.results = data.results || [];
+                     })
+                     .catch(() => {
+                         this.results = [];
+                     })
+                     .finally(() => {
+                         if (controller && controller.signal.aborted) return;
+                         this.searching = false;
+                     });
+             },
+
+             selectUser(user) {
+                 if (user.is_active === false) return;
+
+                 this.$refs.input.value = user.full_name;
+                 this.results = [];
+                 this.showDropdown = false;
+                 this.query = user.full_name;
 
                 // Trigger input event to update any listeners
                 this.$refs.input.dispatchEvent(new Event('input', { bubbles: true }));

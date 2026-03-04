@@ -79,12 +79,9 @@ class ProfileController extends Controller
 
                 $prefix ??= 'Trainee';
 
-                $candidate = "logo_profile/{$prefix}-{$genderKey}.png";
-                if (!Storage::disk('public')->exists($candidate)) {
-                    $candidate = "logo_profile/Trainee-{$genderKey}.png";
-                }
-
-                $photoUrl = asset('storage/' . $candidate);
+                $photoUrl = route('api.assets.logo_profile', [
+                    'filename' => "{$prefix}-{$genderKey}.png",
+                ]);
             }
 
             $initial = Str::of($fullName)->trim()->substr(0, 1)->upper()->toString();
