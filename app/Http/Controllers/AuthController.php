@@ -355,7 +355,7 @@ class AuthController extends Controller
                 }
             }
 
-            return response()->json($payload);
+            return response()->json($payload, 200, [], JSON_INVALID_UTF8_SUBSTITUTE);
         } catch (\Throwable $e) {
             report($e);
             $payload = ['results' => []];
@@ -365,7 +365,7 @@ class AuthController extends Controller
                     'message' => $e->getMessage(),
                 ];
             }
-            return response()->json($payload);
+            return response()->json($payload, 200, [], JSON_INVALID_UTF8_SUBSTITUTE);
         }
     }
 
