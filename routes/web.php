@@ -41,13 +41,86 @@ Route::get('/clear-cache', function () {
 });
 
 use Illuminate\Support\Facades\DB;
-
+ 
 Route::get('/test-db', function () {
+    if (!config('app.debug')) {
+        abort(404);
+    }
+
     try {
-        DB::connection()->getPdo();
-        return "Database connected successfully!";
+        $connection = DB::connection();
+        $connectionName = $connection->getName();
+        $connectionConfig = (array) config('database.connections.' . $connectionName, []);
+
+        $pdo = $connection->getPdo();
+        $driver = null;
+        $serverVersion = null;
+        try {
+            $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+            $serverVersion = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
+        $dbName = null;
+        try {
+            $dbName = $connection->getDatabaseName();
+        } catch (\Throwable $e) {
+            $dbName = null;
+        }
+
+        $serverInfo = [];
+        try {
+            $row = $connection->selectOne(
+                "SELECT
+                    DATABASE() AS db,
+                    USER() AS user,
+                    CURRENT_USER() AS current_user,
+                    @@hostname AS hostname,
+                    @@version AS version,
+                    @@character_set_database AS character_set_database,
+                    @@collation_database AS collation_database"
+            );
+            if ($row) {
+                $serverInfo = (array) $row;
+            }
+        } catch (\Throwable $e) {
+            $serverInfo = [
+                'query_error' => $e->getMessage(),
+            ];
+        }
+
+        $payload = [
+            'status' => 'ok',
+            'app_env' => (string) config('app.env'),
+            'db' => [
+                'default_connection' => (string) config('database.default'),
+                'connection_name' => (string) $connectionName,
+                'driver' => $driver,
+                'database_name' => $dbName,
+                'config' => [
+                    'host' => $connectionConfig['host'] ?? null,
+                    'port' => $connectionConfig['port'] ?? null,
+                    'database' => $connectionConfig['database'] ?? null,
+                    'username' => $connectionConfig['username'] ?? null,
+                    'password_set' => array_key_exists('password', $connectionConfig) && (string) ($connectionConfig['password'] ?? '') !== '',
+                    'password_length' => array_key_exists('password', $connectionConfig) ? strlen((string) ($connectionConfig['password'] ?? '')) : null,
+                    'charset' => $connectionConfig['charset'] ?? null,
+                    'collation' => $connectionConfig['collation'] ?? null,
+                ],
+                'pdo' => [
+                    'server_version' => $serverVersion,
+                ],
+                'server' => $serverInfo,
+            ],
+        ];
+
+        return response()->json($payload, 200, [], JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);
     } catch (\Exception $e) {
-        return "Database not connected: " . $e->getMessage();
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500, [], JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);
     }
 });
 

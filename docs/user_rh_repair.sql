@@ -1,40 +1,5 @@
-﻿-- user_rh repair extract from hark8423_ems.sql
+﻿-- Reload data for table `user_rh` without dropping (safe with FKs)
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS=0;
-DROP TABLE IF EXISTS `user_rh`;
-
-CREATE TABLE `user_rh` (
-  `id` int(11) NOT NULL,
-  `full_name` varchar(100) NOT NULL,
-  `citizen_id` varchar(30) DEFAULT NULL,
-  `no_hp_ic` varchar(20) DEFAULT NULL,
-  `jenis_kelamin` enum('Laki-laki','Perempuan') DEFAULT NULL,
-  `pin` varchar(255) NOT NULL,
-  `api_token` varchar(64) DEFAULT NULL,
-  `role` enum('Staff','Staff Manager','Manager','Vice Director','Director') NOT NULL DEFAULT 'Staff',
-  `batch` int(11) DEFAULT NULL,
-  `kode_nomor_induk_rs` varchar(30) DEFAULT NULL,
-  `position` varchar(100) DEFAULT NULL,
-  `tanggal_masuk` date DEFAULT NULL,
-  `file_ktp` varchar(255) DEFAULT NULL,
-  `file_sim` varchar(255) DEFAULT NULL,
-  `file_kta` varchar(255) DEFAULT NULL,
-  `file_skb` varchar(255) DEFAULT NULL,
-  `sertifikat_heli` varchar(255) DEFAULT NULL,
-  `sertifikat_operasi` varchar(255) DEFAULT NULL,
-  `dokumen_lainnya` varchar(255) DEFAULT NULL,
-  `is_verified` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `resign_reason` text DEFAULT NULL,
-  `resigned_by` int(11) DEFAULT NULL,
-  `resigned_at` datetime DEFAULT NULL,
-  `reactivated_at` datetime DEFAULT NULL,
-  `reactivated_by` int(11) DEFAULT NULL,
-  `reactivated_note` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 INSERT INTO `user_rh` (`id`, `full_name`, `citizen_id`, `no_hp_ic`, `jenis_kelamin`, `pin`, `api_token`, `role`, `batch`, `kode_nomor_induk_rs`, `position`, `tanggal_masuk`, `file_ktp`, `file_sim`, `file_kta`, `file_skb`, `sertifikat_heli`, `sertifikat_operasi`, `dokumen_lainnya`, `is_verified`, `created_at`, `updated_at`, `is_active`, `resign_reason`, `resigned_by`, `resigned_at`, `reactivated_at`, `reactivated_by`, `reactivated_note`) VALUES
 (1, 'Michael Moore', 'RH39IQLC', '5232333', 'Laki-laki', '$2y$12$gyNcB5JmGduvBsc2Hje5G.D6FFvSXJvh3xpfp0Za1OAR3U6xRgx7e', 'EMS-MICHAEL-A8D9Q', 'Staff Manager', 3, 'RHC-0113091315', '(Co.Ast)', '2025-10-17', 'storage/user_docs/user_1-rhc-0113091315/file_ktp.jpg', 'storage/user_docs/user_1-rhc-0113091315/file_sim.jpg', 'storage/user_docs/user_1-rhc-0113091315/file_kta.jpg', 'storage/user_docs/user_1-rhc-0113091315/file_skb.jpg', 'storage/user_docs/user_1-rhc-0113091315/sertifikat_heli.jpg', NULL, NULL, 1, '2025-12-27 08:28:56', '2026-02-06 06:04:27', 1, NULL, NULL, NULL, NULL, NULL, NULL),
 (2, 'AHMAD MILLER', NULL, NULL, NULL, '$2y$12$.AVLlJOAaIeC2CFLUuMCQ.S2PRNjAEYyLc0ab5Ze405tH3hoTw/Cq', NULL, 'Staff', 3, 'RHC-0201081309', 'Paramedic', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2025-12-27 10:06:11', '2026-01-22 22:42:51', 1, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -138,15 +103,37 @@ INSERT INTO `user_rh` (`id`, `full_name`, `citizen_id`, `no_hp_ic`, `jenis_kelam
 (100, 'Marcus Emanuel', 'WS03BOJ2', '33344739', 'Laki-laki', '$2y$12$56STJAA7a7MpPyfPflu0KeTnrf9ZUe55fWu.TekMCiklVFqtvGztC', NULL, 'Staff', 5, 'RHE-10013010513', 'Paramedic', '2026-01-29', 'storage/user_docs/user_100-rhe-10013010513/file_ktp.png', 'storage/user_docs/user_100-rhe-10013010513/file_sim.png', 'storage/user_docs/user_100-rhe-10013010513/file_kta.png', 'storage/user_docs/user_100-rhe-10013010513/file_skb.png', NULL, NULL, NULL, 1, '2026-02-24 21:43:41', '2026-02-24 21:47:09', 1, NULL, NULL, NULL, NULL, NULL, NULL),
 (101, 'RH - Tessa Hushveil', 'HH0958II', '44429474', 'Perempuan', '$2y$12$zSG7sw2.7Ew77349JZykgetMX/wsIdTkotU.8wScMCBMGIMhVdVGe', NULL, 'Staff', 6, 'RHF-10118080821', 'Paramedic', '2026-02-26', 'storage/user_docs/user_101-rhf-10118080821/file_ktp.png', 'storage/user_docs/user_101-rhf-10118080821/file_sim.png', 'storage/user_docs/user_101-rhf-10118080821/file_kta.png', 'storage/user_docs/user_101-rhf-10118080821/file_skb.png', NULL, NULL, NULL, 1, '2026-02-27 13:38:00', '2026-02-27 16:07:31', 1, NULL, NULL, NULL, NULL, NULL, NULL),
 (102, 'Yume W Hinamori', 'D51NR7E8', '21256004', 'Perempuan', '$2y$12$zZw4NovXunSbThY1Xl2z7uRyhp2XJOM4c9gkcjwaL6Y9EJVNF/9mi', NULL, 'Staff', 6, 'RHF-10225210809', 'Paramedic', '2005-04-22', 'storage/user_docs/user_102-rhf-10225210809/file_ktp.png', 'storage/user_docs/user_102-rhf-10225210809/file_sim.png', NULL, 'storage/user_docs/user_102-rhf-10225210809/file_skb.png', NULL, NULL, NULL, 1, '2026-02-28 21:30:35', '2026-02-28 21:33:27', 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(103, 'RH - Pixie Voznesensky Lannister', 'HKFK8E3A', '88763877', 'Perempuan', '$2y$12$naDRlyhwWASW9ODxiVvU2eJYbpExwnNI2qi8AOIcx9UmMWZyFzsVm', NULL, 'Staff', 6, 'RHF-10318081201', 'Paramedic', '2026-02-26', 'storage/user_docs/user_103-rhf-10318081201/file_ktp.png', 'storage/user_docs/user_103-rhf-10318081201/file_sim.png', NULL, 'storage/user_docs/user_103-rhf-10318081201/file_skb.png', NULL, NULL, NULL, 1, '2026-03-01 13:22:11', '2026-03-01 13:26:34', 1, NULL, NULL, NULL, NULL, NULL, NULL);
-
-ALTER TABLE `user_rh`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uniq_user_name` (`full_name`),
-  ADD UNIQUE KEY `api_token` (`api_token`);
+(103, 'RH - Pixie Voznesensky Lannister', 'HKFK8E3A', '88763877', 'Perempuan', '$2y$12$naDRlyhwWASW9ODxiVvU2eJYbpExwnNI2qi8AOIcx9UmMWZyFzsVm', NULL, 'Staff', 6, 'RHF-10318081201', 'Paramedic', '2026-02-26', 'storage/user_docs/user_103-rhf-10318081201/file_ktp.png', 'storage/user_docs/user_103-rhf-10318081201/file_sim.png', NULL, 'storage/user_docs/user_103-rhf-10318081201/file_skb.png', NULL, NULL, NULL, 1, '2026-03-01 13:22:11', '2026-03-01 13:26:34', 1, NULL, NULL, NULL, NULL, NULL, NULL)
+ON DUPLICATE KEY UPDATE
+  `full_name` = VALUES(`full_name`),
+  `citizen_id` = VALUES(`citizen_id`),
+  `no_hp_ic` = VALUES(`no_hp_ic`),
+  `jenis_kelamin` = VALUES(`jenis_kelamin`),
+  `pin` = VALUES(`pin`),
+  `api_token` = VALUES(`api_token`),
+  `role` = VALUES(`role`),
+  `batch` = VALUES(`batch`),
+  `kode_nomor_induk_rs` = VALUES(`kode_nomor_induk_rs`),
+  `position` = VALUES(`position`),
+  `tanggal_masuk` = VALUES(`tanggal_masuk`),
+  `file_ktp` = VALUES(`file_ktp`),
+  `file_sim` = VALUES(`file_sim`),
+  `file_kta` = VALUES(`file_kta`),
+  `file_skb` = VALUES(`file_skb`),
+  `sertifikat_heli` = VALUES(`sertifikat_heli`),
+  `sertifikat_operasi` = VALUES(`sertifikat_operasi`),
+  `dokumen_lainnya` = VALUES(`dokumen_lainnya`),
+  `is_verified` = VALUES(`is_verified`),
+  `created_at` = VALUES(`created_at`),
+  `updated_at` = VALUES(`updated_at`),
+  `is_active` = VALUES(`is_active`),
+  `resign_reason` = VALUES(`resign_reason`),
+  `resigned_by` = VALUES(`resigned_by`),
+  `resigned_at` = VALUES(`resigned_at`),
+  `reactivated_at` = VALUES(`reactivated_at`),
+  `reactivated_by` = VALUES(`reactivated_by`),
+  `reactivated_note` = VALUES(`reactivated_note`);
 
 ALTER TABLE `user_rh`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
-SET FOREIGN_KEY_CHECKS=1;
-COMMIT;
