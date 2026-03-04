@@ -328,7 +328,7 @@
                      x-transition:enter="transition ease-out duration-200"
                      x-transition:enter-start="opacity-0 scale-95"
                      x-transition:enter-end="opacity-100 scale-100">
-                    <template x-for="(user, index) in results" :key="user.id">
+                    <template x-for="(user, index) in results" :key="(user.id ?? '0') + ':' + index">
                         <div
                             x-show="results.length > 0"
                             class="autocomplete-item"
