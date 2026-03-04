@@ -73,13 +73,13 @@ Route::get('/test-db', function () {
         try {
             $row = $connection->selectOne(
                 "SELECT
-                    DATABASE() AS db,
-                    USER() AS user,
-                    CURRENT_USER() AS current_user,
-                    @@hostname AS hostname,
-                    @@version AS version,
-                    @@character_set_database AS character_set_database,
-                    @@collation_database AS collation_database"
+                    DATABASE() AS `db`,
+                    USER() AS `user`,
+                    CURRENT_USER() AS `current_user`,
+                    @@hostname AS `hostname`,
+                    VERSION() AS `version`,
+                    @@character_set_database AS `character_set_database`,
+                    @@collation_database AS `collation_database`"
             );
             if ($row) {
                 $serverInfo = (array) $row;
