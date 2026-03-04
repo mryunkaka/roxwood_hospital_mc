@@ -33,6 +33,13 @@ use App\Http\Controllers\PresenceController;
 |
 */
 
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/clear-cache', function () {
+    Artisan::call('optimize:clear');
+    return "Cache cleared";
+});
+
 use Illuminate\Support\Facades\DB;
 
 Route::get('/test-db', function () {
