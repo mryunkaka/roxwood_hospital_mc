@@ -250,36 +250,50 @@ class AuthController extends Controller
                     ->orWhere('citizen_id', 'like', '%' . $query . '%');
             });
 
-            // Prefer rich columns, but be tolerant on shared hosting where schema may differ.
+            $selectAttempts = [
+                ['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin', 'photo_profile'],
+                ['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin'],
+                ['id', 'full_name', 'position', 'role', 'batch', 'is_active'],
+                ['id', 'full_name', 'position', 'role', 'batch'],
+                ['id', 'full_name', 'position', 'role', 'is_active'],
+                ['id', 'full_name', 'is_active'],
+                ['id', 'full_name'],
+            ];
+
+            $runSelect = function ($queryBuilder) use ($selectAttempts) {
+                foreach ($selectAttempts as $columns) {
+                    try {
+                        return [(clone $queryBuilder)->select($columns)->get(), $columns];
+                    } catch (QueryException $e) {
+                        continue;
+                    }
+                }
+                return [collect(), []];
+            };
+
+            // Prefer citizen_id search (if the column exists), otherwise fallback to full_name only.
+            $usedColumns = [];
+            $usedFallback = false;
+
             try {
-                $users = (clone $baseQuery)
-                    ->select(['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin', 'photo_profile'])
-                    ->get();
+                [$users, $usedColumns] = $runSelect($baseQuery);
             } catch (QueryException $e) {
+                $users = collect();
+                $usedColumns = [];
+            }
+
+            if ($users->isEmpty()) {
                 try {
-                    // Fallback: citizen_id/extra columns missing - retry with full_name only.
                     $fallbackQuery = UserRh::query()
                         ->where('full_name', 'like', '%' . $query . '%')
                         ->orderBy('full_name')
                         ->limit(10);
 
-                    try {
-                        $users = (clone $fallbackQuery)
-                            ->select(['id', 'full_name', 'position', 'role', 'batch', 'is_active', 'jenis_kelamin', 'photo_profile'])
-                            ->get();
-                    } catch (QueryException $e) {
-                        try {
-                            $users = (clone $fallbackQuery)
-                                ->select(['id', 'full_name', 'is_active'])
-                                ->get();
-                        } catch (QueryException $e) {
-                            $users = (clone $fallbackQuery)
-                                ->select(['id', 'full_name'])
-                                ->get();
-                        }
-                    }
+                    [$users, $usedColumns] = $runSelect($fallbackQuery);
+                    $usedFallback = true;
                 } catch (QueryException $e) {
                     $users = collect();
+                    $usedColumns = [];
                 }
             }
 
@@ -307,27 +321,41 @@ class AuthController extends Controller
                     $photoUrl = $this->defaultProfilePhotoUrl($user->position, $user->role, $user->jenis_kelamin);
                 }
 
-                $isActive = $user->is_active;
-                if ($isActive === null) {
-                    $isActive = true;
-                }
-
                 return [
                     'id' => $user->id,
                     'full_name' => $user->full_name,
                     'photo' => $photoUrl,
                     'avatar_variant' => $this->avatarVariant($user->position, $user->role),
-                    'position' => $user->position ?? 'Trainee',
-                    'role' => $user->role ?? 'Staff',
+                    'position' => $user->position ?? '',
+                    'role' => $user->role ?? '',
                     'batch' => $user->batch ?? '',
-                    'is_active' => (bool) $isActive,
+                    'is_active' => $user->is_active === null ? true : (bool) $user->is_active,
                     'is_online' => in_array($user->id, $onlineUserIds, true),
                 ];
             });
 
-            return response()->json([
-                'results' => $results
-            ]);
+            $payload = [
+                'results' => $results,
+            ];
+
+            if (config('app.debug')) {
+                try {
+                    $payload['meta'] = [
+                        'query' => $query,
+                        'used_fallback' => $usedFallback,
+                        'used_columns' => $usedColumns,
+                        'db_database' => DB::connection()->getDatabaseName(),
+                    ];
+                } catch (\Throwable $e) {
+                    $payload['meta'] = [
+                        'query' => $query,
+                        'used_fallback' => $usedFallback,
+                        'used_columns' => $usedColumns,
+                    ];
+                }
+            }
+
+            return response()->json($payload);
         } catch (\Throwable $e) {
             report($e);
             $payload = ['results' => []];

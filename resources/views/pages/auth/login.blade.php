@@ -343,9 +343,9 @@
                             <div class="autocomplete-item-info">
                                 <div class="autocomplete-item-name" x-text="user.full_name"></div>
                                 <div class="autocomplete-item-details">
-                                    <span class="autocomplete-item-badge role" x-text="user.role"></span>
+                                    <span class="autocomplete-item-badge role" x-show="user.role" x-text="user.role"></span>
                                     <span class="autocomplete-item-badge batch" x-show="user.batch" x-text="'Batch ' + user.batch"></span>
-                                    <span x-text="user.position"></span>
+                                    <span x-show="user.position" x-text="user.position"></span>
                                 </div>
                                 <div x-show="user.is_active === false" class="autocomplete-item-inactive">{{ __('messages.account_not_validated') }}</div>
                             </div>
