@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RekapFarmasiController;
@@ -122,6 +123,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Patients
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');

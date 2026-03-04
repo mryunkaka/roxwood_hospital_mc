@@ -573,6 +573,11 @@ return [
     'breadcrumb' => 'Breadcrumb',
     'settings' => 'Settings',
     'profile' => 'Profile',
+    'profile_page_description' => 'View your profile information.',
+    'profile_personal_info' => 'Personal Information',
+    'profile_work_info' => 'Work Information',
+    'profile_verified_badge' => 'Validated',
+    'profile_unverified_badge' => 'Not validated',
     'notifications' => 'Notifications',
 
     // Theme
@@ -1087,6 +1092,7 @@ return [
     'full_name_not_found' => 'Full name not found',
     'pin_incorrect' => 'PIN is incorrect',
     'account_not_validated' => 'Your account has not been validated yet',
+    'account_validated' => 'Your account is validated',
     'searching_users' => 'Searching users...',
     'no_users_found' => 'No users found',
     'currently_active' => 'Currently Active',

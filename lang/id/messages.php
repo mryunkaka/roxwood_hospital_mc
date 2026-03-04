@@ -604,6 +604,11 @@ return [
     'breadcrumb' => 'Remah Roti',
     'settings' => 'Pengaturan',
     'profile' => 'Profil',
+    'profile_page_description' => 'Lihat informasi profil Anda.',
+    'profile_personal_info' => 'Informasi Pribadi',
+    'profile_work_info' => 'Informasi Pekerjaan',
+    'profile_verified_badge' => 'Tervalidasi',
+    'profile_unverified_badge' => 'Belum validasi',
     'notifications' => 'Notifikasi',
 
     // Theme
@@ -1084,6 +1089,7 @@ return [
     'full_name_not_found' => 'Nama lengkap tidak ditemukan',
     'pin_incorrect' => 'PIN salah',
     'account_not_validated' => 'Akun Anda masih belum divalidasi',
+    'account_validated' => 'Akun Anda sudah divalidasi',
     'searching_users' => 'Mencari pengguna...',
     'no_users_found' => 'Tidak ada pengguna ditemukan',
     'currently_active' => 'Sedang Aktif',
